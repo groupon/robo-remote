@@ -184,7 +184,7 @@ public class DebugBridge {
     
     public void setLatLon(double lat, double lon) throws Exception {
         EmulatorConsole emu = EmulatorConsole.getConsole(currentDevice);
-        emu.sendLocation(lat, lon, 0);
+        emu.sendLocation(lon, lat, 0);
     }
 
     /**
