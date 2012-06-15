@@ -30,7 +30,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</div>
  */
 
-import com.roboremote.roboremoteclient.QueryBuilder;
+import com.groupon.roboremote.roboremoteclient.QueryBuilder;
 import org.json.*;
 import org.junit.Test;
 import static junit.framework.Assert.assertNotNull;

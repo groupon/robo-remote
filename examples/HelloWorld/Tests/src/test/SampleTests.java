@@ -30,11 +30,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</div>
  */
 
-import com.roboremote.roboremoteclient.Device;
-import com.roboremote.roboremoteclient.QueryBuilder;
-import com.roboremote.roboremoteclient.Solo;
-import com.roboremote.roboremoteclient.components.*;
-import com.roboremote.roboremoteclient.TestBase;
+import com.groupon.roboremote.roboremoteclient.Device;
+import com.groupon.roboremote.roboremoteclient.QueryBuilder;
+import com.groupon.roboremote.roboremoteclient.Solo;
+import com.groupon.roboremote.roboremoteclient.components.*;
+import com.groupon.roboremote.roboremoteclient.TestBase;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -50,7 +50,7 @@ public class SampleTests extends TestBase {
      */
     @BeforeClass
     public static void setUpApp() {
-        Device.setAppEnvironmentVariables("com.roboremote.example.helloworld", "com.roboremote.example.helloworldtestrunner.Runner", "com.roboremote.example.helloworldtestrunner/android.test.InstrumentationTestRunner");
+        Device.setAppEnvironmentVariables("com.groupon.roboremote.example.helloworld", "com.groupon.roboremote.example.helloworldtestrunner.Runner", "com.groupon.roboremote.example.helloworldtestrunner/android.test.InstrumentationTestRunner");
     }
 
     @Test
@@ -145,12 +145,12 @@ public class SampleTests extends TestBase {
             
             QueryBuilder builder = new QueryBuilder();
             // request the HTML content via javascript
-            builder.map("solo", "getView", "com.roboremote.example.helloworld.support.TestableWebView", 0).call("loadUrl", "javascript:window.HTMLOUT.showHTML(document.body.innerHTML);void(0);").execute();
+            builder.map("solo", "getView", "com.groupon.roboremote.example.helloworld.support.TestableWebView", 0).call("loadUrl", "javascript:window.HTMLOUT.showHTML(document.body.innerHTML);void(0);").execute();
 
             // wait for the content to be available to the test
             for (int x = 0; x < 10; x++) {
                 builder = new QueryBuilder();
-                Boolean available = builder.map("solo", "getView", "com.roboremote.example.helloworld.support.TestableWebView", 0).callField("htmlContentSet").execute().getBoolean(0);
+                Boolean available = builder.map("solo", "getView", "com.groupon.roboremote.example.helloworld.support.TestableWebView", 0).callField("htmlContentSet").execute().getBoolean(0);
                 if (available)
                     break;
                 
@@ -165,7 +165,7 @@ public class SampleTests extends TestBase {
             
             // now try to get retstr from the view
             builder = new QueryBuilder();
-            String htmlContent = builder.map("solo", "getView", "com.roboremote.example.helloworld.support.TestableWebView", 0).callField("htmlContent").execute().getString(0);
+            String htmlContent = builder.map("solo", "getView", "com.groupon.roboremote.example.helloworld.support.TestableWebView", 0).callField("htmlContent").execute().getString(0);
 
             assertTrue(htmlContent.equals("Testing text"));
         } catch (Exception e) {

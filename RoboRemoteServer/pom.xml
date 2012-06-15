@@ -36,13 +36,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.roboremote</groupId>
+    <groupId>com.groupon.roboremote</groupId>
     <artifactId>RoboRemoteServer</artifactId>
     <version>0.1-05082012-1630</version>
     <packaging>apklib</packaging>
 
     <!--<parent>
-        <groupId>com.roboremote</groupId>
+        <groupId>com.groupon.roboremote</groupId>
         <artifactId>roboremote</artifactId>
         <version>${roboremote.version}</version>
     </parent>-->

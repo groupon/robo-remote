@@ -36,13 +36,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.roboremote.example</groupId>
+    <groupId>com.groupon.roboremote.example</groupId>
     <artifactId>HelloWorldTests</artifactId>
     <version>1.0</version>
 
     <parent>
         <artifactId>helloworldaggregator</artifactId>
-        <groupId>com.roboremote.example</groupId>
+        <groupId>com.groupon.roboremote.example</groupId>
         <version>1.0</version>
     </parent>
 
@@ -73,7 +73,7 @@
             <version>0.9.29</version>
         </dependency>
         <dependency>
-            <groupId>com.roboremote</groupId>
+            <groupId>com.groupon.roboremote</groupId>
             <artifactId>RoboRemoteClient</artifactId>
             <version>${roboremote.version}</version>
         </dependency>

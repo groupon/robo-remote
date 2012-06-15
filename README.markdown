@@ -62,21 +62,21 @@ RoboRemoteClient is a java library(jar) that can be utilized in a JUnit 4.11 tes
 
 #### Robotium Solo Emulation
 
-RoboRemoteClient provides com.roboremote.RoboRemoteClient.Solo which maps all Solo commands that were available as of Robotium 3.1.
+RoboRemoteClient provides com.groupon.roboremote.RoboRemoteClient.Solo which maps all Solo commands that were available as of Robotium 3.1.
 
 **Example Robotium Solo request**
 
 *Traditional Robotium Syntax*: 
 <pre><code>View tView = solo.getView(android.widget.EditText.class, 0);
 solo.enterText(tView, "Text to enter");</code></pre>
-*RoboRemote client request*(using com.roboremote.RoboRemoteClient.Solo):
+*RoboRemote client request*(using com.groupon.roboremote.RoboRemoteClient.Solo):
 <pre><code>String tView = Solo.getView("android.widget.EditText", 0);
 Solo.enterText(tView, "Text to enter");
 </code></pre>
 
 #### Arbitrary Function Calls
 
-RoboRemoteClient also provides a method(in com.roboremote.RoboRemoteClient.Client) to call any function in a static/non-static class.  The map method is defined as map(String className, String method_name, Object … parameters).  If the call is successful then it returns a JSONArray of the results.  If the method only has a single return value then it will be in the first element of the JSONArray.  Elements in lists/arrays are returned in the same position in the JSONArray as they would be for the normal function call.
+RoboRemoteClient also provides a method(in com.groupon.roboremote.RoboRemoteClient.Client) to call any function in a static/non-static class.  The map method is defined as map(String className, String method_name, Object … parameters).  If the call is successful then it returns a JSONArray of the results.  If the method only has a single return value then it will be in the first element of the JSONArray.  Elements in lists/arrays are returned in the same position in the JSONArray as they would be for the normal function call.
 
 **Example function call**
 
@@ -102,7 +102,7 @@ You may have a neeed to retrieve content from fields in a class.  This can be do
 
 #### Method Chaining
 
-RoboRemoteClient also allows you to call functions on the return value of a previous function via the com.roboremote.RoboRemoteClient.QueryBuilder class.  You can chain together as many method calls as you would like.  The drawback to this class is that you have to map Solo calls instead of using the pre-defined Solo class.
+RoboRemoteClient also allows you to call functions on the return value of a previous function via the com.groupon.roboremote.RoboRemoteClient.QueryBuilder class.  You can chain together as many method calls as you would like.  The drawback to this class is that you have to map Solo calls instead of using the pre-defined Solo class.
 
 *Traditional method call*:
 <pre><code>float textSize = solo.getText("Sample Text").getTextSize();</code></pre>
@@ -125,11 +125,11 @@ query.mapField("java.lang.System", "out".call("println", "Foo bar").execute();</
 ***
 You need two things to get started with RoboRemote.
 
-* A test runner.  This is very similar to a Robotium test class except that it extends com.roboremote.roboremoteserver.RemoteTest instead of ActivityInstrumentationTestCase2.  You can actually take the example below and simply change the namespace and target test class.  The provided examples(described below) also contain Maven pom files to show how to compile this.
+* A test runner.  This is very similar to a Robotium test class except that it extends com.groupon.roboremote.roboremoteserver.RemoteTest instead of ActivityInstrumentationTestCase2.  You can actually take the example below and simply change the namespace and target test class.  The provided examples(described below) also contain Maven pom files to show how to compile this.
 
-	<pre><code>package com.roboremote.example.helloworldtestrunner;
-import com.roboremote.example.helloworld.HelloWorld;
-import com.roboremote.roboremoteserver.*;
+	<pre><code>package com.groupon.roboremote.example.helloworldtestrunner;
+import com.groupon.roboremote.example.helloworld.HelloWorld;
+import com.groupon.roboremote.roboremoteserver.*;
 public class Runner extends RemoteTest<HelloWorld> {
     public Runner() throws ClassNotFoundException {
         super(HelloWorld.class);
@@ -139,16 +139,16 @@ public class Runner extends RemoteTest<HelloWorld> {
     }
 }</code></pre>
 
-* Tests!  These are JUnit 4.11 test classes that extend com.roboremote.roboremoteclient.TestBase.  Example tests are provided in the source repository.  These can also be compiled with Maven and a sample pom is provided with the example.  
+* Tests!  These are JUnit 4.11 test classes that extend com.groupon.roboremote.roboremoteclient.TestBase.  Example tests are provided in the source repository.  These can also be compiled with Maven and a sample pom is provided with the example.  
 The test executor requires a few environment variables to be set:
-	1. ROBO_APP_PACKAGE - This is the package name of the application under test(ex: com.roboremote.example.HelloWorld)
-	2. ROBO_TEST_CLASS - This is the class name that contains the test method we are usng(ex: com.roboremote.example.helloworldtestrunner.Runner)
-	3. ROBO_TEST_RUNNER - The instrumentation test runner to be used(ex: com.roboremote.example.helloworldtestrunner/android.test.InstrumentationTestRunner)
+	1. ROBO_APP_PACKAGE - This is the package name of the application under test(ex: com.groupon.roboremote.example.HelloWorld)
+	2. ROBO_TEST_CLASS - This is the class name that contains the test method we are usng(ex: com.groupon.roboremote.example.helloworldtestrunner.Runner)
+	3. ROBO_TEST_RUNNER - The instrumentation test runner to be used(ex: com.groupon.roboremote.example.helloworldtestrunner/android.test.InstrumentationTestRunner)
 
 	These can be alternatively defined if your tests have a @BeforeClass method that overrides the setUpApp() method from TestBase
 	<pre><code>@BeforeClass
     public static void setUpApp() {
-        Device.setAppEnvironmentVariables("com.roboremote.example.helloworld", "com.roboremote.example.helloworldtestrunner.Runner", "com.roboremote.example.helloworldtestrunner/android.test.InstrumentationTestRunner");
+        Device.setAppEnvironmentVariables("com.groupon.roboremote.example.helloworld", "com.groupon.roboremote.example.helloworldtestrunner.Runner", "com.groupon.roboremote.example.helloworldtestrunner/android.test.InstrumentationTestRunner");
     }</code></pre>
 
 Once you have these two items along with your app then you can install the app under test and the test runner to your device and then begin executing tests against an attached device/emulator using desktop JUnit either from maven or the IDE of your choice.
@@ -157,7 +157,7 @@ Once you have these two items along with your app then you can install the app u
 You may find that you want to do more complicated function calls that make more sense to do in Android code rather than through function mapping.  Fortunately this is very easy since RoboRemote can call any arbitrary function.  The easiest way to do this is to add an additional class(Ex: TestHook) along side your Runner class.
 
 *Example testhook class*:
-<pre><code>package com.roboremote.example.helloworldtestrunner;
+<pre><code>package com.groupon.roboremote.example.helloworldtestrunner;
 public class TestHook {
     public static void complicatedFunctionCalls() {
         // Do some stuff here
@@ -165,7 +165,7 @@ public class TestHook {
 }</code></pre>
 
 *Invocation of testhook function*:
-<pre><code>Client.map("com.roboremote.example.helloworldtestrunner.TestHook", "complicatedFunctionCalls")</code></pre>
+<pre><code>Client.map("com.groupon.roboremote.example.helloworldtestrunner.TestHook", "complicatedFunctionCalls")</code></pre>
 
 ## Examples
 ***

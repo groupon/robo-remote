@@ -32,13 +32,13 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.roboremote.example.helloworld"
+      package="com.groupon.roboremote.example.helloworld"
       android:versionCode="1"
       android:versionName="1.0.0">
 
     <application android:label="HelloWorld">
 
-        <activity android:name="com.roboremote.example.helloworld.HelloWorld"
+        <activity android:name="com.groupon.roboremote.example.helloworld.HelloWorld"
                   android:label="HelloWorld">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
