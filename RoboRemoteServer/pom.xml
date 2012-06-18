@@ -38,14 +38,30 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>RoboRemoteServer</artifactId>
-    <version>0.1-05082012-1630</version>
+    <version>0.2-SNAPSHOT</version>
     <packaging>apklib</packaging>
+    <name>RoboRemote Server</name>
+    <description>This is the Android side component of RoboRemote</description>
 
-    <!--<parent>
-        <groupId>com.groupon.roboremote</groupId>
-        <artifactId>roboremote</artifactId>
-        <version>${roboremote.version}</version>
-    </parent>-->
+    <licenses>
+        <license>
+            <name>BSD 3 Clause</name>
+            <url>http://www.opensource.org/licenses/bsd-3-clause</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>git@github.com:groupon/robo-remote.git</url>
+        <connection>scm:git:git@github.com:groupon/robo-remote.git</connection>
+        <developerConnection>scm:git:git@github.com:groupon/robo-remote.git</developerConnection>
+    </scm>
+
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
 
     <dependencies>
         <dependency>
@@ -113,43 +129,6 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
-
-            <!-- This is for a workaround to a maven properties issue
-                 Bug/workaround reference: http://jira.codehaus.org/browse/MNG-2971?focusedCommentId=169243&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-169243
-            --><!--
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>replace-pom-placeholder</id>
-                        <phase>package</phase>
-                        <goals><goal>single</goal></goals>
-                        <configuration>
-                            <finalName>modified-pom</finalName>
-                            <descriptors>
-                                <descriptor>../replacePom.xml</descriptor>
-                            </descriptors>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-install-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>overwrite-pom</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                        <configuration>
-                            <file>target/RoboRemoteServer-${roboremote.version}.jar</file>
-                            <pomFile>target/modified-pom-replacePomPlaceholder/modified-pom/pom.xml</pomFile>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>-->
         </plugins>
 
         <pluginManagement>

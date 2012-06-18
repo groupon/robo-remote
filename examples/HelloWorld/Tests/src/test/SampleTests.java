@@ -34,7 +34,7 @@ import com.groupon.roboremote.roboremoteclient.Device;
 import com.groupon.roboremote.roboremoteclient.QueryBuilder;
 import com.groupon.roboremote.roboremoteclient.Solo;
 import com.groupon.roboremote.roboremoteclient.components.*;
-import com.groupon.roboremote.roboremoteclient.TestBase;
+import com.groupon.roboremote.roboremoteclient.junit.TestBase;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

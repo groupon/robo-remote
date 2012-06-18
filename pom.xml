@@ -44,10 +44,11 @@
     <modules>
         <module>RoboRemoteServer</module>
         <module>RoboRemoteClient</module>
+        <module>RoboRemoteClientJUnit</module>
         <module>examples</module>
     </modules>
 
     <properties>
-        <roboremote.version>0.1-05082012-1630</roboremote.version>
+        <roboremote.version>0.2-SNAPSHOT</roboremote.version>
     </properties>
 </project>
