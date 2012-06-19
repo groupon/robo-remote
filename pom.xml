@@ -61,10 +61,5 @@
         <module>RoboRemoteServer</module>
         <module>RoboRemoteClient</module>
         <module>RoboRemoteClientJUnit</module>
-        <module>examples</module>
     </modules>
-
-    <properties>
-        <roboremote.version>0.2-SNAPSHOT</roboremote.version>
-    </properties>
 </project>

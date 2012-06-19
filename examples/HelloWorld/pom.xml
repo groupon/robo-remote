@@ -36,12 +36,6 @@
     <version>1.0</version>
     <packaging>pom</packaging>
 
-    <parent>
-        <groupId>com.groupon.roboremote</groupId>
-        <artifactId>examples</artifactId>
-        <version>${roboremote.version}</version>
-    </parent>
-
     <modules>
         <module>helloworld</module>
         <module>helloworldtestrunner</module>

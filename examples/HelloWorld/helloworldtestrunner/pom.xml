@@ -70,7 +70,7 @@
         <dependency>
             <groupId>com.groupon.roboremote</groupId>
             <artifactId>roboremoteserver</artifactId>
-            <version>${roboremote.version}</version>
+            <version>0.2-SNAPSHOT</version>
             <type>apklib</type>
         </dependency>
         <dependency>
