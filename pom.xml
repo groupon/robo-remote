@@ -57,6 +57,12 @@
         <developerConnection>scm:git:git@github.com:groupon/robo-remote.git</developerConnection>
     </scm>
 
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
     <modules>
         <module>RoboRemoteServer</module>
         <module>RoboRemoteClient</module>
