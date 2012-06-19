@@ -74,7 +74,7 @@
         </dependency>
         <dependency>
             <groupId>com.groupon.roboremote</groupId>
-            <artifactId>RoboRemoteClient</artifactId>
+            <artifactId>roboremoteclient</artifactId>
             <version>${roboremote.version}</version>
         </dependency>
         <dependency>

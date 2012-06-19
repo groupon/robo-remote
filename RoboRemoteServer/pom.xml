@@ -37,7 +37,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.groupon.roboremote</groupId>
-    <artifactId>RoboRemoteServer</artifactId>
+    <artifactId>roboremoteserver</artifactId>
     <version>0.2-SNAPSHOT</version>
     <packaging>apklib</packaging>
     <name>RoboRemote Server</name>
