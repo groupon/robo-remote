@@ -38,8 +38,24 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremote</artifactId>
-    <version>${roboremote.version}</version>
+    <version>0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <name>RoboRemote</name>
+    <description>This is the aggregator for RoboRemote</description>
+
+    <licenses>
+        <license>
+            <name>BSD 3 Clause</name>
+            <url>http://www.opensource.org/licenses/bsd-3-clause</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>git@github.com:groupon/robo-remote.git</url>
+        <connection>scm:git:git@github.com:groupon/robo-remote.git</connection>
+        <developerConnection>scm:git:git@github.com:groupon/robo-remote.git</developerConnection>
+    </scm>
 
     <modules>
         <module>RoboRemoteServer</module>
