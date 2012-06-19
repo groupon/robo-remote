@@ -2,7 +2,7 @@
 
 ## Overview
 ***
-**RoboRemote** is a remote control framework for Robotium.  The goal of RoboRemote is to allow for more complex test scenarios by letting the automator write their tests using standard desktop Java/JUnit.  All of the Robotium Solo commands are available.  RoboRemote also provides some convencience classes to assist in common tasks such as interacting with list views.
+**RoboRemote** is a remote control framework for Robotium.  The goal of RoboRemote is to allow for more complex test scenarios by letting the automator write their tests using standard desktop Java/JUnit(other frameworks to be supported in the future).  All of the Robotium Solo commands are available.  RoboRemote also provides some convencience classes to assist in common tasks such as interacting with list views.
 
 RoboRemote is loosely modeled after Frank for iOS.
 
@@ -139,7 +139,7 @@ public class Runner extends RemoteTest<HelloWorld> {
     }
 }</code></pre>
 
-* Tests!  These are JUnit 4.11 test classes that extend com.groupon.roboremote.roboremoteclient.TestBase.  Example tests are provided in the source repository.  These can also be compiled with Maven and a sample pom is provided with the example.  
+* Tests!  These are JUnit 4.10 test classes that extend com.groupon.roboremote.roboremoteclient.TestBase.  Example tests are provided in the source repository.  These can also be compiled with Maven and a sample pom is provided with the example.  
 The test executor requires a few environment variables to be set:
 	1. ROBO_APP_PACKAGE - This is the package name of the application under test(ex: com.groupon.roboremote.example.HelloWorld)
 	2. ROBO_TEST_CLASS - This is the class name that contains the test method we are usng(ex: com.groupon.roboremote.example.helloworldtestrunner.Runner)
@@ -153,7 +153,32 @@ The test executor requires a few environment variables to be set:
 
 Once you have these two items along with your app then you can install the app under test and the test runner to your device and then begin executing tests against an attached device/emulator using desktop JUnit either from maven or the IDE of your choice.
 
-### Test Hooks
+### Maven Depenendencies
+#### Test Runner
+These are the maven dependencies you need to declare in your test runner pom:
+
+<pre><code><syntaxhighlight lang="xml"><dependency>
+            <groupId>com.groupon.roboremote</groupId>
+            <artifactId>roboremoteserver</artifactId>
+            <version>0.2</version>
+            <type>apklib</type>
+        </dependency></syntaxhighlight></pre></code>
+
+#### Tests
+These are the maven dependencies you need to declare in your tests pom:
+
+<pre><code><syntaxhighlight lang="xml"><dependency>
+            <groupId>com.groupon.roboremote</groupId>
+            <artifactId>roboremoteclient</artifactId>
+            <version>0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.groupon.roboremote.roboremoteclient</groupId>
+            <artifactId>junit</artifactId>
+            <version>0.2</version>
+        </dependency></syntaxhighlight></pre></code>
+
+## Test Hooks
 You may find that you want to do more complicated function calls that make more sense to do in Android code rather than through function mapping.  Fortunately this is very easy since RoboRemote can call any arbitrary function.  The easiest way to do this is to add an additional class(Ex: TestHook) along side your Runner class.
 
 *Example testhook class*:
@@ -177,7 +202,7 @@ An example project is provided in the examples/HelloWorld directory.  The direct
 
 ### Compiling the examples
 
-Running "mvn clean install" from the repository root will build the examples and all required RoboRemote classes.
+Running "mvn clean install" from the "examples" directory will build the examples.  Be sure to run "mvn clean install" from the root first to compile the latest library versions
 
 ### Installing helloworld/helloworldtestrunner
 
