@@ -157,26 +157,26 @@ Once you have these two items along with your app then you can install the app u
 #### Test Runner
 These are the maven dependencies you need to declare in your test runner pom:
 
-<pre><code><dependency>
-            <groupId>com.groupon.roboremote</groupId>
-            <artifactId>roboremoteserver</artifactId>
-            <version>0.2</version>
-            <type>apklib</type>
-        </dependency></code></pre>
+<pre><code>&lt;dependency>
+            &lt;groupId>com.groupon.roboremote&lt;/groupId>
+            &lt;artifactId>roboremoteserver&lt;/artifactId>
+            &lt;version>0.2&lt;/version>
+            &lt;type>apklib&lt;/type>
+        &lt;/dependency></code></pre>
 
 #### Tests
 These are the maven dependencies you need to declare in your tests pom:
 
-<pre><code><dependency>
-            <groupId>com.groupon.roboremote</groupId>
-            <artifactId>roboremoteclient</artifactId>
-            <version>0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.groupon.roboremote.roboremoteclient</groupId>
-            <artifactId>junit</artifactId>
-            <version>0.2</version>
-        </dependency></code></pre>
+<pre><code>&lt;dependency>
+            &lt;groupId>com.groupon.roboremote&lt;/groupId>
+            &lt;artifactId>roboremoteclient&lt;/artifactId>
+            &lt;version>0.2&lt;/version>
+        &lt;/dependency>
+        &lt;dependency>
+            &lt;groupId>com.groupon.roboremote.roboremoteclient&lt;/groupId>
+            &lt;artifactId>junit&lt;/artifactId>
+            &lt;version>0.2&lt;/version>
+        &lt;/dependency></code></pre>
 
 ## Test Hooks
 You may find that you want to do more complicated function calls that make more sense to do in Android code rather than through function mapping.  Fortunately this is very easy since RoboRemote can call any arbitrary function.  The easiest way to do this is to add an additional class(Ex: TestHook) along side your Runner class.
