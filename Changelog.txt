@@ -1,6 +1,6 @@
 Changelog
 
-robo-remote v0.3
+robo-remote v0.2.2
 
 Upgrading robo-remote to work with Robotium 3.4.1
 
