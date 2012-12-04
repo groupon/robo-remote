@@ -36,7 +36,7 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremoteclient</artifactId>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
     <name>RoboRemote Client</name>
     <description>This is the desktop side component of RoboRemote</description>
 
@@ -109,6 +109,11 @@
             <artifactId>junit</artifactId>
             <version>4.10</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava-io</artifactId>
+            <version>r03</version>
         </dependency>
     </dependencies>
     <build>

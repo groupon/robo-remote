@@ -36,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.groupon.roboremote.roboremoteclient.logging.*;
 
+import java.io.File;
 import java.lang.Exception;
 import java.lang.Object;
 import java.lang.String;
@@ -105,7 +106,8 @@ public class TestBase {
             DebugBridge.get().clearLogCat();
 
             TestLogger.get().info("Starting logcat");
-            DebugBridge.get().startLogListener("/tmp/adb_robo.log");
+            DebugBridge.get().startLogListener(System.getProperty("java.io.tmpdir") + 
+            		File.pathSeparator + "adb_robo.log");
 
             // set up logger
             EmSingleton.intialize();
