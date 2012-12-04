@@ -107,7 +107,7 @@ public class TestBase {
 
             TestLogger.get().info("Starting logcat");
             DebugBridge.get().startLogListener(System.getProperty("java.io.tmpdir") + 
-            		File.pathSeparator + "adb_robo.log");
+            		File.separator + "adb_robo.log");
 
             // set up logger
             EmSingleton.intialize();

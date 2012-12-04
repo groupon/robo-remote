@@ -107,15 +107,15 @@ public class Device {
     public static void storeLogs() throws Exception {
         // assumes eventmanager is running
         // store logs
-    	File tmpLogFile = new File(System.getProperty("java.io.tmpdir") + File.pathSeparator + "adb_robo.log");
-    	File destFile = new File(current_log_dir + File.pathSeparator + "test.log");
+    	File tmpLogFile = new File(System.getProperty("java.io.tmpdir") + File.separator + "adb_robo.log");
+    	File destFile = new File(current_log_dir + File.separator + "test.log");
     	
         Files.copy(tmpLogFile, destFile);
     }
 
     public static void storeFailurePng() throws Exception {
     	File failureFile = new File("FAILURE.png");
-    	File destFile = new File(current_log_dir);
+    	File destFile = new File(current_log_dir + File.separator + "FAILURE.png");
     	
     	Files.copy(failureFile, destFile);
     }
@@ -124,18 +124,18 @@ public class Device {
         String currentDir = new File("").getAbsolutePath();
 
         // clear the final log directory
-        File log_dir = new File(currentDir + File.pathSeparator + "logs" 
-              + File.pathSeparator + Utils.getTestName());
-        TestLogger.get().info("Log directory: {}", log_dir.getAbsolutePath());
+        File log_dir = new File(currentDir + File.separator + "logs" 
+              + File.separator + Utils.getTestName() + File.separator + "test.log");
+        TestLogger.get().info("Log directory: {}", log_dir.getParent());
         
-        log_dir.mkdirs();
+        Files.createParentDirs(log_dir);
 
         // clear existing files from this location
         if (log_dir.exists()) {
             delete(log_dir);
         }
 
-        current_log_dir = log_dir.getAbsolutePath();
+        current_log_dir = log_dir.getParent();
     }
 
     public static void startApp() throws Exception {
