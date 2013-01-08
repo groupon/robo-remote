@@ -105,6 +105,10 @@ public class QueryBuilder {
             {
                 args.put((Boolean) items[i]);
             }
+            else if (items[i] == null)
+            {
+                args.put((Object)null);
+            }
             else
             {
                 throw new Exception("Invalid type");

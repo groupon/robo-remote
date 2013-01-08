@@ -32,6 +32,7 @@
 
 package com.groupon.roboremote.roboremoteserver;
 
+import android.os.Handler;
 import android.test.ActivityInstrumentationTestCase2;
 import android.app.Activity;
 import android.view.View;
@@ -44,6 +45,8 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
+
 import com.groupon.roboremote.roboremoteserver.httpd.NanoHTTPD;
 
 public abstract class RemoteTest<T extends Activity> extends ActivityInstrumentationTestCase2 {
@@ -140,7 +143,7 @@ public abstract class RemoteTest<T extends Activity> extends ActivityInstrumenta
             return new Response( HTTP_OK, MIME_HTML, msg );
         }
 
-        public JSONObject processOperations(JSONArray operations) throws Exception {
+        private JSONObject processOperations(JSONArray operations) throws Exception {
             JSONArray returnValues = new JSONArray();
             JSONObject returnObject = new JSONObject();
 
@@ -252,7 +255,7 @@ public abstract class RemoteTest<T extends Activity> extends ActivityInstrumenta
             return returnObject;
         }
         
-        public JSONArray getReturnValues(ArbitraryItemStruct returnItem) {
+        private JSONArray getReturnValues(ArbitraryItemStruct returnItem) {
             JSONArray returnValues = new JSONArray();
 
             String returnType = returnItem.getReturnType();
@@ -298,7 +301,7 @@ public abstract class RemoteTest<T extends Activity> extends ActivityInstrumenta
             return returnValues;
         }
         
-        public ArbitraryItemStruct getArbitraryField(Object classObject, String fieldName) throws Exception {
+        private ArbitraryItemStruct getArbitraryField(Object classObject, String fieldName) throws Exception {
             ArbitraryItemStruct fieldResults = new ArbitraryItemStruct();
 
             Field f = null;
@@ -326,7 +329,7 @@ public abstract class RemoteTest<T extends Activity> extends ActivityInstrumenta
             return fieldResults;
         }
 
-        public ArbitraryItemStruct runArbitraryMethod(Object classObject, String methodName, Object[] args) throws Exception {
+        private ArbitraryItemStruct runArbitraryMethod(Object classObject, String methodName, Object[] args) throws Exception {
             ArbitraryItemStruct methodResults = new ArbitraryItemStruct();
 
             // generate list of arg class types
@@ -370,11 +373,18 @@ public abstract class RemoteTest<T extends Activity> extends ActivityInstrumenta
                     for (Class<?> paramClass: paramTypes) {
                         // now get the known types array that matches the argTypes type
                         String currentClsArg = argTypes[x].toString();
-
                         x++;
 
                         // get just the class name
                         currentClsArg = currentClsArg.substring(currentClsArg.lastIndexOf(".") + 1);
+
+                        // it's possible that null was passed in.. if so we'll automatically say that it matches but was converted
+                        if (currentClsArg.startsWith("JSONObject") && newArgs[x - 1].toString().compareTo("null") == 0) {
+                            newArgs[x - 1] = null;
+                            convertedArgumentsForCurrentMethod = true;
+                            matches++;
+                            continue;
+                        }
 
                         // get type equivalents
                         // ex: int == Integer
@@ -462,10 +472,11 @@ public abstract class RemoteTest<T extends Activity> extends ActivityInstrumenta
                 }
             }
 
+
             return methodResults;
         }
 
-        public JSONObject processPost(String uri, Properties params) {
+        private JSONObject processPost(String uri, Properties params) {
             JSONObject returnVal = new JSONObject();
             try {
                 if (uri.equalsIgnoreCase(Constants.REQUEST_MAP)) {
@@ -492,7 +503,7 @@ public abstract class RemoteTest<T extends Activity> extends ActivityInstrumenta
             return returnVal;
         }
 
-        public String processGet(String uri, Properties params) {
+        private String processGet(String uri, Properties params) {
             String msg = "";
             Enumeration eparams = params.propertyNames();
             while ( eparams.hasMoreElements())
