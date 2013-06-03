@@ -36,7 +36,7 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremoteclient</artifactId>
-    <version>0.5-SNAPSHOT</version>
+    <version>0.4-SNAPSHOT</version>
     <name>RoboRemote Client</name>
     <description>This is the desktop side component of RoboRemote</description>
 

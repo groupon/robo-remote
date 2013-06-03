@@ -35,7 +35,7 @@
 
     <groupId>com.groupon.roboremote.roboremoteclient</groupId>
     <artifactId>junit</artifactId>
-    <version>0.5-SNAPSHOT</version>
+    <version>0.4-SNAPSHOT</version>
     <name>RoboRemote Client JUnit</name>
     <description>This is the junit portion of the desktop side component of RoboRemote</description>
 
