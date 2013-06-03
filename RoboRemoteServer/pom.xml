@@ -36,7 +36,7 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremoteserver</artifactId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.5-SNAPSHOT</version>
     <packaging>apklib</packaging>
     <name>RoboRemote Server</name>
     <description>This is the Android side component of RoboRemote</description>
@@ -65,7 +65,7 @@
         <dependency>
             <groupId>com.jayway.android.robotium</groupId>
             <artifactId>robotium-solo</artifactId>
-            <version>3.6</version>
+            <version>4.1</version>
         </dependency>
         <dependency>
             <groupId>com.google.android</groupId>
