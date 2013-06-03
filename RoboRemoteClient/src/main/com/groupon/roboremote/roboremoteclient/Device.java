@@ -32,6 +32,7 @@
 
 package com.groupon.roboremote.roboremoteclient;
 
+import com.google.common.io.Files;
 import com.groupon.roboremote.roboremoteclient.logging.TestLogger;
 
 import java.io.*;
@@ -106,35 +107,35 @@ public class Device {
     public static void storeLogs() throws Exception {
         // assumes eventmanager is running
         // store logs
-        String[] commands = {"/bin/bash", "-c", "cp \"" +  "/tmp/adb_robo.log\" \"" + current_log_dir + "/test.log\""};
-
-        Runtime.getRuntime().exec(commands);
+    	File tmpLogFile = new File(System.getProperty("java.io.tmpdir") + File.separator + "adb_robo.log");
+    	File destFile = new File(current_log_dir + File.separator + "test.log");
+    	
+        Files.copy(tmpLogFile, destFile);
     }
 
     public static void storeFailurePng() throws Exception {
-        String[] commands = {"/bin/bash", "-c", "cp \"" +  "FAILURE.png\" \"" + current_log_dir + "\""};
-
-        Runtime.getRuntime().exec(commands);
+    	File failureFile = new File("FAILURE.png");
+    	File destFile = new File(current_log_dir + File.separator + "FAILURE.png");
+    	
+    	Files.copy(failureFile, destFile);
     }
 
     public static void setupLogDirectories() throws Exception {
         String currentDir = new File("").getAbsolutePath();
 
         // clear the final log directory
-        File log_dir = new File(currentDir + "/logs/" + Utils.getTestName());
-        TestLogger.get().info("Log directory: {}", log_dir.getAbsolutePath());
-        //log_dir.mkdirs();
-
-        String[] commands1 = {"/bin/bash", "-c", "mkdir -p \"" + log_dir.getAbsolutePath() + "\""};
-
-        Process pr = Runtime.getRuntime().exec(commands1);
+        File log_dir = new File(currentDir + File.separator + "logs" 
+              + File.separator + Utils.getTestName() + File.separator + "test.log");
+        TestLogger.get().info("Log directory: {}", log_dir.getParent());
+        
+        Files.createParentDirs(log_dir);
 
         // clear existing files from this location
         if (log_dir.exists()) {
             delete(log_dir);
         }
 
-        current_log_dir = log_dir.getAbsolutePath();
+        current_log_dir = log_dir.getParent();
     }
 
     public static void startApp() throws Exception {
