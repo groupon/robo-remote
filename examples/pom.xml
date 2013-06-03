@@ -38,7 +38,7 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>examples</artifactId>
-    <version>0.5</version>
+    <version>0.4</version>
     <packaging>pom</packaging>
 
     <modules>
