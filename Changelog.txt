@@ -1,0 +1,28 @@
+Changelog
+
+robo-remote v0.2.2
+
+Upgrading robo-remote to work with Robotium 3.4.1
+
+The new functionalities:
+
+From Robotium v3.2.1:
+typeText(int index, String text)
+typeText(EditText editText, String text)
+finishInactiveActivities()
+
+From Robotium v3.3:
+getCurrentImageViews(View parent)
+takeScreenshot()
+clickOnActionBarItem(int resourceId)
+
+From Robotium v3.4.1:
+scrollToTop()
+scrollToBottom()
+scrollListToTop(int index)
+scrollListToBottom(int index)
+waitForFragmentById(int id)
+waitForFragmentByTag(String tag)
+waitForLogMessage(String logMessage)
+clickOnActionBarHomeButton()
+takeScreenShot(String filename)
