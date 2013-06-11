@@ -123,11 +123,11 @@ public class Solo {
         Client.map(Constants.ROBOTIUM_SOLO, "clickLongOnView", view, time);
     }
     
-    public static void clickOnActionBarHomeButton() {
+    public static void clickOnActionBarHomeButton() throws Exception {
     	Client.map(Constants.ROBOTIUM_SOLO, "clickOnActionBarHomeButton");
     }
 
-    public static void clickOnActionBarItem(int resourceId) {
+    public static void clickOnActionBarItem(int resourceId) throws Exception{
     	Client.map(Constants.ROBOTIUM_SOLO, "clickOnActionBarItem", resourceId);
     }
 
