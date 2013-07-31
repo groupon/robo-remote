@@ -62,6 +62,10 @@ public class Solo {
         Client.map(Constants.ROBOTIUM_SOLO, "clearEditText", index);
     }
 
+    public static void clearLog() throws Exception{
+        Client.map(Constants.ROBOTIUM_SOLO, "clearLog");
+    }
+
     public static String[] clickInList(int line) throws Exception {
         ArrayList<String> abar = Utils.jsonArrayToStringList(Client.map(Constants.ROBOTIUM_SOLO, "clickInList", line));
         return abar.toArray(new String[0]);
@@ -123,11 +127,11 @@ public class Solo {
         Client.map(Constants.ROBOTIUM_SOLO, "clickLongOnView", view, time);
     }
     
-    public static void clickOnActionBarHomeButton() {
+    public static void clickOnActionBarHomeButton() throws Exception {
     	Client.map(Constants.ROBOTIUM_SOLO, "clickOnActionBarHomeButton");
     }
 
-    public static void clickOnActionBarItem(int resourceId) {
+    public static void clickOnActionBarItem(int resourceId) throws Exception{
     	Client.map(Constants.ROBOTIUM_SOLO, "clickOnActionBarItem", resourceId);
     }
 
@@ -171,6 +175,10 @@ public class Solo {
         Client.map(Constants.ROBOTIUM_SOLO, "clickOnScreen", x, y);
     }
 
+    public static void clickOnScreen(float x, float y, int numberOfClicks) throws Exception {
+        Client.map(Constants.ROBOTIUM_SOLO, "clickOnScreen", x, y, numberOfClicks);
+    }
+
     public static void clickOnText(String text) throws Exception {
         Client.map(Constants.ROBOTIUM_SOLO, "clickOnText", text);
     }
@@ -189,6 +197,10 @@ public class Solo {
 
     public static void clickOnView(String viewName) throws Exception {
         Client.map(Constants.ROBOTIUM_SOLO, "clickOnView", viewName);
+    }
+
+    public static void clickOnView(String viewName, boolean immediately) throws Exception {
+        Client.map(Constants.ROBOTIUM_SOLO, "clickOnView", viewName, immediately);
     }
 
     public static void drag(float fromX, float toX, float fromY, float toY, int stepCount)  throws Exception {
@@ -319,6 +331,16 @@ public class Solo {
         return abar.toArray(new String[0]);
     }
 
+    public static String[] getCurrentViews(String classToFilterBy) throws Exception {
+        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.map(Constants.ROBOTIUM_SOLO, "getCurrentViews", classToFilterBy));
+        return abar.toArray(new String[0]);
+    }
+
+    public static String[] getCurrentViews(String classToFilterBy, String parent) throws Exception {
+        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.map(Constants.ROBOTIUM_SOLO, "getCurrentViews", classToFilterBy, parent));
+        return abar.toArray(new String[0]);
+    }
+
     public static String getEditText(int index) throws Exception {
         return Client.map(Constants.ROBOTIUM_SOLO, "getEditText", index).getString(0);
     }
@@ -363,6 +385,10 @@ public class Solo {
         return Client.map(Constants.ROBOTIUM_SOLO, "getView", id).getString(0);
     }
 
+    public static String getView(int id, int index) throws Exception {
+        return Client.map(Constants.ROBOTIUM_SOLO, "getView", id, index).getString(0);
+    }
+
     public static String getView(String viewClass, int index) throws Exception {
         return Client.map(Constants.ROBOTIUM_SOLO, "getView", viewClass, index).getString(0);
     }
@@ -377,12 +403,20 @@ public class Solo {
         return abar.toArray(new String[0]);
     }
 
+    public static String getWebUrl() throws Exception {
+        return Client.map(Constants.ROBOTIUM_SOLO, "getWebUrl").getString(0);
+    }
+
     public static void goBack() throws Exception {
         Client.map(Constants.ROBOTIUM_SOLO, "goBack");
     }
 
     public static void goBackToActivity(String name) throws Exception {
         Client.map(Constants.ROBOTIUM_SOLO, "goBackToActivity", name);
+    }
+
+    public static void hideSoftKeyboard() throws Exception {
+        Client.map(Constants.ROBOTIUM_SOLO, "hideSoftKeyboard");
     }
 
     public static boolean isCheckBoxChecked(int index) throws Exception {
@@ -441,13 +475,25 @@ public class Solo {
         return Client.map(Constants.ROBOTIUM_SOLO, "scrollDownList", index).getBoolean(0);
     }
 
+    public static boolean scrollDownList(String list) throws Exception {
+        return Client.map(Constants.ROBOTIUM_SOLO, "scrollDownList", list).getBoolean(0);
+    }
+
     public static boolean scrollListToBottom(int index) throws Exception {
         return Client.map(Constants.ROBOTIUM_SOLO, "scrollListToBottom", index).getBoolean(0);
-    } 
-    
+    }
+
+    public static boolean scrollListToBottom(String view) throws Exception {
+        return Client.map(Constants.ROBOTIUM_SOLO, "scrollListToTop", view).getBoolean(0);
+    }
+
     public static boolean scrollListToTop(int index) throws Exception {
         return Client.map(Constants.ROBOTIUM_SOLO, "scrollListToTop", index).getBoolean(0);
-    }    
+    }
+
+    public static boolean scrollListToTop(String view) throws Exception {
+        return Client.map(Constants.ROBOTIUM_SOLO, "scrollListToTop", view).getBoolean(0);
+    }
 
     public static void scrollToSide(int side) throws Exception {
         Client.map(Constants.ROBOTIUM_SOLO, "scrollToSide", side);
@@ -467,6 +513,10 @@ public class Solo {
 
     public static boolean scrollUpList(int index) throws Exception {
         return Client.map(Constants.ROBOTIUM_SOLO, "scrollUpList", index).getBoolean(0);
+    }
+
+    public static boolean scrollUpList(String view) throws Exception {
+        return Client.map(Constants.ROBOTIUM_SOLO, "scrollUpList", view).getBoolean(0);
     }
 
     public static boolean searchButton(String text) throws Exception {
@@ -560,7 +610,31 @@ public class Solo {
     public static void sleep(int time) throws Exception {
         Client.map(Constants.ROBOTIUM_SOLO, "sleep", time);
     }
-    
+
+    public void scrollListToLine(int index, int line)  throws Exception{
+        Client.map(Constants.ROBOTIUM_SOLO, "scrollListToLine", index, line);
+    }
+
+    public void scrollListToLine(String view, int line)  throws Exception{
+        Client.map(Constants.ROBOTIUM_SOLO, "scrollListToLine", view, line);
+    }
+
+    public static void scrollViewToSide(String view, int side) throws Exception  {
+        Client.map(Constants.ROBOTIUM_SOLO, "scrollViewToSide", view, side);
+    }
+
+    public static void startScreenshotSequence(String name) throws Exception {
+        Client.map(Constants.ROBOTIUM_SOLO, "startScreenshotSequence", name);
+    }
+
+    public static void startScreenshotSequence(String name, int quality, int frameDelay, int maxFrames) throws Exception {
+        Client.map(Constants.ROBOTIUM_SOLO, "startScreenshotSequence", name, quality, frameDelay, maxFrames);
+    }
+
+    public static void stopScreenshotSequence(String name) throws Exception {
+        Client.map(Constants.ROBOTIUM_SOLO, "stopScreenshotSequence");
+    }
+
     public static void takeScreenshot() throws Exception {
     	Client.map(Constants.ROBOTIUM_SOLO, "takeScreenshot");
     }
@@ -572,10 +646,10 @@ public class Solo {
     public static void typeText(int index, String text) throws Exception {
         Client.map(Constants.ROBOTIUM_SOLO, "typeText", index, text);
     }
-    
+
     public static void typeText(String editText, String text) throws Exception {
         Client.map(Constants.ROBOTIUM_SOLO, "typeText", editText, text);
-    }    
+    }
 
     public static boolean waitForActivity(String name) throws Exception {
         return Client.map(Constants.ROBOTIUM_SOLO, "waitForActivity", name).getBoolean(0);
@@ -583,6 +657,10 @@ public class Solo {
 
     public static boolean waitForActivity(String name, int timeout) throws Exception {
         return Client.map(Constants.ROBOTIUM_SOLO, "waitForActivity", name, timeout).getBoolean(0);
+    }
+
+    public static boolean waitForCondition(String condition, int timeout) throws Exception {
+        return Client.map(Constants.ROBOTIUM_SOLO, "waitForActivity", condition, timeout).getBoolean(0);
     }
 
     public static boolean waitForDialogToClose(long timeout) throws Exception {
@@ -630,10 +708,22 @@ public class Solo {
         return Client.map(Constants.ROBOTIUM_SOLO, "waitForView", view, timeout, scroll).getString(0);
     }
 
+    public static String waitForView(int id ) throws Exception {
+        return Client.map(Constants.ROBOTIUM_SOLO, "waitForView", id).getString(0);
+    }
+
+    public static String waitForView(int id, int minimumNumberOfMatches, int timeout) throws Exception {
+        return Client.map(Constants.ROBOTIUM_SOLO, "waitForView", id, minimumNumberOfMatches, timeout).getString(0);
+    }
+
+    public static String waitForView(int id, int minimumNumberOfMatches, int timeout, boolean scroll) throws Exception {
+        return Client.map(Constants.ROBOTIUM_SOLO, "waitForView", id, minimumNumberOfMatches, timeout, scroll).getString(0);
+    }
+
+
     /**
      * Returns a string array of all of the text contained within a view
      * @param viewName
-     * @param match
      * @return
      */
     public static String[] getTextFromView(String viewName) throws Exception {
