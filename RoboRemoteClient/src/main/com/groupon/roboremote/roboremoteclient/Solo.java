@@ -720,10 +720,6 @@ public class Solo {
         return Client.map(Constants.ROBOTIUM_SOLO, "waitForView", id, minimumNumberOfMatches, timeout, scroll).getString(0);
     }
 
-    public static boolean waitForWebElement (String by, int timeout, boolean scroll)  throws Exception  {
-
-        return Client.map(Constants.ROBOTIUM_SOLO, "waitForWebElement", by, timeout, scroll).getBoolean(0);
-    }
 
     /**
      * Returns a string array of all of the text contained within a view
