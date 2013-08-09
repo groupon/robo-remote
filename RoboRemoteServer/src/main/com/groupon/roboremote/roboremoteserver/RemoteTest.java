@@ -51,6 +51,7 @@ import com.groupon.roboremote.roboremoteserver.httpd.NanoHTTPD;
 
 public abstract class RemoteTest<T extends Activity> extends ActivityInstrumentationTestCase2 {
     protected Solo2 solo;
+    private Object lastResponseObject = null;
 
     public RemoteTest(Class<T> activityClass) throws ClassNotFoundException {
         super("blah", activityClass);
@@ -252,6 +253,9 @@ public abstract class RemoteTest<T extends Activity> extends ActivityInstrumenta
                 }
             }
 
+            // store currentClassObject
+            lastResponseObject = currentClassObject;
+
             return returnObject;
         }
         
@@ -433,6 +437,17 @@ public abstract class RemoteTest<T extends Activity> extends ActivityInstrumenta
                                 }
                             }
 
+                        }
+
+                        // last ditch effort.. this param type might match our previous process result
+                        if (lastResponseObject == null)
+                            continue;
+
+                        // If the last response type matches the current method param type then use it
+                        if (lastResponseObject.getClass().toString().startsWith(paramClass.toString())) {
+                            newArgs[matches] = lastResponseObject;
+                            convertedArgumentsForCurrentMethod = true;
+                            matches++;
                         }
                     }
 
