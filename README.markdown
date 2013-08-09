@@ -88,6 +88,17 @@ RoboRemoteClient also provides a method(in com.groupon.roboremote.RoboRemoteClie
 
 ***Note about function calls***: You can call methods in static/non-static classes, but cannot call methods in already instantiated classes.  In order to use already instantiated classes you will have to add hook methods in your test runner(explained in the Getting Started section of this README).  The only exception to this is the Robotium Solo class.  This class is pre-instantiated and can be referenced as "solo" in a map call.
 
+**Complex function calls**
+Robotium 4.x introduced some more complex function calls for web elements.  The functions take a By parameter.  To support this the method matcher remembers the result of the last function call and will automatically use that if the result type matches the parameter type.  The actual paremeter passed in the map command is ignored in this case.  An example is:
+
+*Traditional Robotium Syntax*: 
+<pre><code>solo.waitForWebElement(By.textContent("myText"))</code></pre>
+
+*RoboRemote client request*:
+<pre><code>Client.map("com.jayway.android.robotium.solo.By", "textContent", "myText");
+Client.map("solo", "waitForWebElement", "byTextContent");
+</code></pre>
+
 ##### Fields
 
 You may have a neeed to retrieve content from fields in a class.  This can be done using the mapField(String className, String) function instead of the map(…) function.
