@@ -116,7 +116,9 @@
                             <jvmArgument>-Xmx512m</jvmArgument>
                         </jvmArguments>
                     </dex>
-                    <sdk><platform>14</platform></sdk>
+                    <sdk>
+                        <platform>14</platform>
+                    </sdk>
                 </configuration>
                 <extensions>true</extensions>
             </plugin>
