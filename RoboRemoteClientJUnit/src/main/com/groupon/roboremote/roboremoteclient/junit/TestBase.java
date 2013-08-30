@@ -50,13 +50,15 @@ import static org.junit.Assert.fail;
 public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
     @Rule
     public TestName name = new TestName();
+    protected void onFail(FrameworkMethod m){}
+    protected void onPass(FrameworkMethod m){}
 
     // This rule is evaluated at the end of a test run
     // If there as an AssertionError(test failure) then this takes a screenshot
     // This also calls test teardown
     @Rule
     public MethodRule mr = new MethodRule() {
-        public Statement apply(final Statement base, FrameworkMethod m, Object o) {
+        public Statement apply(final Statement base, final FrameworkMethod m, Object o) {
             return new Statement() {
                 @Override
                 public void evaluate() throws Throwable {
@@ -80,9 +82,13 @@ public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
                     if (failed)
                     {
                         // do failure stuff here
+                        // for writing own fail function in custom TestBase
+                        onFail(m);
 
                     } else {
                         // do passed stuff here
+                        // for writing own pass function in custom TestBase
+                        onPass(m);
 
                     }
 
