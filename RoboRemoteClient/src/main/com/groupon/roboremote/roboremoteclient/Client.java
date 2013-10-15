@@ -78,7 +78,7 @@ public class Client {
     }
 
     public static JSONObject post_to_server(String verb, String postBody) throws Exception {
-        postBody = postBody.replace("%", "%%");
+        //postBody = postBody.replace("%", "%%");
 
         String responseStr = com.groupon.roboremote.roboremoteclient.http.Post.post(API_URL, verb, "request=" + postBody);
 

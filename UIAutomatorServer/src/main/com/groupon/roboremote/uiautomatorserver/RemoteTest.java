@@ -30,31 +30,17 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</div>
  */
 
-package com.groupon.roboremote.roboremoteserver;
+package com.groupon.roboremote.uiautomatorserver;
 
-import android.test.ActivityInstrumentationTestCase2;
-import android.app.Activity;
-import com.groupon.roboremote.roboremoteserver.robotium.*;
+import com.android.uiautomator.testrunner.UiAutomatorTestCase;
 
-public abstract class RemoteTest<T extends Activity> extends ActivityInstrumentationTestCase2 {
-    protected Solo2 solo;
-    private Object lastResponseObject = null;
-
-    public RemoteTest(Class<T> activityClass) throws ClassNotFoundException {
-        super("blah", activityClass);
-    }
-
-    public void startServer() throws Exception {
-        RoboRemoteServer rrs = new RoboRemoteServer(solo, getInstrumentation());
-        rrs.startServer(8080);
-    }
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
-        // Initialize Robotium Solo singleton
-        solo = new Solo2(getInstrumentation(), getActivity());
-        SoloSingleton.set(solo);
+public class RemoteTest extends UiAutomatorTestCase {
+    /**
+     * Basic test that starts the UiAutomatorServer on port 8081
+     * @throws Exception
+     */
+    public void testRunner() throws Exception {
+        UiAutomatorServer uas = new UiAutomatorServer(getUiDevice());
+        uas.startServer(8081);
     }
 }

@@ -33,43 +33,7 @@
 package com.groupon.roboremote.roboremoteserver;
 
 public class Constants {
-    // response constants
-    public static final String RESULT_SUCCESS = "SUCCESS";
-    public static final String RESULT_FAILED = "FAILED";
-    public static final String RESULT_OUTCOME = "outcome";
-    public static final String RESULT_RESULTS = "results";
-    public static final String RESULT_REASON = "reason";
-    
-    // request constants
-    public static final String REQUEST_FIELD = "field";
-    public static final String REQUEST_OPERATION = "operation";
-    public static final String REQUEST_OPERATIONS = "operations";
-    public static final String REQUEST_METHOD_NAME = "method_name";
-    public static final String REQUEST_ARGUMENTS = "arguments";
-    public static final String REQUEST_QUERY = "query";
-    public static final String REQUEST_MAP = "map";
-    public static final String REQUEST = "request";
-    
-    // robotium constants
     public static final String ROBOTIUM_SOLO = "solo";
-    
-    // nanohttpd constants
-    public static final String NANO_POST = "POST";
-    public static final String NANO_GET = "GET";
-    
-    // roboremote constants
+
     public static final String TYPE_EQUIVALENT_IDENTIFIER = "TYPE";
-    
-    public static final String RETURN_TYPE_LIST = "List";
-    public static final String RETURN_TYPE_JAVA_UTIL = "java.util";
-    public static final String RETURN_TYPE_BOOLEAN = "Boolean";
-    public static final String RETURN_TYPE_ARRAY = "class [";
-    public static final String RETURN_TYPE_VOID = "void";
-    
-    public static final String CLASS_TYPE_STATIC = "java.lang.Class";
-    
-    public static final String ARGUMENT_TYPE_STRING = "String";
-    public static final String ARGUMENT_TYPE_CLASS = ".Class";
-    public static final String ARGUMENT_TYPE_VIEW = ".View";
-    public static final String ARGUMENT_TYPE_WIDGET = ".widget.";
 }

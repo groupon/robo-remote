@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (c) 2012, Groupon, Inc.
   ~ All rights reserved.
@@ -31,41 +31,17 @@
   ~ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</div>
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <groupId>com.groupon.roboremote</groupId>
-    <artifactId>roboremote</artifactId>
-    <version>0.5-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>RoboRemote</name>
-    <description>This is the aggregator for RoboRemote</description>
-
-    <licenses>
-        <license>
-            <name>BSD 3 Clause</name>
-            <url>http://www.opensource.org/licenses/bsd-3-clause</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <scm>
-        <url>git@github.com:groupon/robo-remote.git</url>
-        <connection>scm:git:git@github.com:groupon/robo-remote.git</connection>
-        <developerConnection>scm:git:git@github.com:groupon/robo-remote.git</developerConnection>
-    </scm>
-
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
-    </parent>
-
-    <modules>
-        <module>RoboRemoteServerCommon</module>
-        <module>RoboRemoteServer</module>
-        <module>RoboRemoteClient</module>
-        <module>RoboRemoteClientJUnit</module>
-        <module>UIAutomatorServer</module>
-    </modules>
-</project>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.groupon.roboremote.uiautomatorserver"
+          android:versionCode="1"
+          android:versionName="1.0">
+    <application android:label="uiautomatorserver">
+        <activity android:name="ACTIVITY_ENTRY_NAME"
+                  android:label="uiautomatorserver">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

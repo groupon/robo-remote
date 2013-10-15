@@ -1,4 +1,4 @@
-package com.groupon.roboremote.roboremoteserver.httpd;
+package com.groupon.roboremote.roboremoteservercommon;
 
 import java.io.*;
 import java.net.ServerSocket;

@@ -30,31 +30,57 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</div>
  */
 
-package com.groupon.roboremote.roboremoteserver;
+package com.groupon.roboremote.uiautomatorserver;
 
-import android.test.ActivityInstrumentationTestCase2;
-import android.app.Activity;
-import com.groupon.roboremote.roboremoteserver.robotium.*;
+import android.view.View;
+import com.android.uiautomator.core.UiDevice;
+import com.groupon.roboremote.roboremoteservercommon.RemoteServer;
+import java.util.ArrayList;
 
-public abstract class RemoteTest<T extends Activity> extends ActivityInstrumentationTestCase2 {
-    protected Solo2 solo;
-    private Object lastResponseObject = null;
+public class UiAutomatorServer extends RemoteServer {
+    UiDevice device = null;
 
-    public RemoteTest(Class<T> activityClass) throws ClassNotFoundException {
-        super("blah", activityClass);
+    public UiAutomatorServer(UiDevice device) {
+        this.device = device;
     }
 
-    public void startServer() throws Exception {
-        RoboRemoteServer rrs = new RoboRemoteServer(solo, getInstrumentation());
-        rrs.startServer(8080);
+    /**
+     * Implementation of getInstantiatedClass that returns a UiDevice if one is requested
+     * @param query
+     * @return
+     */
+    protected Object getInstantiatedClass(String query) {
+        if (query.equals(Constants.UIAUTOMATOR_UIDEVICE)) {
+            return device;
+        }
+        return null;
     }
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    /**
+     * UiAutomator cannot find views so this always returns null
+     * @param viewName
+     * @return
+     */
+    protected View getView(String viewName) {
+        return null;
+    }
 
-        // Initialize Robotium Solo singleton
-        solo = new Solo2(getInstrumentation(), getActivity());
-        SoloSingleton.set(solo);
+    /**
+     * Basic implementation of getTypeEquivalents to support UiAutomator
+     * @param type
+     * @return
+     */
+    protected String[] getTypeEquivalents(String type) {
+        String[] returnArray = null;
+
+        if (type.equals("int") || type.equals("Integer")) {
+            ArrayList<String> tmpArray = new ArrayList<String>();
+            tmpArray.add("TYPE");
+            tmpArray.add("int");
+            tmpArray.add("Integer");
+            returnArray = tmpArray.toArray(new String[tmpArray.size()]);
+        }
+
+        return returnArray;
     }
 }
