@@ -53,7 +53,7 @@ public class Text {
             return false;
         }
         
-        JSONArray retVal = Client.map("solo", "getText", label, true);
+        JSONArray retVal = Client.getInstance().map("solo", "getText", label, true);
 
         if (retVal.length() == 0) {
             logger.warn("Could not find text: {}", label);

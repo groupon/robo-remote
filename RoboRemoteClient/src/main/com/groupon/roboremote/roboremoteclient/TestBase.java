@@ -32,19 +32,24 @@
 
 package com.groupon.roboremote.roboremoteclient;
 
+import com.groupon.roboremote.roboremoteclientcommon.DebugBridge;
+import com.groupon.roboremote.roboremoteclientcommon.Device;
+import com.groupon.roboremote.roboremoteclientcommon.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.groupon.roboremote.roboremoteclient.logging.*;
+import com.groupon.roboremote.roboremoteclientcommon.logging.*;
 
 import java.io.File;
 import java.lang.Exception;
-import java.lang.Object;
 import java.lang.String;
 import java.lang.Thread;
 
 public class TestBase {
     public static final Logger logger = LoggerFactory.getLogger("test");
-    private Object syncObject_ = new Object();
+    static String app_package = null;
+    static String test_class = null;
+    static String test_runner = null;
+    static AppThread ap = null;
 
     public static void onFailure() throws Exception {
         logger.warn("TestBase::OnFailure:: Taking screenshot");
@@ -73,14 +78,14 @@ public class TestBase {
 
         // see if a server is already listening
         boolean clientWasListening = false;
-        if (Client.isListening()) {
+        if (Client.getInstance().isListening()) {
             clientWasListening = true;
         }
 
         if (clearAppData) {
             // clear app data - this has the side effect of killing a running app
             // TODO: this only works on 2.3+.. need a solution for 2.1+
-            Device.clearAppData();
+            Device.clearAppData(app_package);
         }
 
         // wait for the client to stop listening if it was previously listening
@@ -90,7 +95,7 @@ public class TestBase {
                 // try to make a query.. if it doesnt work then sleep
                 TestLogger.get().info("Trying to see if server is still available..");
 
-                if (! Client.isListening())
+                if (! Client.getInstance().isListening())
                     break;
 
                 if (x == 9)
@@ -119,7 +124,7 @@ public class TestBase {
         TestLogger.get().info("Starting RC Runner");
 
         // start app
-        Device.startApp();
+        startApp();
     }
 
     // This is called in the failure method override above
@@ -127,7 +132,7 @@ public class TestBase {
         try
         {
             EmSingleton.get().close();
-            Device.killApp();
+            killApp();
 
             // stop logcat
             TestLogger.get().info("Stopping logcat");
@@ -139,6 +144,107 @@ public class TestBase {
 
         } finally {
             DebugBridge.get().close();
+        }
+    }
+
+    public static void setAppEnvironmentVariables(String appPackage, String testClass, String testRunner) {
+        app_package = appPackage;
+        test_class = testClass;
+        test_runner = testRunner;
+    }
+
+    public static void setAppEnvironmentVariables() throws Exception {
+        // get environment variables
+        app_package = Utils.getEnv("ROBO_APP_PACKAGE", app_package);
+        if (app_package == null) {
+            throw new Exception("ROBO_APP_PACKAGE is not set");
+        }
+
+        test_class = Utils.getEnv("ROBO_TEST_CLASS", test_class);
+        if (test_class == null) {
+            throw new Exception("ROBO_TEST_CLASS is not set");
+        }
+
+        test_runner = Utils.getEnv("ROBO_TEST_RUNNER", test_runner);
+        if (test_runner == null) {
+            throw new Exception("ROBO_TEST_RUNNER is not set");
+        }
+    }
+
+    public static String getTestClass() {
+        return test_class;
+    }
+
+    public static String getTestRunner() {
+        return test_runner;
+    }
+
+    public static void startApp() throws Exception {
+        ap = new AppThread();
+        ap.start();
+
+        for (int x = 0; x < 10; x++) {
+            // try to make a query.. if it doesnt work then sleep
+            TestLogger.get().info("Trying to ping test server..");
+            if (Client.getInstance().isListening())
+                break;
+
+            if (x == 9)
+                throw new Exception("Could not contact test server");
+
+            Thread.sleep(5000);
+        }
+    }
+
+    public static void killApp() throws Exception {
+        // try to kill just by calling exit
+        try {
+            Client.getInstance().map("java.lang.System", "exit", 0);
+        } catch (Exception e) {
+            // this will actually throw an exception since it doesnt get a response from this command
+        }
+
+        // shut down the thread
+        if (ap != null) {
+            ap.close();
+            ap.interrupt();
+            ap = null;
+        }
+
+        // wait for the server to be dead
+        for (int x = 0; x < 10; x++) {
+            // try to make a query.. if it doesnt work then sleep
+            TestLogger.get().info("Trying to see if server is still available..");
+
+            if (! Client.getInstance().isListening())
+                break;
+
+            if (x == 9)
+                throw new Exception("Server is still available, but should not be");
+
+            Thread.sleep(2000);
+        }
+    }
+
+    /**
+     * This thread contains the running RC test
+     * DebugBridge does not return until the instrumentation finishes so we have to run it in its own thread
+     */
+    private static class AppThread extends Thread {
+        DebugBridge.MultiReceiver _receiver = null;
+
+        public void run() {
+            _receiver = new DebugBridge.MultiReceiver();
+            try {
+                DebugBridge.get().runShellCommand("am instrument -e class "  + getTestClass() + " -w " + getTestRunner(), _receiver, 0);
+            } catch (Exception e) {
+
+            }
+        }
+
+        public void close() {
+            // close the receiver to kill the thread
+            _receiver.close();
         }
     }
 }

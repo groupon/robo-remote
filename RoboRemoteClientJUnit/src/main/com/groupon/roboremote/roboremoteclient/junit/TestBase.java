@@ -34,10 +34,6 @@
 
 package com.groupon.roboremote.roboremoteclient.junit;
 
-import com.groupon.roboremote.roboremoteclient.logging.*;
-import com.groupon.roboremote.roboremoteclient.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;

@@ -32,8 +32,8 @@
 
 package com.groupon.roboremote.roboremoteclient.components;
 
-import com.groupon.roboremote.roboremoteclient.QueryBuilder;
 import com.groupon.roboremote.roboremoteclient.Solo;
+import com.groupon.roboremote.roboremoteclient.QueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

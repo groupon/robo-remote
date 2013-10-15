@@ -64,6 +64,7 @@
     <modules>
         <module>RoboRemoteServerCommon</module>
         <module>RoboRemoteServer</module>
+        <module>RoboRemoteClientCommon</module>
         <module>RoboRemoteClient</module>
         <module>RoboRemoteClientJUnit</module>
         <module>UIAutomatorServer</module>

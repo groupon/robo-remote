@@ -30,7 +30,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</div>
  */
 
-package com.groupon.roboremote.roboremoteclient.logging;
+package com.groupon.roboremote.roboremoteclientcommon.logging;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -30,40 +30,37 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</div>
  */
 
-package com.groupon.roboremote.roboremoteclient;
+package com.groupon.roboremote.roboremoteclientcommon.logging;
 
-import org.json.JSONArray;
+public class EmSingleton {
+    /* Here is the instance of the Singleton */
+    private static EventManager instance_ = null;
 
-import java.lang.Exception;import java.lang.String;import java.util.ArrayList;
-import java.util.Map;
+    /* Need the following object to synchronize */
+    /* a block */
+    private static Object syncObject_ = new Object();
 
-public class Utils {
-    public static String testName = null;
-
-    public static void setTestName(String name) {
-        testName = name;
+    /* Prevent direct access to the constructor */
+    private EmSingleton() {
+        super();
     }
 
-    public static String getTestName() {
-        return testName;
-    }
-
-    public static ArrayList<String> jsonArrayToStringList(JSONArray arry) throws Exception {
-        ArrayList<String> newArray = new ArrayList<String>();
-        for (int x = 0; x < arry.length(); x++) {
-            newArray.add(arry.getString(x));
+    public static void intialize() throws Exception {
+        synchronized (syncObject_) {
+            instance_ = new EventManager();
         }
-
-        return newArray;
     }
 
-    public static String getEnv(String name, String defaultValue) {
-        Map<String, String> env = System.getenv();
-
-        if (env.get(name) != null) {
-            return env.get(name);
+    public static EventManager get() throws Exception {
+        if (instance_ == null) {
+            intialize();
         }
+        return instance_;
+    }
 
-        return defaultValue;
+    public static void release() {
+        synchronized (syncObject_) {
+            instance_ = null;
+        }
     }
 }

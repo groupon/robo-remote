@@ -32,7 +32,7 @@
 
 <configuration>
 
-  <appender name="ROBO" class="com.groupon.roboremote.roboremoteclient.LogbackAppender">
+  <appender name="ROBO" class="com.groupon.roboremote.roboremoteclientcommon.LogbackAppender">
   </appender>
 
   <root>

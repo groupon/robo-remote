@@ -30,41 +30,41 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</div>
  */
 
-package com.groupon.roboremote.roboremoteclient;
+package com.groupon.roboremote.roboremoteclientcommon.http;
 
-import ch.qos.logback.classic.PatternLayout;
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.AppenderBase;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
 
-public class LogbackAppender extends AppenderBase<ILoggingEvent> {
-    private PatternLayout layout = null;
-
-    public LogbackAppender() {
+public class Post {
+    public Post() {
 
     }
 
-    @Override
-    public void start() {
-        super.start();
-    }
+    public static String post(String baseurl, String verb, String postData) throws Exception {
+        String returnVal = "";
 
-    public void append(ILoggingEvent event) {
-        if (layout == null) {
-            layout = new PatternLayout();
-            layout.setPattern("[%le] - %class{36}:%L %M - %msg");
-            layout.setContext(this.context);
-            layout.start();
+        String urlStr = String.format("%s/%s", baseurl, verb);
+
+        URL url = new URL(urlStr);
+
+        URLConnection conn = url.openConnection();
+        conn.setDoOutput(true);
+        OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
+        writer.write(postData);
+        writer.flush();
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        
+        String line;
+        while ((line = reader.readLine()) != null) {
+            returnVal += line + "\n";
         }
-
-        // print to console
-        String log = this.layout.doLayout(event);
-        System.out.println(log);
-
-        try
-        {
-            Client.map("com.groupon.roboremote.roboremoteserver.Commands", "log", log);
-        } catch (Exception e) {
-
-        }
+        writer.close();
+        reader.close();
+        
+        return returnVal;
     }
 }

@@ -30,7 +30,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</div>
  */
 
-package com.groupon.roboremote.roboremoteclient;
+package com.groupon.roboremote.roboremoteclientcommon;
 
 import com.android.ddmlib.*;
 

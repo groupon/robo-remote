@@ -30,7 +30,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</div>
  */
 
-import com.groupon.roboremote.roboremoteclient.Device;
+import com.groupon.roboremote.roboremoteclientcommon.Device;
 import com.groupon.roboremote.roboremoteclient.QueryBuilder;
 import com.groupon.roboremote.roboremoteclient.Solo;
 import com.groupon.roboremote.roboremoteclient.components.*;
@@ -50,7 +50,7 @@ public class SampleTests extends TestBase {
      */
     @BeforeClass
     public static void setUpApp() {
-        Device.setAppEnvironmentVariables("com.groupon.roboremote.example.helloworld", "com.groupon.roboremote.example.helloworldtestrunner.Runner", "com.groupon.roboremote.example.helloworldtestrunner/android.test.InstrumentationTestRunner");
+        setAppEnvironmentVariables("com.groupon.roboremote.example.helloworld", "com.groupon.roboremote.example.helloworldtestrunner.Runner", "com.groupon.roboremote.example.helloworldtestrunner/android.test.InstrumentationTestRunner");
     }
 
     @Test

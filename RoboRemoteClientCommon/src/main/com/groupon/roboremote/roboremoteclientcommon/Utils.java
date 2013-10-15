@@ -30,41 +30,42 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</div>
  */
 
-package com.groupon.roboremote.roboremoteclient.http;
+package com.groupon.roboremote.roboremoteclientcommon;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.net.URLConnection;
+import org.json.JSONArray;
 
-public class Post {
-    public Post() {
+import java.lang.Exception;
+import java.lang.String;
+import java.util.ArrayList;
+import java.util.Map;
 
+public class Utils {
+    public static String testName = null;
+
+    public static void setTestName(String name) {
+        testName = name;
     }
 
-    public static String post(String baseurl, String verb, String postData) throws Exception {
-        String returnVal = "";
+    public static String getTestName() {
+        return testName;
+    }
 
-        String urlStr = String.format("%s/%s", baseurl, verb);
-
-        URL url = new URL(urlStr);
-
-        URLConnection conn = url.openConnection();
-        conn.setDoOutput(true);
-        OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
-        writer.write(postData);
-        writer.flush();
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        
-        String line;
-        while ((line = reader.readLine()) != null) {
-            returnVal += line + "\n";
+    public static ArrayList<String> jsonArrayToStringList(JSONArray arry) throws Exception {
+        ArrayList<String> newArray = new ArrayList<String>();
+        for (int x = 0; x < arry.length(); x++) {
+            newArray.add(arry.getString(x));
         }
-        writer.close();
-        reader.close();
-        
-        return returnVal;
+
+        return newArray;
+    }
+
+    public static String getEnv(String name, String defaultValue) {
+        Map<String, String> env = System.getenv();
+
+        if (env.get(name) != null) {
+            return env.get(name);
+        }
+
+        return defaultValue;
     }
 }

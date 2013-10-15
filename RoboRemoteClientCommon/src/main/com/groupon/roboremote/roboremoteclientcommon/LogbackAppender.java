@@ -30,37 +30,41 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</div>
  */
 
-package com.groupon.roboremote.roboremoteclient.logging;
+package com.groupon.roboremote.roboremoteclientcommon;
 
-public class EmSingleton {
-    /* Here is the instance of the Singleton */
-    private static EventManager instance_ = null;
+import ch.qos.logback.classic.PatternLayout;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.AppenderBase;
 
-    /* Need the following object to synchronize */
-    /* a block */
-    private static Object syncObject_ = new Object();
+public class LogbackAppender extends AppenderBase<ILoggingEvent> {
+    private PatternLayout layout = null;
 
-    /* Prevent direct access to the constructor */
-    private EmSingleton() {
-        super();
+    public LogbackAppender() {
+
     }
 
-    public static void intialize() throws Exception {
-        synchronized (syncObject_) {
-            instance_ = new EventManager();
+    @Override
+    public void start() {
+        super.start();
+    }
+
+    public void append(ILoggingEvent event) {
+        if (layout == null) {
+            layout = new PatternLayout();
+            layout.setPattern("[%le] - %class{36}:%L %M - %msg");
+            layout.setContext(this.context);
+            layout.start();
         }
-    }
 
-    public static EventManager get() throws Exception {
-        if (instance_ == null) {
-            intialize();
-        }
-        return instance_;
-    }
+        // print to console
+        String log = this.layout.doLayout(event);
+        System.out.println(log);
 
-    public static void release() {
-        synchronized (syncObject_) {
-            instance_ = null;
+        try
+        {
+            Client.getInstance().map("com.groupon.roboremote.roboremoteserver.Commands", "log", log);
+        } catch (Exception e) {
+
         }
     }
 }

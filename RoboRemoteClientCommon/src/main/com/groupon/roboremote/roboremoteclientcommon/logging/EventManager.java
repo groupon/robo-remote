@@ -30,10 +30,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</div>
  */
 
-package com.groupon.roboremote.roboremoteclient.logging;
+package com.groupon.roboremote.roboremoteclientcommon.logging;
 
 import com.android.ddmlib.MultiLineReceiver;
-import com.groupon.roboremote.roboremoteclient.DebugBridge;
+import com.groupon.roboremote.roboremoteclientcommon.DebugBridge;
 
 import java.util.ArrayList;
 import java.util.Arrays;
