@@ -42,7 +42,7 @@ RoboRemoteServer acts as a HTTP interface to Robotium. It accepts requests and p
 
 RoboRemote uses Java reflection along with some additional logic to turn the JSON based requests into function calls.  All return values from functions are returned as a JSONArray of values.  If a function results in a List or an Array then the JSONArray will contain all of the data from the functions return value.
 
-RoboRemoteServer contains a resource file(&lt;root&gt;/RoboRemoteServer/res/values/types.xml) that maps parameter types to equivalent parameter types.  This is used to determine if the value that was passed in through JSON(ex: Integer) can be used as an argument to a function that takes a different numerical type.  If you are trying to call a function and it is not working properly then a missing mapping in this file is the likely culprit.
+RoboRemoteServerCommon(RemoteServer.java contains a function(getTypeEquivalents) that maps parameter types to equivalent parameter types.  This is used to determine if the value that was passed in through JSON(ex: Integer) can be used as an argument to a function that takes a different numerical type.  If you are trying to call a function and it is not working properly then a missing mapping in this function is the likely culprit.
 
 **What do I do with the String version of the View I requested?**
 

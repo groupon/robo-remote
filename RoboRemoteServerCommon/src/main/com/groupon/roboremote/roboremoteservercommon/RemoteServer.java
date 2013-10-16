@@ -34,16 +34,22 @@ package com.groupon.roboremote.roboremoteservercommon;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Properties;
+import java.net.URL;
+import java.util.*;
 
 import android.view.View;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
 
 public abstract class RemoteServer {
     // get an instantiated class based on predefined keys(ex: solo for Robotium)
@@ -51,10 +57,6 @@ public abstract class RemoteServer {
 
     // Get a view with the specified name(may not be supported by all automation platforms)
     protected abstract View getView(String viewName);
-
-    // get type equivalents
-    // TODO: Move this function back into this library
-    protected abstract String[] getTypeEquivalents(String type);
 
     public void startServer(int port) throws Exception {
         System.out.println("- Starting HTTP service");
@@ -500,6 +502,35 @@ public abstract class RemoteServer {
             }
 
             return returnObject.toString();
+        }
+
+        /**
+         * Returns an array of "equivalent" object types for a specified type
+         * Ex: Integer, int, Long, long, Float, float are all considered to be the same for function matching
+         * @param type
+         * @return
+         * @throws Exception
+         */
+        private String[] getTypeEquivalents(String type) throws Exception {
+            // Build equivalence table
+            String[] StringArray = {"String"};
+            String[] IntegerArray = {"Integer", "int", "Long", "long", "Float", "float"};
+            String[] BooleanArray = {"Boolean", "boolean"};
+            Hashtable<String, String[]> typeHash = new Hashtable<String, String[]>();
+            typeHash.put("String", StringArray);
+            typeHash.put("Integer", IntegerArray);
+            typeHash.put("Boolean", BooleanArray);
+
+            for (String key : typeHash.keySet()) {
+                String[] typeArray = typeHash.get(key);
+                for (String entry : typeArray) {
+                    if (entry.equals(type)) {
+                        return typeArray;
+                    }
+                }
+            }
+
+            return null;
         }
 
         /**

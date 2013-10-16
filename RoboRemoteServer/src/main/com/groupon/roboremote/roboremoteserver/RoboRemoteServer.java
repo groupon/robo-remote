@@ -50,47 +50,4 @@ public class RoboRemoteServer extends RemoteServer {
 
         return null;
     }
-
-    /**
-     * Get all type equivalents from the resource file
-     * @param type
-     * @return
-     */
-    protected String[] getTypeEquivalents(String type) {
-        String[] returnArray = null;
-
-        for (int x = 0; x < R.array.class.getFields().length; x++) {
-            try {
-
-                ArrayList<String> tmpArray = new ArrayList<String>();
-
-                Collections.addAll(tmpArray, instrumentation.getContext().getResources().getStringArray(R.array.class.getFields()[x].getInt(null)));
-
-                if (tmpArray.size() == 0)
-                    continue;
-
-                // safety precaution.. make sure the first item is "TYPE"
-                if (tmpArray.get(0).compareTo(Constants.TYPE_EQUIVALENT_IDENTIFIER) != 0)
-                    continue;
-
-                tmpArray.remove(0);
-
-                // look through the rest of the array and see if one of the types matches the type we passed in
-                for (String tmpString: tmpArray) {
-                    if (tmpString.compareTo(type) == 0) {
-                        returnArray = tmpArray.toArray(new String[tmpArray.size()]);
-                    }
-                }
-
-                if (returnArray != null)
-                    break;
-
-            } catch (Exception e) {
-                // we'll get here if we ran out of types to look at
-                break;
-            }
-        }
-
-        return returnArray;
-    }
 }

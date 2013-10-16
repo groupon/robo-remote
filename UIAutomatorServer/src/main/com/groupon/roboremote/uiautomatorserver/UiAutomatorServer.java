@@ -64,23 +64,4 @@ public class UiAutomatorServer extends RemoteServer {
     protected View getView(String viewName) {
         return null;
     }
-
-    /**
-     * Basic implementation of getTypeEquivalents to support UiAutomator
-     * @param type
-     * @return
-     */
-    protected String[] getTypeEquivalents(String type) {
-        String[] returnArray = null;
-
-        if (type.equals("int") || type.equals("Integer")) {
-            ArrayList<String> tmpArray = new ArrayList<String>();
-            tmpArray.add("TYPE");
-            tmpArray.add("int");
-            tmpArray.add("Integer");
-            returnArray = tmpArray.toArray(new String[tmpArray.size()]);
-        }
-
-        return returnArray;
-    }
 }
