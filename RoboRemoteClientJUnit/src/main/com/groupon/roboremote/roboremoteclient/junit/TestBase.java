@@ -78,12 +78,12 @@ public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
                     if (failed)
                     {
                         // do failure stuff here
-                        // for writing own fail function in custom TestBase
+                        // for writing own fail function in custom com.groupon.roboremote.uiautomatorclient.TestBase
                         onFail(m);
 
                     } else {
                         // do passed stuff here
-                        // for writing own pass function in custom TestBase
+                        // for writing own pass function in custom com.groupon.roboremote.uiautomatorclient.TestBase
                         onPass(m);
 
                     }
@@ -98,7 +98,7 @@ public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
 
     @BeforeClass
     public static void setUpApp() throws Exception {
-        Device.setAppEnvironmentVariables();
+        setAppEnvironmentVariables();
     }
 
     @Before

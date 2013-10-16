@@ -68,5 +68,6 @@
         <module>RoboRemoteClient</module>
         <module>RoboRemoteClientJUnit</module>
         <module>UIAutomatorServer</module>
+        <module>UIAutomatorClient</module>
     </modules>
 </project>

@@ -49,6 +49,7 @@ public class Constants {
     public static final String REQUEST_QUERY = "query";
     public static final String REQUEST_MAP = "map";
     public static final String REQUEST = "request";
+    public static final String REQUEST_HEARTBEAT = "heartbeat";
 
     // nanohttpd constants
     public static final String NANO_POST = "POST";

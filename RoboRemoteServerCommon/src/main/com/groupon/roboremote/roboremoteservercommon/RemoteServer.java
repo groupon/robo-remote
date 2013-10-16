@@ -126,7 +126,6 @@ public abstract class RemoteServer {
                     } else {
                         Class c = Class.forName(query);
                         try {
-                            System.out.println(c.getDeclaredConstructors()[0].getParameterTypes().length);
                             // try instantiating.. if that doesn't work then it is probably a static class
                             if (c.getDeclaredConstructors()[0].getParameterTypes().length == 1) {
                                 currentClassObject = c.getDeclaredConstructors()[0].newInstance(lastResponseObject);
@@ -323,7 +322,6 @@ public abstract class RemoteServer {
                 Boolean convertedArgumentsForCurrentMethod = false;
                 // try to match up the name, # args and method signature
                 if (method.getName().equals(methodName) && method.getParameterTypes().length == argTypes.length) {
-                    System.out.println(method.getName() + " " + method.getParameterTypes().length);
                     // replicate the args array
                     int x = 0;
                     for (Object arg: args) {
@@ -413,7 +411,6 @@ public abstract class RemoteServer {
                             continue;
 
                         // If the last response type matches the current method param type then use it
-                        System.out.println(lastResponseObject.getClass().toString() + ", " + paramClass.toString());
                         if (lastResponseObject.getClass().toString().startsWith(paramClass.toString())) {
                             newArgs[matches] = lastResponseObject;
                             convertedArgumentsForCurrentMethod = true;
@@ -490,15 +487,19 @@ public abstract class RemoteServer {
 
         private String processGet(String uri, Properties params) {
             String msg = "";
-            Enumeration eparams = params.propertyNames();
-            while ( eparams.hasMoreElements())
-            {
-                String value = (String)eparams.nextElement();
-                msg = msg + "  PRM: '" + value + "' = '" +
-                        params.getProperty( value ) + "'\n" ;
+            JSONObject returnObject = new JSONObject();
+
+            try {
+                if (uri.equalsIgnoreCase(Constants.REQUEST_HEARTBEAT)) {
+                    returnObject.put(Constants.RESULT_OUTCOME, Constants.RESULT_SUCCESS);
+                } else {
+                    returnObject.put(Constants.RESULT_OUTCOME, Constants.RESULT_FAILED);
+                }
+            } catch (Exception e) {
+                e.getMessage();
             }
 
-            return msg;
+            return returnObject.toString();
         }
 
         /**

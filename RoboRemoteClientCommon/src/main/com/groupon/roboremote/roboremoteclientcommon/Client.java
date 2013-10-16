@@ -32,6 +32,7 @@
 
 package com.groupon.roboremote.roboremoteclientcommon;
 
+import com.groupon.roboremote.roboremoteclientcommon.http.Get;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -76,8 +77,8 @@ public class Client {
      */
     public boolean isListening() throws Exception {
         try {
-            // TODO add a heartbeat to server common
-            map(Constants.ROBOTIUM_SOLO, "waitForText", "Stuff", 1, 1000, false);
+            JSONObject resp = new JSONObject(Get.get(API_BASE_URL + ":" + API_PORT, Constants.REQUEST_HEARTBEAT, ""));
+
             return true;
         } catch (Exception e) {
             return false;
