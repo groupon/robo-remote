@@ -47,6 +47,10 @@ public class Constants {
     public static final String REQUEST_METHOD_NAME = "method_name";
     public static final String REQUEST_ARGUMENTS = "arguments";
     public static final String REQUEST_QUERY = "query";
+    public static final String REQUEST_STORE = "store";
+    public static final String REQUEST_REMOVE = "remove";
+    public static final String REQUEST_RETRIEVE = "retrieve";
+    public static final String REQUEST_INSTANTIATE = "instantiate";
     public static final String REQUEST_MAP = "map";
     public static final String REQUEST = "request";
     public static final String REQUEST_HEARTBEAT = "heartbeat";
@@ -70,4 +74,6 @@ public class Constants {
     public static final String ARGUMENT_TYPE_CLASS = ".Class";
     public static final String ARGUMENT_TYPE_VIEW = ".View";
     public static final String ARGUMENT_TYPE_WIDGET = ".widget.";
+
+    public static final String STORED = "STORED_";
 }

@@ -86,13 +86,58 @@ public class QueryBuilder {
 
         java.util.Map<String, Object> operation = new LinkedHashMap<String, Object>();
         operation.put(Constants.REQUEST_METHOD_NAME, method_name);
-        JSONArray args = new JSONArray();
 
         if (query != null)
             queryStringRepresentation += query;
 
         queryStringRepresentation += "." + method_name;
 
+        operation.put(Constants.REQUEST_ARGUMENTS, buildArgsArray(items));
+        op.put(Constants.REQUEST_OPERATION, operation);
+
+        JSONArray operations = (JSONArray) request.get(Constants.REQUEST_OPERATIONS);
+        operations.put(op);
+        request.remove(Constants.REQUEST_OPERATIONS);
+        request.put(Constants.REQUEST_OPERATIONS, operations);
+
+        return this;
+    }
+
+    /**
+     * Used to instantiate a class
+     * @param query
+     * @param items
+     * @return
+     * @throws Exception
+     */
+    public QueryBuilder instantiate(String query, Object... items) throws Exception {
+        JSONObject op = new JSONObject();
+        if (query != null)
+            op.put(Constants.REQUEST_INSTANTIATE, query);
+
+        java.util.Map<String, Object> operation = new LinkedHashMap<String, Object>();
+
+        if (query != null)
+            queryStringRepresentation += query;
+
+        op.put(Constants.REQUEST_ARGUMENTS, buildArgsArray(items));
+
+        JSONArray operations = (JSONArray) request.get(Constants.REQUEST_OPERATIONS);
+        operations.put(op);
+        request.remove(Constants.REQUEST_OPERATIONS);
+        request.put(Constants.REQUEST_OPERATIONS, operations);
+
+        return this;
+    }
+
+    /**
+     * Internal function used to build a JSON Array of arguments from a list of items
+     * @param items
+     * @return
+     * @throws Exception
+     */
+    private JSONArray buildArgsArray(Object ... items) throws Exception {
+        JSONArray args = new JSONArray();
         for (int i = 0; i < items.length; i++) {
 
             if (items[i] instanceof java.lang.String)
@@ -116,22 +161,26 @@ public class QueryBuilder {
                 throw new Exception("Invalid type");
             }
         }
-
-        operation.put(Constants.REQUEST_ARGUMENTS, args);
-        op.put(Constants.REQUEST_OPERATION, operation);
-
-        JSONArray operations = (JSONArray) request.get(Constants.REQUEST_OPERATIONS);
-        operations.put(op);
-        request.remove(Constants.REQUEST_OPERATIONS);
-        request.put(Constants.REQUEST_OPERATIONS, operations);
-
-        return this;
+        return args;
     }
 
+    /**
+     * Builder function to call a method on the result of a previous build function(ex: instantiate, map, retrieveresult)
+     * @param method_name
+     * @param items
+     * @return
+     * @throws Exception
+     */
     public QueryBuilder call(String method_name, Object ... items) throws Exception {
         return map(null, method_name, items);
     }
 
+    /**
+     * Builder function to call a field(ex System.out)
+     * @param fieldName
+     * @return
+     * @throws Exception
+     */
     public QueryBuilder callField(String fieldName) throws Exception {
         return mapField(null, fieldName);
     }
@@ -140,6 +189,58 @@ public class QueryBuilder {
         return request.toString();
     }
 
+    /**
+     * Store the result of the previous build operation.  The return value of this is the stored item
+     * @param label
+     * @return
+     * @throws Exception
+     */
+    public QueryBuilder storeResult(String label) throws Exception {
+        return genericRequest(Constants.REQUEST_STORE, label);
+    }
+
+    /**
+     * Remove a stored value
+     * @param label
+     * @return
+     * @throws Exception
+     */
+    public QueryBuilder removeResult(String label) throws Exception {
+        return genericRequest(Constants.REQUEST_REMOVE, label);
+    }
+
+    /**
+     * Retrieve a stored value.  This can be build upon using the call or callField builders
+     * @param label
+     * @return
+     * @throws Exception
+     */
+    public QueryBuilder retrieveResult(String label) throws Exception {
+        return genericRequest(Constants.REQUEST_RETRIEVE, label);
+    }
+
+    /**
+     * Creates a key value request
+     * @param type
+     * @param value
+     * @return
+     * @throws Exception
+     */
+    private QueryBuilder genericRequest(String type, String value) throws Exception {
+        JSONObject op = new JSONObject();
+        op.put(type, value);
+        JSONArray operations = (JSONArray) request.get(Constants.REQUEST_OPERATIONS);
+        operations.put(op);
+        request.remove(Constants.REQUEST_OPERATIONS);
+        request.put(Constants.REQUEST_OPERATIONS, operations);
+        return this;
+    }
+
+    /**
+     * Execute a series of commands
+     * @return
+     * @throws Exception
+     */
     public JSONArray execute() throws Exception {
         try {
             JSONArray retVal = Client.getInstance(port).map(toString());
@@ -148,5 +249,15 @@ public class QueryBuilder {
         } catch (Exception e) {
             throw new Exception(queryStringRepresentation + ": " + e.getMessage());
         }
+    }
+
+    /**
+     * Helper function if a stored value needs to be as an argument to a builder function
+     * Ex: .map("solo", "click", QueryBuilder.getStoredValue("myStoredValue")).execute()
+     * @param label
+     * @return
+     */
+    public static String getStoredValue(String label) {
+        return Constants.STORED + label;
     }
 }

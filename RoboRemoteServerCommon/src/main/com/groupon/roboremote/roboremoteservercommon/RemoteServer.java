@@ -35,6 +35,7 @@ package com.groupon.roboremote.roboremoteservercommon;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -77,6 +78,7 @@ public abstract class RemoteServer {
 
     public class RCHttpd extends NanoHTTPD {
         private Object lastResponseObject = null;
+        private Hashtable<String, Object> storedResponses = new Hashtable<String, Object>();
 
         public RCHttpd(int port) throws IOException {
             super(port, new File("/"));
@@ -99,7 +101,12 @@ public abstract class RemoteServer {
         }
 
 
-
+        /**
+         * Process the list of passed in operations and return the result
+         * @param operations
+         * @return
+         * @throws Exception
+         */
         private JSONObject processOperations(JSONArray operations) throws Exception {
             JSONArray returnValues = new JSONArray();
             JSONObject returnObject = new JSONObject();
@@ -109,18 +116,39 @@ public abstract class RemoteServer {
             Object currentClassObject = null;
             for (int x = 0; x < operations.length(); x++) {
                 JSONObject operation = operations.getJSONObject(x);
+                System.out.println("Current op: " + operation);
+
+                Object[] classArgs = new Object[0];
 
                 // see if this has a query.. normally only the 1st op will
                 String query = null;
                 if (operation.has(Constants.REQUEST_QUERY)) {
                     query = operation.getString(Constants.REQUEST_QUERY);
+                } else if(operation.has(Constants.REQUEST_INSTANTIATE)) {
+                    query = operation.getString(Constants.REQUEST_INSTANTIATE);
+
+                    // get arguments for class instantiation
+                    JSONArray args = new JSONArray();
+                    if (operation.has(Constants.REQUEST_ARGUMENTS)) {
+                        args = operation.getJSONArray(Constants.REQUEST_ARGUMENTS);
+                        classArgs = new Object[args.length()];
+                        for (int xx = 0; xx < args.length(); xx++) {
+                            classArgs[xx] = args.get(xx);
+                        }
+                    }
+                }
+
+                // restore stored item if this was a stored value
+                if (query != null && query.startsWith(Constants.STORED)) {
+                    System.out.println("Getting stored value for: " + query);
+                    currentClassObject = storedResponses.get(query);
+                    System.out.println("Stored value: " + currentClassObject);
                 }
 
                 // need to find a class object to work on if one isn't already defined
-                if (currentClassObject == null) {
+                if (currentClassObject == null && query != null) {
                     // let's find a class based on the query
-                    // special case for solo
-
+                    // This function is abstract and delegated to the implementing server
                     Object delegatedClassObject = getInstantiatedClass(query);
 
                     if (delegatedClassObject != null) {
@@ -129,18 +157,21 @@ public abstract class RemoteServer {
                         Class c = Class.forName(query);
                         try {
                             // try instantiating.. if that doesn't work then it is probably a static class
-                            if (c.getDeclaredConstructors()[0].getParameterTypes().length == 1) {
-                                currentClassObject = c.getDeclaredConstructors()[0].newInstance(lastResponseObject);
-                            } else {
-                                currentClassObject = c.newInstance();
-                            }
+                            currentClassObject = instantiateClass(c, classArgs);
+                            System.out.println("Instantiated class: " + currentClassObject);
                         } catch (Exception e) {
-                            currentClassObject = c;
+
                         }
+
+                        // if we still don't have one then assume it is static and assign to the found class
+                        if (currentClassObject == null)
+                            currentClassObject = c;
                     }
                 }
 
-                // the op type could be an Constants.REQUEST_OPERATION or a Constants.REQUEST_FIELD
+                System.out.println("Working class: " + currentClassObject);
+
+                // the op type could be an Constants.REQUEST_OPERATION or a Constants.REQUEST_FIELD or REQUEST_STORE or REQUEST_REMOVE
                 // operations are method calls
                 // fields are field accessors(returns the value of the field)
                 if (operation.has(Constants.REQUEST_OPERATION)) {
@@ -169,6 +200,7 @@ public abstract class RemoteServer {
                     } catch (Exception e) {
                         // this means something went wrong trying to call the function
                         String msg = e.getMessage();
+                        e.printStackTrace();
                         returnObject.put(Constants.RESULT_OUTCOME, Constants.RESULT_FAILED);
                         returnObject.put(Constants.RESULT_REASON, msg);
 
@@ -187,6 +219,13 @@ public abstract class RemoteServer {
                     }
 
                     returnObject.put(Constants.RESULT_RESULTS, returnValues);
+                } else if (operation.has(Constants.REQUEST_INSTANTIATE)) {
+                    // Instantiate a class
+                    JSONArray resultArray = new JSONArray();
+                    resultArray.put(currentClassObject);
+                    returnObject.put(Constants.RESULT_RESULTS, resultArray);
+                    returnObject.put(Constants.RESULT_OUTCOME, Constants.RESULT_SUCCESS);
+                    System.out.println(returnObject);
                 } else if (operation.has(Constants.REQUEST_FIELD)) {
                     // we actually want a field accessor
                     String fieldName = operation.getString(Constants.REQUEST_FIELD);
@@ -213,15 +252,29 @@ public abstract class RemoteServer {
                     returnValues = getReturnValues(funcReturn);
                     returnObject.put(Constants.RESULT_RESULTS, returnValues);
                     returnObject.put(Constants.RESULT_OUTCOME, Constants.RESULT_SUCCESS);
+                } else if (operation.has(Constants.REQUEST_STORE)) {
+                    // store the lastResponseObject
+                    storedResponses.put(Constants.STORED + operation.getString(Constants.REQUEST_STORE), lastResponseObject);
+                } else if (operation.has(Constants.REQUEST_REMOVE)) {
+                    // remove the specified stored response
+                    storedResponses.remove(operation.getString(Constants.REQUEST_STORE));
+                } else if (operation.has(Constants.REQUEST_RETRIEVE)) {
+                    // retrieve a stored response
+                    currentClassObject = storedResponses.get(Constants.STORED + operation.get(Constants.REQUEST_RETRIEVE));
                 }
-            }
 
-            // store currentClassObject
-            lastResponseObject = currentClassObject;
+                // store currentClassObject
+                lastResponseObject = currentClassObject;
+            }
 
             return returnObject;
         }
 
+        /**
+         * Returns a JSONArray representing the return values of the call
+         * @param returnItem
+         * @return
+         */
         private JSONArray getReturnValues(ArbitraryItemStruct returnItem) {
             JSONArray returnValues = new JSONArray();
 
@@ -296,14 +349,190 @@ public abstract class RemoteServer {
             return fieldResults;
         }
 
+        /**
+         * Private inner class to represent a complex return value from matchAndConvertArguments
+         */
+        private class MatchAndConvert {
+            Boolean convertedArguments = false;
+            Object[] arguments = null;
+            int matches = 0;
+            Boolean matchSucceeded = false;
+        }
+
+        /**
+         * This method takes an array of Classes that represent parameter types for a method or class instantation
+         * And an array of arguments to match up with that constructor/method signature
+         * Some arguments may be converted during the process
+         * @param paramTypesToMatch
+         * @param args
+         * @throws Exception
+         */
+        private MatchAndConvert matchAndConvertArguments(Class<?>[] paramTypesToMatch, Object[] args) throws Exception {
+            // return value
+            MatchAndConvert matchReturn = new MatchAndConvert();
+
+            // array to contain the original argument types from "args"
+            Class[] argTypes = new Class[args.length];
+            // array to contain a copy of the "args" array which may be edited
+            matchReturn.arguments = new Object[args.length];
+
+            // replicate the args array
+            int x = 0;
+            for (Object arg: args) {
+                argTypes[x] = arg.getClass();
+                matchReturn.arguments[x] = args[x];
+                x++;
+            }
+
+            // go through each param type and try to match things up
+            x = 0;
+            matchReturn.matches = 0;
+            for (Class<?> paramClass: paramTypesToMatch) {
+                System.out.println("Matching: " + paramClass);
+                // now get the known types array that matches the argTypes type
+                String currentClsArg = argTypes[x].toString();
+                x++;
+
+                // see if this is a stored value
+                if ((String.valueOf(args[matchReturn.matches])).startsWith(Constants.STORED)) {
+                    // IF there is a stored value and it's type matches the type we are trying to match
+                    if (storedResponses.containsKey((String)args[matchReturn.matches]) &&
+                            storedResponses.get((String)args[matchReturn.matches]).getClass().toString().startsWith(paramClass.toString())) {
+                        matchReturn.arguments[matchReturn.matches] = storedResponses.get((String)args[matchReturn.matches]);
+                        matchReturn.matches++;
+                        continue;
+                    }
+                }
+
+                // get just the class name
+                currentClsArg = currentClsArg.substring(currentClsArg.lastIndexOf(".") + 1);
+
+                // it's possible that null was passed in.. if so we'll automatically say that it matches but was converted
+                if (currentClsArg.startsWith("JSONObject") && matchReturn.arguments[x - 1].toString().compareTo("null") == 0) {
+                    matchReturn.arguments[x - 1] = null;
+                    matchReturn.convertedArguments = true;
+                    matchReturn.matches++;
+                    continue;
+                }
+
+                // get type equivalents
+                // ex: int == Integer
+                String[] knownTypes = getTypeEquivalents(currentClsArg);
+
+                // if the knownTypes array is empty.. then we push the current type on for the type comparison
+                // we have no better knowledge, but this allows comparison for types with no equivalents
+                if (knownTypes == null || knownTypes.length == 0) {
+                    knownTypes = new String[1];
+                    knownTypes[0] = currentClsArg;
+                }
+
+                // see if one of the knownTypes matches the current paramClass
+                String paramClassStr = paramClass.toString().substring(paramClass.toString().lastIndexOf(" ") + 1);
+                String paramClassStrEnd = paramClass.toString().substring(paramClass.toString().lastIndexOf(".") + 1);
+                for (String knowType: knownTypes) {
+                    if (knowType.compareTo(paramClassStrEnd) == 0) {
+                        matchReturn.matches++;
+                        break;
+                    }
+
+                    // special case for String to Class or String to View conversion
+                    // some functions want a class and we'll treat String and Class as equivalent if the string exists as a class
+                    if ((paramClassStr.contains(Constants.ARGUMENT_TYPE_CLASS)
+                            || paramClassStr.contains(Constants.ARGUMENT_TYPE_VIEW)
+                            || paramClassStr.contains(Constants.ARGUMENT_TYPE_WIDGET)) && knowType.equals(Constants.ARGUMENT_TYPE_STRING)) {
+
+                        // see if there is a class that represents this value
+                        try {
+                            Class findC = Class.forName((String)args[matchReturn.matches]);
+                            matchReturn.arguments[matchReturn.matches] = findC;
+                            matchReturn.convertedArguments = true;
+                            matchReturn.matches++;
+                            break;
+                        } catch (Exception e) {
+
+                        }
+
+                        // try to find a view instead
+                        // not all frameworks will support this and getView may return null in those cases
+                        View viewFinder = getView((String)args[matchReturn.matches]);
+                        if (viewFinder != null) {
+                            matchReturn.arguments[matchReturn.matches] = viewFinder;
+                            matchReturn.convertedArguments = true;
+                            matchReturn.matches++;
+                            break;
+                        }
+                    }
+
+                }
+
+                // last ditch effort.. this param type might match our previous process result
+                if (lastResponseObject == null)
+                    continue;
+
+                // If the last response type matches the current method param type then use it
+                if (lastResponseObject.getClass().toString().startsWith(paramClass.toString())) {
+                    matchReturn.arguments[matchReturn.matches] = lastResponseObject;
+                    matchReturn.convertedArguments = true;
+                    matchReturn.matches++;
+                }
+            }
+
+            // set matchSucceeded if matches == # of parameters
+            if (matchReturn.matches == paramTypesToMatch.length) {
+                matchReturn.matchSucceeded = true;
+            }
+
+            return matchReturn;
+        }
+
+        /**
+         * Instantiate a class based on a found class and list of arguments
+         * @param c
+         * @return
+         */
+        private Object instantiateClass(Class c, Object[] args) {
+            Object instantiatedClass = null;
+            Constructor constructorToInstantiate = null;
+            Object[] argsToPass = new Object[args.length];
+            try {
+                // if there are no args just try the default constructor.. otherwise search for one
+                if (args.length == 0) {
+                    instantiatedClass = c.newInstance();
+                } else {
+                    for (Constructor constructor : c.getDeclaredConstructors()) {
+                        if (constructor.getParameterTypes().length == args.length) {
+                            MatchAndConvert matchedData = matchAndConvertArguments(constructor.getParameterTypes(), args);
+                            if (constructorToInstantiate == null ||
+                                    (constructorToInstantiate != null && !matchedData.convertedArguments)
+                                    ) {
+                                // replace args with the temp args array incase we converted any arguments
+                                argsToPass = matchedData.arguments;
+                                constructorToInstantiate = constructor;
+                            }
+                        }
+                    }
+
+                    if (constructorToInstantiate != null) {
+                        instantiatedClass = constructorToInstantiate.newInstance(argsToPass);
+                    }
+                }
+            } catch (Exception ee) {
+                System.out.println("instantiateClass: " + ee.getMessage());
+            }
+
+            return instantiatedClass;
+        }
+
+        /**
+         * Run a method on the current class object with the specified arguments list
+         * @param classObject
+         * @param methodName
+         * @param args
+         * @return
+         * @throws Exception
+         */
         private ArbitraryItemStruct runArbitraryMethod(Object classObject, String methodName, Object[] args) throws Exception {
             ArbitraryItemStruct methodResults = new ArbitraryItemStruct();
-
-            // generate list of arg class types
-            Class[] argTypes = new Class[args.length];
-
-            // declare a temp array for a copy of the args array incase we need type replacement
-            Object[] newArgs = new Object[args.length];
 
             // declare an array for the final arg list
             Object[] argsToPass = new Object[args.length];
@@ -320,107 +549,11 @@ public abstract class RemoteServer {
             // loop through all the methods and try to manually match the signature
             // based on the method name and argument type equivalents
             for (Method method: methods) {
-                // Boolean to track whether or not we converted any arguments for the method match being evaluated
-                Boolean convertedArgumentsForCurrentMethod = false;
                 // try to match up the name, # args and method signature
-                if (method.getName().equals(methodName) && method.getParameterTypes().length == argTypes.length) {
-                    // replicate the args array
-                    int x = 0;
-                    for (Object arg: args) {
-                        argTypes[x] = arg.getClass();
-                        newArgs[x] = args[x];
-                        x++;
-                    }
+                if (method.getName().equals(methodName) && method.getParameterTypes().length == args.length) {
+                    MatchAndConvert matchedData = matchAndConvertArguments(method.getParameterTypes(), args);
 
-                    // go through each param type and try to match things up
-                    Class<?>[] paramTypes = method.getParameterTypes();
-                    x = 0;
-                    int matches = 0;
-                    for (Class<?> paramClass: paramTypes) {
-                        // now get the known types array that matches the argTypes type
-                        String currentClsArg = argTypes[x].toString();
-                        x++;
-
-                        // get just the class name
-                        currentClsArg = currentClsArg.substring(currentClsArg.lastIndexOf(".") + 1);
-
-                        // it's possible that null was passed in.. if so we'll automatically say that it matches but was converted
-                        if (currentClsArg.startsWith("JSONObject") && newArgs[x - 1].toString().compareTo("null") == 0) {
-                            newArgs[x - 1] = null;
-                            convertedArgumentsForCurrentMethod = true;
-                            matches++;
-                            continue;
-                        }
-
-                        // get type equivalents
-                        // ex: int == Integer
-                        String[] knownTypes = getTypeEquivalents(currentClsArg);
-
-                        // if the knownTypes array is empty.. then we push the current type on for the type comparison
-                        // we have no better knowledge, but this allows comparison for types with no equivalents
-                        if (knownTypes == null || knownTypes.length == 0) {
-                            knownTypes = new String[1];
-                            knownTypes[0] = currentClsArg;
-                        }
-
-                        // see if one of the knownTypes matches the current paramClass
-                        String paramClassStr = paramClass.toString().substring(paramClass.toString().lastIndexOf(" ") + 1);
-                        String paramClassStrEnd = paramClass.toString().substring(paramClass.toString().lastIndexOf(".") + 1);
-                        for (String knowType: knownTypes) {
-                            if (knowType.compareTo(paramClassStrEnd) == 0) {
-                                matches++;
-                                break;
-                            }
-
-                            // special case for String to Class or String to View conversion
-                            // some functions want a class and we'll treat String and Class as equivalent if the string exists as a class
-                            if ((paramClassStr.contains(Constants.ARGUMENT_TYPE_CLASS)
-                                    || paramClassStr.contains(Constants.ARGUMENT_TYPE_VIEW)
-                                    || paramClassStr.contains(Constants.ARGUMENT_TYPE_WIDGET)) && knowType.equals(Constants.ARGUMENT_TYPE_STRING)) {
-                                // need to check for this item
-                                try {
-                                    Class findC = Class.forName((String)args[matches]);
-                                    newArgs[matches] = findC;
-                                    convertedArgumentsForCurrentMethod = true;
-                                    matches++;
-                                    break;
-                                } catch (Exception e) {
-
-                                }
-                                /*
-                                // if that didn't work.. let's see if it matches a known view
-                                for (View view: solo.getCurrentViews()) {
-                                    if (view.toString().contains((String)args[matches])) {
-                                        newArgs[matches] = view;
-                                        convertedArgumentsForCurrentMethod = true;
-                                        matches++;
-                                        break;
-                                    }
-                                }*/
-                                View viewFinder = getView((String)args[matches]);
-                                if (viewFinder != null) {
-                                    newArgs[matches] = viewFinder;
-                                    convertedArgumentsForCurrentMethod = true;
-                                    matches++;
-                                    break;
-                                }
-                            }
-
-                        }
-
-                        // last ditch effort.. this param type might match our previous process result
-                        if (lastResponseObject == null)
-                            continue;
-
-                        // If the last response type matches the current method param type then use it
-                        if (lastResponseObject.getClass().toString().startsWith(paramClass.toString())) {
-                            newArgs[matches] = lastResponseObject;
-                            convertedArgumentsForCurrentMethod = true;
-                            matches++;
-                        }
-                    }
-
-                    if (matches == paramTypes.length) {
+                    if (matchedData.matches == method.getParameterTypes().length) {
                         // the idea here is to find the best match
                         // the ideal match is one where we didn't do any argument conversion
                         // TODO: this still needs to be smarter
@@ -429,10 +562,10 @@ public abstract class RemoteServer {
                         // 1. We don't have a match already(m == null)
                         // 2. We have a match, but the newer match didn't require argument conversion
                         if (m == null ||
-                                (m != null && !convertedArgumentsForCurrentMethod)
+                                (m != null && !matchedData.convertedArguments)
                                 ) {
                             // replace args with the temp args array incase we converted any arguments
-                            argsToPass = newArgs;
+                            argsToPass = matchedData.arguments;
                             m = method;
                         }
                     }
@@ -481,9 +614,11 @@ public abstract class RemoteServer {
                     // not sure what to do yet
                 }
             } catch (Exception e) {
-                e.getMessage();
+                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
 
+            System.out.println("Return value: " + returnVal);
             return returnVal;
         }
 
