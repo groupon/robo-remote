@@ -59,7 +59,7 @@
 
     <build>
         <sourceDirectory>src/main/</sourceDirectory>
-
+        <finalName>uiautomatorserver</finalName>
         <plugins>
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
@@ -67,6 +67,7 @@
                 <version>3.6.1</version>
                 <extensions>true</extensions>
                 <configuration>
+
                     <sdk>
                         <platform>17</platform>
                     </sdk>
@@ -89,6 +90,7 @@
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
+                    <finalName>uiautomatorserver</finalName>
                     <classesDirectory>${project.build.directory}/</classesDirectory>
                     <includes>
                         <include>classes.dex</include>
