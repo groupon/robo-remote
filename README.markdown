@@ -11,6 +11,12 @@ RoboRemote is loosely modeled after Frank for iOS.
 * 2.3+ for Robotium
 * 4.2.2+ for UIAutomator
 
+## Requirements
+***
+### UiAutomator Remote
+UiAutomator remote requires Android API Level 17 to be installed as a maven artifact.  It is suggested that the maven android sdk deployer is used for this(https://github.com/mosabua/maven-android-sdk-deployer).  Use the tool to install API 17(mvn install -P 4.2) libraries.  This will install the android and uiautomator library that is required. 
+
+
 ## Architecture
 ***
 RoboRemote consists of two main components and several framework specific.  The main components are RoboRemoteServerCommon and RoboRemoteClientCommon.  Robotium specific components are RoboRemoteServer, RoboRemoteClient and RoboRemoteClientJUnit.  The UIAutomator specific components are UIAutomatorServer and UIAutomatorClient.  The entire project is managed by Maven and the components are provided as artifacts.
