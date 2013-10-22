@@ -1,21 +1,22 @@
-# RoboRemote - A remote control framework for Robotium
+# RoboRemote - A remote control framework for Robotium and UIAutomator
 
 ## Overview
 ***
-**RoboRemote** is a remote control framework for Robotium.  The goal of RoboRemote is to allow for more complex test scenarios by letting the automator write their tests using standard desktop Java/JUnit(other frameworks to be supported in the future).  All of the Robotium Solo commands are available.  RoboRemote also provides some convencience classes to assist in common tasks such as interacting with list views.
+**RoboRemote** is a remote control framework for Robotium/UIAutomator.  The goal of RoboRemote is to allow for more complex test scenarios by letting the automator write their tests using standard desktop Java/JUnit(other frameworks to be supported in the future).  All of the Robotium Solo commands and UIAutomator commands are available.  RoboRemote also provides some convencience classes to assist in common tasks such as interacting with list views.
 
 RoboRemote is loosely modeled after Frank for iOS.
 
 ### Currently Supported Android Versions
 
-* 2.3+
+* 2.3+ for Robotium
+* 4.2.2+ for UIAutomator
 
 ## Architecture
 ***
-RoboRemote consists of two components - RoboRemoteServer and RoboRemoteClient.  The entire project is managed by Maven and both components are provided as artifacts.
+RoboRemote consists of two main components and several framework specific.  The main components are RoboRemoteServerCommon and RoboRemoteClientCommon.  Robotium specific components are RoboRemoteServer, RoboRemoteClient and RoboRemoteClientJUnit.  The UIAutomator specific components are UIAutomatorServer and UIAutomatorClient.  The entire project is managed by Maven and the components are provided as artifacts.
 
-### RoboRemoteServer
-RoboRemoteServer acts as a HTTP interface to Robotium. It accepts requests and provides responses in JSON format.  The input JSON describes the class, method and method parameters for the function that is being called.
+### RoboRemoteServerCommon
+RoboRemoteServer acts as a HTTP interface to arbitrary function calls.  RoboRemoteServer and UIAutomatorServer are specific usages of the component.  It accepts requests and provides responses in JSON format.  The input JSON describes the class, method and method parameters for the function that is being called.
 
 **Example request**
 
@@ -48,15 +49,18 @@ RoboRemoteServerCommon(RemoteServer.java contains a function(getTypeEquivalents)
 
 The textual versions of views or class names can be passed back is an argument to a function that requires a class or a view.  An example will be shown in the RoboRemoteClient section of this README.
 
-### RoboRemoteClient
-RoboRemoteClient is a java library(jar) that can be utilized in a JUnit 4.11 test project.  It provides the following functionality:
+### RoboRemoteClientCommon
+RoboRemoteClientCommon is a java library(jar) that provides the following functionality:
 
 * Device/Emulator functions(start app, close app, clear app data)
 * Test logging(using SLF4J and logback)
 * Logcat collection
 * Event based testing(currently logcat monitoring)
 * Failure screenshots
+
+The specific UIAutomator or Robotium implementations provide:
 * Robotium Solo emulation
+* UIAutomator UiObject, UiDevice, UiSelector and UiScrollable emulation
 * Client class to call almost any class/function you want
 * Convenience classes for several components(ex: click an item at an absolute listview item index)
 
@@ -74,13 +78,28 @@ solo.enterText(tView, "Text to enter");</code></pre>
 Solo.enterText(tView, "Text to enter");
 </code></pre>
 
+#### UiAutomator Emulation
+
+UIAutomatorClient provides several classes(UiDevice, UiObject, UiSelector, UiScrollable, UiCollection) that provide interfaces to the native classes.  UiDevice provides function calls to all of it's functions.  The other classes provide call(..) methods to map function calls according to class documentation for UiAutomator.
+
+**Example UiAutomator requests**
+*Traditional UiAutomator Syntax*:
+<pre><code>UiObject cancelButton = new UiObject(new UiSelector().text("Cancel").className("android.widget.Button"));
+if (cancelButton.exists())
+    cancelButton.click();</code></pre>
+*UiAutomator client request*:
+<pre><code>UiObject cancelButton = new UiObject(new UiSelector().call("text", "Cancel").call("className", "android.widget.Button"));
+if (cancelButton.call("exists").getBoolean(0))
+    cancelButton.call("click");</code></pre>
+
+
 #### Arbitrary Function Calls
 
-RoboRemoteClient also provides a method(in com.groupon.roboremote.RoboRemoteClient.Client) to call any function in a static/non-static class.  The map method is defined as map(String className, String method_name, Object … parameters).  If the call is successful then it returns a JSONArray of the results.  If the method only has a single return value then it will be in the first element of the JSONArray.  Elements in lists/arrays are returned in the same position in the JSONArray as they would be for the normal function call.
+RoboRemoteClientCommon also provides a method(in com.groupon.roboremote.RoboRemoteClient.Client) to call any function in a static/non-static class.  The map method is defined as map(String className, String method_name, Object … parameters).  If the call is successful then it returns a JSONArray of the results.  If the method only has a single return value then it will be in the first element of the JSONArray.  Elements in lists/arrays are returned in the same position in the JSONArray as they would be for the normal function call.
 
 **Example function call**
 
-*Traditional method call in Robotium test*:
+*Traditional method call in a test*:
 <pre><code>java.lang.System.exit(0);</code></pre>
 
 *RoboRemote client request*:
@@ -89,15 +108,24 @@ RoboRemoteClient also provides a method(in com.groupon.roboremote.RoboRemoteClie
 ***Note about function calls***: You can call methods in static/non-static classes, but cannot call methods in already instantiated classes.  In order to use already instantiated classes you will have to add hook methods in your test runner(explained in the Getting Started section of this README).  The only exception to this is the Robotium Solo class.  This class is pre-instantiated and can be referenced as "solo" in a map call.
 
 **Complex function calls**
-Robotium 4.x introduced some more complex function calls for web elements.  The functions take a By parameter.  To support this the method matcher remembers the result of the last function call and will automatically use that if the result type matches the parameter type.  The actual paremeter passed in the map command is ignored in this case.  An example is:
+Robotium 4.x introduced some more complex function calls for web elements.  The functions take a By parameter.  To support this the system provides a method of storing and retrieving objects.  An example is:
 
-*Traditional Robotium Syntax*: 
+*Traditional Syntax*: 
 <pre><code>solo.waitForWebElement(By.textContent("myText"))</code></pre>
 
 *RoboRemote client request*:
-<pre><code>Client.map("com.jayway.android.robotium.solo.By", "textContent", "myText");
-Client.map("solo", "waitForWebElement", "byTextContent");
+<pre><code>new QueryBuilder().map("com.jayway.android.robotium.solo.By", "textContent", "myText").storeResult("byMyText").execute();
+Client.map("solo", "waitForWebElement", QueryBuilder.getStoredValue("byMyText"));
 </code></pre>
+
+**Class Instantiation**
+RoboRemoteClientCommon provides a method to do paramaterized class instantion.
+
+*Traditional Syntax*:
+<pre><code>UiObject myObject = new UiObject(mySelector);</code></pre>
+
+*RoboRemoteClientCommon Syntax*(mySelector is already a stored value in this example):
+<pre><code>new QueryBuilder().instantiate("com.android.uiautomator.core.UiObject", QueryBuilder.getStoredValue("mySelector")).execute();</code></pre>
 
 ##### Fields
 
