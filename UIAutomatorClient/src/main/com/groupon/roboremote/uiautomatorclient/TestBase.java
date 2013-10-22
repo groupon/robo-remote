@@ -30,7 +30,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</div>
  */
 
-package com.groupon.roboremote.roboremoteclient;
+package com.groupon.roboremote.uiautomatorclient;
 
 import com.groupon.roboremote.roboremoteclientcommon.DebugBridge;
 import com.groupon.roboremote.roboremoteclientcommon.Device;
@@ -46,17 +46,15 @@ import java.lang.Thread;
 
 public class TestBase {
     public static final Logger logger = LoggerFactory.getLogger("test");
-    static String app_package = null;
-    static String test_class = null;
-    static String test_runner = null;
+    static String automator_jar = null;
     static AppThread ap = null;
 
     public static void onFailure() throws Exception {
-        logger.warn("TestBase::OnFailure:: Taking screenshot");
+        logger.warn("com.groupon.roboremote.uiautomatorclient.TestBase::OnFailure:: Taking screenshot");
         DebugBridge.get().getScreenShot("FAILURE.png");
         Device.storeFailurePng();
     }
-    
+
     public static void setUp(String testName) throws Exception {
         setUp(testName, false, true);
     }
@@ -71,21 +69,12 @@ public class TestBase {
             logger.info("Starting test {}", testName);
             Utils.setTestName(testName);
             Device.setupLogDirectories();
-
-            // create adb tunnel
-            DebugBridge.get().createTunnel(8080, 8080);
         }
 
         // see if a server is already listening
         boolean clientWasListening = false;
         if (Client.getInstance().isListening()) {
             clientWasListening = true;
-        }
-
-        if (clearAppData) {
-            // clear app data - this has the side effect of killing a running app
-            // TODO: this only works on 2.3+.. need a solution for 2.1+
-            Device.clearAppData(app_package);
         }
 
         // wait for the client to stop listening if it was previously listening
@@ -111,8 +100,8 @@ public class TestBase {
             DebugBridge.get().clearLogCat();
 
             TestLogger.get().info("Starting logcat");
-            DebugBridge.get().startLogListener(System.getProperty("java.io.tmpdir") + 
-            		File.separator + "adb_robo.log");
+            DebugBridge.get().startLogListener(System.getProperty("java.io.tmpdir") +
+                    File.separator + "adb_uiauto.log");
 
             // set up logger
             EmSingleton.intialize();
@@ -139,7 +128,7 @@ public class TestBase {
             DebugBridge.get().stopLogListener();
 
             // store logs
-            Device.storeLogs("adb_robo.log", "robo.log");
+            Device.storeLogs("adb_uiauto.log", "uiauto.log");
         } catch (Exception e) {
 
         } finally {
@@ -147,36 +136,29 @@ public class TestBase {
         }
     }
 
-    public static void setAppEnvironmentVariables(String appPackage, String testClass, String testRunner) {
-        app_package = appPackage;
-        test_class = testClass;
-        test_runner = testRunner;
+    public static void setAppEnvironmentVariables(String automator_jar) {
+        automator_jar = automator_jar;
     }
 
     public static void setAppEnvironmentVariables() throws Exception {
         // get environment variables
-        app_package = Utils.getEnv("ROBO_APP_PACKAGE", app_package);
-        if (app_package == null) {
-            throw new Exception("ROBO_APP_PACKAGE is not set");
-        }
-
-        test_class = Utils.getEnv("ROBO_TEST_CLASS", test_class);
-        if (test_class == null) {
-            throw new Exception("ROBO_TEST_CLASS is not set");
-        }
-
-        test_runner = Utils.getEnv("ROBO_TEST_RUNNER", test_runner);
-        if (test_runner == null) {
-            throw new Exception("ROBO_TEST_RUNNER is not set");
+        automator_jar = Utils.getEnv("ROBO_UIAUTOMATOR_JAR", automator_jar);
+        if (automator_jar == null) {
+            throw new Exception("ROBO_UIAUTOMATOR_JAR is not set");
         }
     }
 
-    public static String getTestClass() {
-        return test_class;
-    }
+    /**
+     * Deploys the test jar to the device
+     * @return
+     * @throws Exception
+     */
+    public static void deployTestJar() throws Exception {
+        File jarFile = new File(automator_jar);
+        if (!jarFile.exists())
+            throw new Exception("Test jar does not exist: " + automator_jar);
 
-    public static String getTestRunner() {
-        return test_runner;
+        DebugBridge.get().push(automator_jar, "/data/local/tmp/uiauto.jar");
     }
 
     public static void startApp() throws Exception {
@@ -236,7 +218,11 @@ public class TestBase {
         public void run() {
             _receiver = new DebugBridge.MultiReceiver();
             try {
-                DebugBridge.get().runShellCommand("am instrument -e class "  + getTestClass() + " -w " + getTestRunner(), _receiver, 0);
+                // create adb tunnel
+                DebugBridge.get().createTunnel(Constants.UIAUTOMATOR_PORT, Constants.UIAUTOMATOR_PORT);
+
+                // run uiautomator
+                DebugBridge.get().runShellCommand("uiautomator runtest uiauto.jar -c com.groupon.roboremote.uiautomatorserver.RemoteTest", _receiver, 0);
             } catch (Exception e) {
 
             }

@@ -63,11 +63,15 @@ public class Device {
         throw new FileNotFoundException("Failed to delete file: " + f);
     }
 
-    public static void storeLogs() throws Exception {
+    /**
+     * Stores the specified log for this test
+     * @throws Exception
+     */
+    public static void storeLogs(String sourceLogFileName, String destLogFileName) throws Exception {
         // assumes eventmanager is running
         // store logs
-    	File tmpLogFile = new File(System.getProperty("java.io.tmpdir") + File.separator + "adb_robo.log");
-    	File destFile = new File(current_log_dir + File.separator + "test.log");
+    	File tmpLogFile = new File(System.getProperty("java.io.tmpdir") + File.separator + sourceLogFileName);
+    	File destFile = new File(current_log_dir + File.separator + destLogFileName);
     	
         Files.copy(tmpLogFile, destFile);
     }
