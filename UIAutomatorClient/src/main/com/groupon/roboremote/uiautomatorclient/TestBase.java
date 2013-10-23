@@ -48,6 +48,7 @@ public class TestBase {
     public static final Logger logger = LoggerFactory.getLogger("test");
     static String _automator_jar = null;
     static AppThread ap = null;
+    static int _automator_port = Constants.UIAUTOMATOR_PORT;
 
     public static void onFailure() throws Exception {
         logger.warn("com.groupon.roboremote.uiautomatorclient.TestBase::OnFailure:: Taking screenshot");
@@ -56,7 +57,11 @@ public class TestBase {
     }
 
     public static void setUp(String testName) throws Exception {
-        setUp(testName, false, true);
+        setUp(testName, false, true, _automator_port);
+    }
+
+    public static void setUp(String testName, int port) throws Exception {
+        setUp(testName, false, true, port);
     }
 
     /**
@@ -64,7 +69,10 @@ public class TestBase {
      * @param relaunch - true if this is an app relaunch
      * @param clearAppData - true if you want app data cleared, false otherwise
      */
-    public static void setUp(String testName, Boolean relaunch, Boolean clearAppData) throws Exception {
+    public static void setUp(String testName, Boolean relaunch, Boolean clearAppData, int port) throws Exception {
+        // another port may have been passed in for use
+        _automator_port = port;
+
         setAppEnvironmentVariables();
 
         if (! relaunch) {
@@ -103,6 +111,14 @@ public class TestBase {
 
         // start app
         startApp();
+    }
+
+    /**
+     * Get the port that the automator is running on
+     * @return
+     */
+    public static int getAutomatorPort() {
+        return _automator_port;
     }
 
     // This is called in the failure method override above
@@ -208,10 +224,10 @@ public class TestBase {
             _receiver = new DebugBridge.MultiReceiver();
             try {
                 // create adb tunnel
-                DebugBridge.get().createTunnel(Constants.UIAUTOMATOR_PORT, Constants.UIAUTOMATOR_PORT);
+                DebugBridge.get().createTunnel(_automator_port, _automator_port);
 
                 // run uiautomator
-                DebugBridge.get().runShellCommand("uiautomator runtest uiauto.jar -c com.groupon.roboremote.uiautomatorserver.RemoteTest", _receiver, 0);
+                DebugBridge.get().runShellCommand("uiautomator runtest uiauto.jar -c com.groupon.roboremote.uiautomatorserver.RemoteTest -e port " + _automator_port, _receiver, 0);
             } catch (Exception e) {
 
             }

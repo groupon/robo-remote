@@ -35,6 +35,6 @@ package com.groupon.roboremote.uiautomatorclient;
 public class QueryBuilder extends com.groupon.roboremote.roboremoteclientcommon.QueryBuilder {
     // Returns a QueryBuilder on the UIAutomator port
     public QueryBuilder() {
-        super(Constants.UIAUTOMATOR_PORT);
+        super(TestBase.getAutomatorPort());
     }
 }

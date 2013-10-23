@@ -32,6 +32,7 @@
 
 package com.groupon.roboremote.uiautomatorserver;
 
+import android.os.Bundle;
 import com.android.uiautomator.testrunner.UiAutomatorTestCase;
 
 public class RemoteTest extends UiAutomatorTestCase {
@@ -40,7 +41,13 @@ public class RemoteTest extends UiAutomatorTestCase {
      * @throws Exception
      */
     public void testRunner() throws Exception {
+        Bundle params = getParams();
+        int bindPort = 8081;
+
+        if (params.containsKey("port"))
+            bindPort = Integer.parseInt(params.getString("port"));
+
         UiAutomatorServer uas = new UiAutomatorServer(getUiDevice());
-        uas.startServer(8081);
+        uas.startServer(bindPort);
     }
 }
