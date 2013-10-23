@@ -37,25 +37,27 @@ import com.groupon.roboremote.uiautomatorclient.Constants;
 
 public class UiDevice {
     /**
-     * Opens the notification shade
-     * @throws Exception
-     */
-    public static void openNotificationAPI17() throws Exception {
-        int displayHeight = Client.getInstance().map(Constants.UIAUTOMATOR_UIDEVICE, "getDisplayHeight").getInt(0);
-
-        // Calculated a Y position to pull down to that is the display height minus 10%
-        int pullTo = displayHeight - (int)((double)displayHeight * .1);
-
-        Client.getInstance().map(Constants.UIAUTOMATOR_UIDEVICE, "swipe", 10, 0, 10, pullTo, 100);
-    }
-
-    /**
      * Open notification shade for API >= 18
      * @return
      * @throws Exception
      */
     public static boolean openNotification() throws Exception {
-        return Client.getInstance().map(Constants.UIAUTOMATOR_UIDEVICE, "openNotification").getBoolean(0);
+        boolean success = false;
+        try {
+            success = Client.getInstance().map(Constants.UIAUTOMATOR_UIDEVICE, "openNotification").getBoolean(0);
+        } catch (Exception e) {
+            if (e.getMessage().contains("Could not find method")) {
+                // try a different way
+                int displayHeight = Client.getInstance().map(Constants.UIAUTOMATOR_UIDEVICE, "getDisplayHeight").getInt(0);
+
+                // Calculated a Y position to pull down to that is the display height minus 10%
+                int pullTo = displayHeight - (int)((double)displayHeight * .1);
+
+                Client.getInstance().map(Constants.UIAUTOMATOR_UIDEVICE, "swipe", 10, 0, 10, pullTo, 100);
+                success = true;
+            }
+        }
+        return success;
     }
 
     /**
