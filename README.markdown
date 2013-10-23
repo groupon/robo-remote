@@ -16,7 +16,37 @@ RoboRemote is loosely modeled after Frank for iOS.
 ### UiAutomator Remote
 UiAutomator remote requires Android API Level 18 to be installed as a maven artifact.  It is suggested that the maven android sdk deployer is used for this(https://github.com/mosabua/maven-android-sdk-deployer).  Use the tool to install API 18(mvn install -P 4.3) libraries.  This will install the android and uiautomator library that is required. 
 
-*Note*: An API Level 17(4.2.2) system can be used to execute tests but calls to UiAutomator functions that require API 18 will fail. 
+*Note*: An API Level 17(4.2.2) system can be used to execute tests but calls to UiAutomator functions that require API 18 will fail.
+
+## Examples
+***
+An example project is provided in the examples/HelloWorld directory.  The directory structure is as follows:
+
+* helloworld - This is the application under test which provides a simple list view and an activity to launch based on pressing an itme in the list view
+* helloworldtestrunner - This is the test runner which starts up the RoboRemote HTTP listener and the application under test.
+* Tests - 
+  * SampleTests - This contains the desktop JUnit based RoboRemote Robotium example tests for the HelloWorld project.  Under Tests/src/test is a SampleTests.java which contains a few tests demonstrating various RoboRemote functions.
+  * AutomatorTests - This contains the desktop JUnit based RoboRemote UiAutomator example tests for the HelloWorld project.  This also servers as an example of how to call various functions in the UiAutomatorClient TestBase to setup the test and run the application you would like to test.
+
+### Compiling the examples
+
+Running "mvn clean install" from the "examples" directory will build the examples.  Be sure to run "mvn clean install" from the root first to compile the latest library versions
+
+### Installing helloworld/helloworldtestrunner
+
+Execute the following from your repository root:
+
+1. adb install examples/HelloWorld/helloworld/target/HelloWorld-1.0.apk
+2. adb install examples/HelloWorld/helloworldtestrunner/target/helloworldtestrunner-1.apk
+
+### Executing the examples
+
+Execute the following from examples/HelloWorld/Tests
+
+1. Robotium example: mvn test -Dtest=SampleTests
+2. UiAutomator example:
+   1. export ROBO_UIAUTOMATOR_JAR=&lt;path to source root>/UIAutomatorServer/target/uiautomatorserver.jar
+   2. mvn test -DAutomatorTests 
 
 
 ## Architecture
@@ -238,33 +268,6 @@ public class TestHook {
 
 *Invocation of testhook function*:
 <pre><code>Client.map("com.groupon.roboremote.example.helloworldtestrunner.TestHook", "complicatedFunctionCalls")</code></pre>
-
-## Examples
-***
-An example project is provided in the examples/HelloWorld directory.  The directory structure is as follows:
-
-* helloworld - This is the application under test which provides a simple list view and an activity to launch based on pressing an itme in the list view
-* helloworldtestrunner - This is the test runner which starts up the RoboRemote HTTP listener and the application under test.
-* Tests - 
-  * SampleTests - This contains the desktop JUnit based RoboRemote Robotium example tests for the HelloWorld project.  Under Tests/src/test is a SampleTests.java which contains a few tests demonstrating various RoboRemote functions.
-  * AutomatorTests - This contains the desktop JUnit based RoboRemote UiAutomator example tests for the HelloWorld project.  This also servers as an example of how to call various functions in the UiAutomatorClient TestBase to setup the test and run the application you would like to test.
-
-### Compiling the examples
-
-Running "mvn clean install" from the "examples" directory will build the examples.  Be sure to run "mvn clean install" from the root first to compile the latest library versions
-
-### Installing helloworld/helloworldtestrunner
-
-Execute the following from your repository root:
-
-1. adb install examples/HelloWorld/helloworld/target/HelloWorld-1.0.apk
-2. adb install examples/HelloWorld/helloworldtestrunner/target/helloworldtestrunner-1.apk
-
-### Executing the examples
-
-Execute the following from examples/HelloWorld/Tests
-
-1. mvn test -Dtest=SampleTests
 
 ## TODO/Limitations
 ***
