@@ -18,6 +18,87 @@ UiAutomator remote requires Android API Level 18 to be installed as a maven arti
 
 *Note*: An API Level 17(4.2.2) system can be used to execute tests but calls to UiAutomator functions that require API 18 will fail.
 
+## Getting Started - UiAutomator Remote
+
+To use UiAutomator Remote you only need tests with a few setup steps as follows(See examples/HelloWorld/Tests/AutomatorTests.java for an example junit test setup):
+
+1. Create a test class that extends com.groupon.roboremote.uiautomatorclient.TestBase
+2. Provide the location of the UiAutomatorServer JAR.  There are two ways to do this:
+   1. Set ROBO_UIAUTOMATOR_JAR as an environment variable to the location of the jar
+   2. OR Call setAppEnvironmentVariables("location of jar")  in a @BeforeClass
+3. In @Before call super.setUp("test name") and then any commands you need in order to start the app under test4. In @After call tearDown()
+
+To get the JAR file either build it from source(in the UIAutomatorServer directory) or get it from maven(replace 0.5-SNAPSHOT with the latest version #): 
+<pre><code>mvn org.apache.maven.plugins:maven-dependency-plugin:2.4:get -DrepoUrl=http://oss.sonatype.org/content/repositories/snapshots -Dartifact=com.groupon.roboremote:uiautomatorserver:0.5-SNAPSHOT -Ddest=uiautomatorserver.jar</code></pre>
+
+### Maven Depenendencies
+#### Tests
+These are the maven dependencies you need to declare in your tests pom:
+
+<pre><code>&lt;dependency>
+	&lt;groupId>com.groupon.roboremote&lt;/groupId>
+    &lt;artifactId>uiautomatorclient&lt;/artifactId>
+    &lt;version>0.5-SNAPSHOT&lt;/version>
+&lt;/dependency></code></pre>
+
+
+## Getting Started - Robotium Remote
+***
+You need two things to get started with RoboRemote.
+
+* A test runner.  This is very similar to a Robotium test class except that it extends com.groupon.roboremote.roboremoteserver.RemoteTest instead of ActivityInstrumentationTestCase2.  You can actually take the example below and simply change the namespace and target test class.  The provided examples(described below) also contain Maven pom files to show how to compile this.
+
+	<pre><code>package com.groupon.roboremote.example.helloworldtestrunner;
+import com.groupon.roboremote.example.helloworld.HelloWorld;
+import com.groupon.roboremote.roboremoteserver.*;
+public class Runner extends RemoteTest<HelloWorld> {
+    public Runner() throws ClassNotFoundException {
+        super(HelloWorld.class);
+    }
+    public void testRCRunner() throws Exception {
+        startServer();
+    }
+}</code></pre>
+
+* Tests!  These are JUnit 4.10 test classes that extend com.groupon.roboremote.roboremoteclient.TestBase.  Example tests are provided in the source repository.  These can also be compiled with Maven and a sample pom is provided with the example.  
+The test executor requires a few environment variables to be set:
+	1. ROBO_APP_PACKAGE - This is the package name of the application under test(ex: com.groupon.roboremote.example.HelloWorld)
+	2. ROBO_TEST_CLASS - This is the class name that contains the test method we are usng(ex: com.groupon.roboremote.example.helloworldtestrunner.Runner)
+	3. ROBO_TEST_RUNNER - The instrumentation test runner to be used(ex: com.groupon.roboremote.example.helloworldtestrunner/android.test.InstrumentationTestRunner)
+
+	These can be alternatively defined if your tests have a @BeforeClass method that overrides the setUpApp() method from TestBase
+	<pre><code>@BeforeClass
+    public static void setUpApp() {
+        Device.setAppEnvironmentVariables("com.groupon.roboremote.example.helloworld", "com.groupon.roboremote.example.helloworldtestrunner.Runner", "com.groupon.roboremote.example.helloworldtestrunner/android.test.InstrumentationTestRunner");
+    }</code></pre>
+
+Once you have these two items along with your app then you can install the app under test and the test runner to your device and then begin executing tests against an attached device/emulator using desktop JUnit either from maven or the IDE of your choice.
+
+### Maven Depenendencies
+#### Test Runner
+These are the maven dependencies you need to declare in your test runner pom:
+
+<pre><code>&lt;dependency>
+            &lt;groupId>com.groupon.roboremote&lt;/groupId>
+            &lt;artifactId>roboremoteserver&lt;/artifactId>
+            &lt;version>0.2&lt;/version>
+            &lt;type>apklib&lt;/type>
+        &lt;/dependency></code></pre>
+
+#### Tests
+These are the maven dependencies you need to declare in your tests pom:
+
+<pre><code>&lt;dependency>
+            &lt;groupId>com.groupon.roboremote&lt;/groupId>
+            &lt;artifactId>roboremoteclient&lt;/artifactId>
+            &lt;version>0.2&lt;/version>
+        &lt;/dependency>
+        &lt;dependency>
+            &lt;groupId>com.groupon.roboremote.roboremoteclient&lt;/groupId>
+            &lt;artifactId>junit&lt;/artifactId>
+            &lt;version>0.2&lt;/version>
+        &lt;/dependency></code></pre>
+
 ## Examples
 ***
 An example project is provided in the examples/HelloWorld directory.  The directory structure is as follows:
@@ -196,64 +277,6 @@ float textSize = new Double(result.getDouble(0)).floatValue();</code></pre>
 *RoboRemote QueryBuilder call*:
 <pre><code>QueryBuilder query = new QueryBuilder();
 query.mapField("java.lang.System", "out".call("println", "Foo bar").execute();</code></pre>
-
-
-## Getting Started
-***
-You need two things to get started with RoboRemote.
-
-* A test runner.  This is very similar to a Robotium test class except that it extends com.groupon.roboremote.roboremoteserver.RemoteTest instead of ActivityInstrumentationTestCase2.  You can actually take the example below and simply change the namespace and target test class.  The provided examples(described below) also contain Maven pom files to show how to compile this.
-
-	<pre><code>package com.groupon.roboremote.example.helloworldtestrunner;
-import com.groupon.roboremote.example.helloworld.HelloWorld;
-import com.groupon.roboremote.roboremoteserver.*;
-public class Runner extends RemoteTest<HelloWorld> {
-    public Runner() throws ClassNotFoundException {
-        super(HelloWorld.class);
-    }
-    public void testRCRunner() throws Exception {
-        startServer();
-    }
-}</code></pre>
-
-* Tests!  These are JUnit 4.10 test classes that extend com.groupon.roboremote.roboremoteclient.TestBase.  Example tests are provided in the source repository.  These can also be compiled with Maven and a sample pom is provided with the example.  
-The test executor requires a few environment variables to be set:
-	1. ROBO_APP_PACKAGE - This is the package name of the application under test(ex: com.groupon.roboremote.example.HelloWorld)
-	2. ROBO_TEST_CLASS - This is the class name that contains the test method we are usng(ex: com.groupon.roboremote.example.helloworldtestrunner.Runner)
-	3. ROBO_TEST_RUNNER - The instrumentation test runner to be used(ex: com.groupon.roboremote.example.helloworldtestrunner/android.test.InstrumentationTestRunner)
-
-	These can be alternatively defined if your tests have a @BeforeClass method that overrides the setUpApp() method from TestBase
-	<pre><code>@BeforeClass
-    public static void setUpApp() {
-        Device.setAppEnvironmentVariables("com.groupon.roboremote.example.helloworld", "com.groupon.roboremote.example.helloworldtestrunner.Runner", "com.groupon.roboremote.example.helloworldtestrunner/android.test.InstrumentationTestRunner");
-    }</code></pre>
-
-Once you have these two items along with your app then you can install the app under test and the test runner to your device and then begin executing tests against an attached device/emulator using desktop JUnit either from maven or the IDE of your choice.
-
-### Maven Depenendencies
-#### Test Runner
-These are the maven dependencies you need to declare in your test runner pom:
-
-<pre><code>&lt;dependency>
-            &lt;groupId>com.groupon.roboremote&lt;/groupId>
-            &lt;artifactId>roboremoteserver&lt;/artifactId>
-            &lt;version>0.2&lt;/version>
-            &lt;type>apklib&lt;/type>
-        &lt;/dependency></code></pre>
-
-#### Tests
-These are the maven dependencies you need to declare in your tests pom:
-
-<pre><code>&lt;dependency>
-            &lt;groupId>com.groupon.roboremote&lt;/groupId>
-            &lt;artifactId>roboremoteclient&lt;/artifactId>
-            &lt;version>0.2&lt;/version>
-        &lt;/dependency>
-        &lt;dependency>
-            &lt;groupId>com.groupon.roboremote.roboremoteclient&lt;/groupId>
-            &lt;artifactId>junit&lt;/artifactId>
-            &lt;version>0.2&lt;/version>
-        &lt;/dependency></code></pre>
 
 ## Test Hooks
 You may find that you want to do more complicated function calls that make more sense to do in Android code rather than through function mapping.  Fortunately this is very easy since RoboRemote can call any arbitrary function.  The easiest way to do this is to add an additional class(Ex: TestHook) along side your Runner class.
