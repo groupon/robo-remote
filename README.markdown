@@ -14,7 +14,9 @@ RoboRemote is loosely modeled after Frank for iOS.
 ## Requirements
 ***
 ### UiAutomator Remote
-UiAutomator remote requires Android API Level 17 to be installed as a maven artifact.  It is suggested that the maven android sdk deployer is used for this(https://github.com/mosabua/maven-android-sdk-deployer).  Use the tool to install API 17(mvn install -P 4.2) libraries.  This will install the android and uiautomator library that is required. 
+UiAutomator remote requires Android API Level 18 to be installed as a maven artifact.  It is suggested that the maven android sdk deployer is used for this(https://github.com/mosabua/maven-android-sdk-deployer).  Use the tool to install API 18(mvn install -P 4.3) libraries.  This will install the android and uiautomator library that is required. 
+
+*Note*: An API Level 17(4.2.2) system can be used to execute tests but calls to UiAutomator functions that require API 18 will fail. 
 
 
 ## Architecture

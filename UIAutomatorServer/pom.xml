@@ -35,13 +35,13 @@
         <dependency>
             <groupId>android.test.uiautomator</groupId>
             <artifactId>uiautomator</artifactId>
-            <version>4.2.2_r2</version>
+            <version>4.3_r2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>android</groupId>
             <artifactId>android</artifactId>
-            <version>4.2.2_r2</version>
+            <version>4.3_r2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
