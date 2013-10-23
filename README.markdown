@@ -245,7 +245,9 @@ An example project is provided in the examples/HelloWorld directory.  The direct
 
 * helloworld - This is the application under test which provides a simple list view and an activity to launch based on pressing an itme in the list view
 * helloworldtestrunner - This is the test runner which starts up the RoboRemote HTTP listener and the application under test.
-* Tests - This contains the desktop JUnit based example tests for the HelloWorld project.  Under Tests/src/test is a SampleTests.java which contains a few tests demonstrating various RoboRemote functions.
+* Tests - 
+  * SampleTests - This contains the desktop JUnit based RoboRemote Robotium example tests for the HelloWorld project.  Under Tests/src/test is a SampleTests.java which contains a few tests demonstrating various RoboRemote functions.
+  * AutomatorTests - This contains the desktop JUnit based RoboRemote UiAutomator example tests for the HelloWorld project.  This also servers as an example of how to call various functions in the UiAutomatorClient TestBase to setup the test and run the application you would like to test.
 
 ### Compiling the examples
 

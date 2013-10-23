@@ -46,7 +46,7 @@ import java.lang.Thread;
 
 public class TestBase {
     public static final Logger logger = LoggerFactory.getLogger("test");
-    static String automator_jar = null;
+    static String _automator_jar = null;
     static AppThread ap = null;
 
     public static void onFailure() throws Exception {
@@ -64,34 +64,23 @@ public class TestBase {
      * @param relaunch - true if this is an app relaunch
      * @param clearAppData - true if you want app data cleared, false otherwise
      */
-    public static void setUp(String testName, Boolean relaunch, Boolean clearAppData) throws Exception{
+    public static void setUp(String testName, Boolean relaunch, Boolean clearAppData) throws Exception {
+        setAppEnvironmentVariables();
+
         if (! relaunch) {
             logger.info("Starting test {}", testName);
             Utils.setTestName(testName);
             Device.setupLogDirectories();
+            deployTestJar();
         }
 
         // see if a server is already listening
         boolean clientWasListening = false;
         if (Client.getInstance().isListening()) {
             clientWasListening = true;
-        }
 
-        // wait for the client to stop listening if it was previously listening
-        if (clientWasListening) {
-            // wait for the server to be dead
-            for (int x = 0; x < 10; x++) {
-                // try to make a query.. if it doesnt work then sleep
-                TestLogger.get().info("Trying to see if server is still available..");
-
-                if (! Client.getInstance().isListening())
-                    break;
-
-                if (x == 9)
-                    throw new Exception("Server is still available, but should not be");
-
-                Thread.sleep(2000);
-            }
+            // try to kill it
+             killApp();
         }
 
         if (! relaunch) {
@@ -137,13 +126,13 @@ public class TestBase {
     }
 
     public static void setAppEnvironmentVariables(String automator_jar) {
-        automator_jar = automator_jar;
+        _automator_jar = automator_jar;
     }
 
     public static void setAppEnvironmentVariables() throws Exception {
         // get environment variables
-        automator_jar = Utils.getEnv("ROBO_UIAUTOMATOR_JAR", automator_jar);
-        if (automator_jar == null) {
+        _automator_jar = Utils.getEnv("ROBO_UIAUTOMATOR_JAR", _automator_jar);
+        if (_automator_jar == null) {
             throw new Exception("ROBO_UIAUTOMATOR_JAR is not set");
         }
     }
@@ -154,11 +143,11 @@ public class TestBase {
      * @throws Exception
      */
     public static void deployTestJar() throws Exception {
-        File jarFile = new File(automator_jar);
+        File jarFile = new File(_automator_jar);
         if (!jarFile.exists())
-            throw new Exception("Test jar does not exist: " + automator_jar);
+            throw new Exception("Test jar does not exist: " + _automator_jar);
 
-        DebugBridge.get().push(automator_jar, "/data/local/tmp/uiauto.jar");
+        DebugBridge.get().push(_automator_jar, "/data/local/tmp/uiauto.jar");
     }
 
     public static void startApp() throws Exception {
