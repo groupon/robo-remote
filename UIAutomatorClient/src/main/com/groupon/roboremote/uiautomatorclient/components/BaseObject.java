@@ -32,19 +32,28 @@
 
 package com.groupon.roboremote.uiautomatorclient.components;
 
+import com.groupon.roboremote.roboremoteclientcommon.Constants;
 import com.groupon.roboremote.uiautomatorclient.QueryBuilder;
 import org.json.JSONArray;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.UUID;
+public class BaseObject {
+    String storedId;
 
-public class UiObject extends BaseObject {
-    public UiObject(String storedId) {
-        super(storedId);
+    protected BaseObject() throws Exception {
     }
 
-    public UiObject(UiSelector selector) throws Exception {
-        storedId = UUID.randomUUID().toString();
-        new QueryBuilder().instantiate("com.android.uiautomator.core.UiObject", QueryBuilder.getStoredValue(selector.getStoredId())).storeResult(storedId).execute();
+    /**
+     * Creates a new object based on the storedId of an object
+     * @param storedId
+     */
+    public BaseObject(String storedId) {
+        this.storedId = storedId;
+    }
+
+    // returns the stored ID for other operations to use
+    protected String getStoredId() {
+        return storedId;
     }
 
     /**
@@ -54,7 +63,38 @@ public class UiObject extends BaseObject {
      * @return
      * @throws Exception
      */
-    public JSONArray call(String method, Object ... args) throws Exception {
-        return super.callMethod(method, args);
+    protected JSONArray callMethod(String method, Object ... args) throws Exception {
+        return new QueryBuilder().retrieveResult(storedId).call(method, args).storeResult("LAST_" + getStoredId()).execute();
+    }
+
+    /**
+     * Returns a stored ID for the last result of a call
+     * @return
+     * @throws Exception
+     */
+    public String getLastResult() throws Exception {
+        return "LAST_" + getStoredId();
+    }
+
+    /**
+     * Returns a stored value string for use with remote calls
+     * This is useful when calling a function that takes a UiObject as an argument
+     * @return
+     */
+    public String getStoredValue() {
+        return QueryBuilder.getStoredValue(getStoredId());
+    }
+
+    /**
+     * Returns a human readable representation of this
+     * @return
+     */
+    public String toString() {
+        try {
+            String stringVal = new QueryBuilder().retrieveResult(storedId).call("toString").execute().getString(0);
+            return stringVal;
+        } catch (Exception e) {
+            return "";
+        }
     }
 }

@@ -35,30 +35,30 @@ package com.groupon.roboremote.uiautomatorclient.components;
 import com.groupon.roboremote.uiautomatorclient.QueryBuilder;
 import java.util.UUID;
 
-public class UiSelector {
-    String storedId;
-
+public class UiSelector extends BaseObject {
     public UiSelector() throws Exception {
         storedId = UUID.randomUUID().toString();
         new QueryBuilder().instantiate("com.android.uiautomator.core.UiSelector").storeResult(storedId).execute();
     }
 
-    // returns the stored ID for other operations to use
-    protected String getStoredId() {
-        return storedId;
-    }
-
+    /**
+     * Call a function on this object
+     * @param method
+     * @param args
+     * @return
+     * @throws Exception
+     */
     public UiSelector call(String method, Object ... args) throws Exception {
         new QueryBuilder().retrieveResult(storedId).call(method, args).storeResult(storedId).execute();
         return this;
     }
 
-    public String toString() {
-        try {
-        String stringVal = new QueryBuilder().retrieveResult(storedId).call("toString").execute().getString(0);
-            return stringVal;
-        } catch (Exception e) {
-            return "";
-        }
+    /**
+     * Returns a stored ID for the last result of a call
+     * @return
+     * @throws Exception
+     */
+    public String getLastResult() throws Exception {
+        return getStoredValue();
     }
 }

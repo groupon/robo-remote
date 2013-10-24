@@ -179,6 +179,10 @@ public class TestBase {
         return test_runner;
     }
 
+    public static String getAppPackage() {
+        return app_package;
+    }
+
     public static void startApp() throws Exception {
         ap = new AppThread();
         ap.start();

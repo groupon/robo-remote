@@ -37,29 +37,20 @@ import org.json.JSONArray;
 
 import java.util.UUID;
 
-public class UiCollection {
-    String storedId;
-
+public class UiCollection extends BaseObject {
     public UiCollection(UiSelector selector) throws Exception {
         storedId = UUID.randomUUID().toString();
         new QueryBuilder().instantiate("com.android.uiautomator.core.UiCollection", QueryBuilder.getStoredValue(selector.getStoredId())).storeResult(storedId).execute();
     }
 
-    // returns the stored ID for other operations to use
-    protected String getStoredId() {
-        return storedId;
-    }
-
+    /**
+     * Call a function on this object
+     * @param method
+     * @param args
+     * @return
+     * @throws Exception
+     */
     public JSONArray call(String method, Object ... args) throws Exception {
-        return new QueryBuilder().retrieveResult(storedId).call(method, args).execute();
-    }
-
-    public String toString() {
-        try {
-            String stringVal = new QueryBuilder().retrieveResult(storedId).call("toString").execute().getString(0);
-            return stringVal;
-        } catch (Exception e) {
-            return "";
-        }
+        return super.callMethod(method, args);
     }
 }
