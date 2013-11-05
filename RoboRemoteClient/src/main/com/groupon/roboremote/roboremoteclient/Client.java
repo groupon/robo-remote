@@ -44,7 +44,7 @@ public class Client extends com.groupon.roboremote.roboremoteclientcommon.Client
             instance = new Client();
         }
 
-        instance.API_PORT = Constants.ROBOREMOTE_PORT;
+        instance.API_PORT = TestBase.getRoboRemotePort();
         return instance;
     }
 }

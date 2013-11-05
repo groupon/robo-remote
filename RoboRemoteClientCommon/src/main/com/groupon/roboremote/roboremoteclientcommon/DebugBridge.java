@@ -33,6 +33,8 @@
 package com.groupon.roboremote.roboremoteclientcommon;
 
 import com.android.ddmlib.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -40,6 +42,8 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class DebugBridge {
+    public static final Logger logger = LoggerFactory.getLogger(DebugBridge.class);
+
     private AndroidDebugBridge bridge;
     private static DebugBridge _debugBridge = null;
 
@@ -210,11 +214,21 @@ public class DebugBridge {
         String _fileName = null;
         FileWriter fstream = null;
         BufferedWriter ostream = null;
+        Boolean writeToConsole = false;
 
         public MultiReceiver(String outfile) throws Exception {
+            new MultiReceiver(outfile, false);
+        }
+
+        public MultiReceiver(String outfile, Boolean writeToConsole) throws Exception {
             _fileName = outfile;
             fstream = new FileWriter(_fileName);
             ostream = new BufferedWriter(fstream);
+            this.writeToConsole = writeToConsole;
+        }
+
+        public MultiReceiver(Boolean writeToConsole) {
+            this.writeToConsole = writeToConsole;
         }
 
         public MultiReceiver() {
@@ -223,10 +237,12 @@ public class DebugBridge {
 
         public void processNewLines(java.lang.String[] lines) {
             try {
-                if (_fileName != null) {
-                    for (String line: lines) {
+                for (String line: lines) {
+                    if (ostream != null) {
                         ostream.write(line + "\n");
                     }
+                    if (writeToConsole)
+                        System.out.println(line);
                 }
             } catch (Exception e) {
                 

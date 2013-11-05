@@ -30,10 +30,45 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</div>
  */
 
-package com.groupon.roboremote.roboremoteclient;
+import com.groupon.roboremote.roboremoteclientcommon.DebugBridge;
+import com.groupon.roboremote.roboremoteclientcommon.Device;
+import com.groupon.roboremote.uiautomatorclient.*;
+import com.groupon.roboremote.uiautomatorclient.components.UiObject;
+import com.groupon.roboremote.uiautomatorclient.components.UiSelector;
+import org.junit.*;
 
-public class QueryBuilder extends com.groupon.roboremote.roboremoteclientcommon.QueryBuilder {
-    public QueryBuilder() {
-        super(TestBase.getRoboRemotePort());
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
+
+import org.json.*;
+import org.junit.Test;
+import org.junit.rules.TestName;
+
+public class AutomatorTests extends TestBase {
+    @Rule
+    public TestName name = new TestName();
+
+    @Before
+    public void setUpTest() throws Exception {
+        // call super setup
+        super.setUp(name.getMethodName());
+
+        // also start helloworld
+        DebugBridge.get().runShellCommand("pm clear com.groupon.roboremote.example.helloworld");
+        DebugBridge.get().runShellCommand("am start -n com.groupon.roboremote.example.helloworld/.HelloWorld");
+    }
+
+    @After
+    public void tearDownTest() throws Exception {
+        tearDown();
+    }
+
+    @Test
+    public void BVT() throws Exception {
+        UiObject fooLabel = new UiObject(new UiSelector().call("text", "Foo").call("className", "android.widget.TextView"));
+        assertTrue(fooLabel.call("exists").getBoolean(0));
+        fooLabel.call("click");
+        UiObject fooPage = new UiObject(new UiSelector().call("text", "Foo page").call("className", "android.widget.TextView"));
+        assertTrue(fooPage.call("exists").getBoolean(0));
     }
 }

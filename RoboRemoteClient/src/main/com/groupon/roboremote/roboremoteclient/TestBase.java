@@ -50,6 +50,7 @@ public class TestBase {
     static String test_class = null;
     static String test_runner = null;
     static AppThread ap = null;
+    static int _roboremote_port = 8080;
 
     public static void onFailure() throws Exception {
         logger.warn("TestBase::OnFailure:: Taking screenshot");
@@ -58,7 +59,19 @@ public class TestBase {
     }
     
     public static void setUp(String testName) throws Exception {
-        setUp(testName, false, true);
+        setUp(testName, false, true, _roboremote_port);
+    }
+
+    public static void setUp(String testName, int port) throws Exception {
+        setUp(testName, false, true, port);
+    }
+
+    /**
+     * Get the port that the automator is running on
+     * @return
+     */
+    public static int getRoboRemotePort() {
+        return _roboremote_port;
     }
 
     /**
@@ -66,14 +79,17 @@ public class TestBase {
      * @param relaunch - true if this is an app relaunch
      * @param clearAppData - true if you want app data cleared, false otherwise
      */
-    public static void setUp(String testName, Boolean relaunch, Boolean clearAppData) throws Exception{
+    public static void setUp(String testName, Boolean relaunch, Boolean clearAppData, int port) throws Exception {
+        // another port may have been passed in for use
+        _roboremote_port = port;
+
         if (! relaunch) {
             logger.info("Starting test {}", testName);
             Utils.setTestName(testName);
             Device.setupLogDirectories();
 
             // create adb tunnel
-            DebugBridge.get().createTunnel(8080, 8080);
+            DebugBridge.get().createTunnel(_roboremote_port, _roboremote_port);
         }
 
         // see if a server is already listening
@@ -240,7 +256,7 @@ public class TestBase {
         public void run() {
             _receiver = new DebugBridge.MultiReceiver();
             try {
-                DebugBridge.get().runShellCommand("am instrument -e class "  + getTestClass() + " -w " + getTestRunner(), _receiver, 0);
+                DebugBridge.get().runShellCommand("am instrument -e class "  + getTestClass() + " -e port " + _roboremote_port + " -w " + getTestRunner(), _receiver, 0);
             } catch (Exception e) {
 
             }

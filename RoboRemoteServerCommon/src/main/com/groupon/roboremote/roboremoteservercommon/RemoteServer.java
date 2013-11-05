@@ -39,9 +39,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.*;
 
 import android.view.View;
+import dalvik.system.PathClassLoader;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -140,9 +142,7 @@ public abstract class RemoteServer {
 
                 // restore stored item if this was a stored value
                 if (query != null && query.startsWith(Constants.STORED)) {
-                    System.out.println("Getting stored value for: " + query);
                     currentClassObject = storedResponses.get(query);
-                    System.out.println("Stored value: " + currentClassObject);
                 }
 
                 // need to find a class object to work on if one isn't already defined
@@ -158,7 +158,6 @@ public abstract class RemoteServer {
                         try {
                             // try instantiating.. if that doesn't work then it is probably a static class
                             currentClassObject = instantiateClass(c, classArgs);
-                            System.out.println("Instantiated class: " + currentClassObject);
                         } catch (Exception e) {
 
                         }
@@ -388,7 +387,6 @@ public abstract class RemoteServer {
             x = 0;
             matchReturn.matches = 0;
             for (Class<?> paramClass: paramTypesToMatch) {
-                System.out.println("Matching: " + paramClass);
                 // now get the known types array that matches the argTypes type
                 String currentClsArg = argTypes[x].toString();
                 x++;

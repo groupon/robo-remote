@@ -43,10 +43,13 @@ import java.io.File;
 import java.lang.Exception;
 import java.lang.String;
 import java.lang.Thread;
+import java.util.ArrayList;
 
 public class TestBase {
     public static final Logger logger = LoggerFactory.getLogger("test");
     static String _automator_jar = null;
+    static String[] _automator_jars = null;
+    static ArrayList<String> _automator_run_jars = null;
     static AppThread ap = null;
     static int _automator_port = Constants.UIAUTOMATOR_PORT;
 
@@ -73,7 +76,8 @@ public class TestBase {
         // another port may have been passed in for use
         _automator_port = port;
 
-        setAppEnvironmentVariables();
+        if (_automator_jars == null)
+            setAppEnvironmentVariables();
 
         if (! relaunch) {
             logger.info("Starting test {}", testName);
@@ -141,8 +145,8 @@ public class TestBase {
         }
     }
 
-    public static void setAppEnvironmentVariables(String automator_jar) {
-        _automator_jar = automator_jar;
+    public static void setAppEnvironmentVariables(String ... automator_jars) {
+        _automator_jars = automator_jars;
     }
 
     public static void setAppEnvironmentVariables() throws Exception {
@@ -151,6 +155,8 @@ public class TestBase {
         if (_automator_jar == null) {
             throw new Exception("ROBO_UIAUTOMATOR_JAR is not set");
         }
+
+        _automator_jars = _automator_jar.split(System.getProperty("path.separator"));
     }
 
     /**
@@ -159,11 +165,22 @@ public class TestBase {
      * @throws Exception
      */
     public static void deployTestJar() throws Exception {
-        File jarFile = new File(_automator_jar);
-        if (!jarFile.exists())
-            throw new Exception("Test jar does not exist: " + _automator_jar);
+        String pathSeparator = System.getProperty("file.separator");
 
-        DebugBridge.get().push(_automator_jar, "/data/local/tmp/uiauto.jar");
+        // we build a new list of jars that will be used for the launch command line
+        _automator_run_jars = new ArrayList<String>();
+
+        for (String jarFileName: _automator_jars) {
+            File jarFile = new File(jarFileName);
+            if (!jarFile.exists())
+                throw new Exception("Test jar does not exist: " + _automator_jar);
+
+            String[] destFileNameParts = jarFileName.split(pathSeparator);
+            String destFileName = "/data/local/tmp/" + destFileNameParts[destFileNameParts.length-1];
+            _automator_run_jars.add(destFileName);
+
+            DebugBridge.get().push(jarFileName, destFileName);
+        }
     }
 
     public static void startApp() throws Exception {
@@ -221,13 +238,21 @@ public class TestBase {
         DebugBridge.MultiReceiver _receiver = null;
 
         public void run() {
-            _receiver = new DebugBridge.MultiReceiver();
+            _receiver = new DebugBridge.MultiReceiver(true);
             try {
                 // create adb tunnel
                 DebugBridge.get().createTunnel(_automator_port, _automator_port);
 
+                // build jar list
+                String jarList = "";
+                for (String jarFileName: _automator_run_jars) {
+                    jarList += jarFileName + " ";
+                }
+
                 // run uiautomator
-                DebugBridge.get().runShellCommand("uiautomator runtest uiauto.jar -c com.groupon.roboremote.uiautomatorserver.RemoteTest -e port " + _automator_port, _receiver, 0);
+                String uiAutomatorCommand = "uiautomator runtest " + jarList + "-c com.groupon.roboremote.uiautomatorserver.RemoteTest -e port " + _automator_port;
+                logger.info("Executing: {}", uiAutomatorCommand);
+                DebugBridge.get().runShellCommand(uiAutomatorCommand, _receiver, 0);
             } catch (Exception e) {
 
             }

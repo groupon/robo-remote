@@ -62,7 +62,7 @@ public class LogbackAppender extends AppenderBase<ILoggingEvent> {
 
         try
         {
-            Client.getInstance().map("com.groupon.roboremote.roboremoteserver.Commands", "log", log);
+            new QueryBuilder(Client.getInstance().API_PORT).mapField("java.lang.System", "out").call("println", log).execute();
         } catch (Exception e) {
 
         }

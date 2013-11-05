@@ -103,7 +103,7 @@ public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
 
     @Before
     public void setUp() {
-        setUp(false, true);
+        setUp(false, true, 8080);
     }
 
     /**
@@ -111,7 +111,7 @@ public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
      * @param relaunch - true if this is an app relaunch
      * @param clearAppData - true if you want app data cleared, false otherwise
      */
-    public void setUp(Boolean relaunch, Boolean clearAppData) {
+    public void setUp(Boolean relaunch, Boolean clearAppData, int port) {
         try
         {
             String subname = name.getMethodName();
@@ -119,7 +119,7 @@ public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
             String test_name = this.getClass() + "_" + subname;
             test_name = test_name.replaceFirst("class ", "");
 
-            setUp(test_name, relaunch, clearAppData);
+            setUp(test_name, relaunch, clearAppData, port);
         } catch (Exception e) {
             fail("Caught exception: " + e);
         }

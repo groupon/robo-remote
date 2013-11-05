@@ -30,10 +30,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</div>
  */
 
-package com.groupon.roboremote.roboremoteclient;
+package com.groupon.roboremote.roboremoteserver;
 
-public class QueryBuilder extends com.groupon.roboremote.roboremoteclientcommon.QueryBuilder {
-    public QueryBuilder() {
-        super(TestBase.getRoboRemotePort());
+import android.os.Bundle;
+import android.test.InstrumentationTestRunner;
+
+public class RemoteTestRunner extends InstrumentationTestRunner {
+    @Override
+    public void onCreate(Bundle arguments) {
+        //process you parameters here.
+        if ( arguments != null ) {
+            if (arguments.containsKey("port")) {
+                System.setProperty("ROBOREMOTE_PORT", arguments.getString("port"));
+            }
+        }
+        super.onCreate(arguments);
     }
 }
