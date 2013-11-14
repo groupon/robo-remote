@@ -464,7 +464,8 @@ public abstract class RemoteServer {
                 }
 
                 // last ditch effort.. this param type might match our previous process result
-                if (lastResponseObject == null)
+                // we also bail if the amount of matches already matches the amount of parameters we have evaluated
+                if (lastResponseObject == null || matchReturn.matches == x)
                     continue;
 
                 // If the last response type matches the current method param type then use it
