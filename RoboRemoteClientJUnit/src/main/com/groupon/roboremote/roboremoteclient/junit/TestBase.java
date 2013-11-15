@@ -102,7 +102,7 @@ public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
     }
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         setUp(false, true, 8080);
     }
 

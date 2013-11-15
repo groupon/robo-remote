@@ -175,6 +175,11 @@ public class DebugBridge {
         SyncService service = currentDevice.getSyncService();
         service.pushFile(sourcefile, destination, SyncService.getNullProgressMonitor());
     }
+
+    public void pull(String sourcefile, String destination) throws Exception {
+        SyncService service = currentDevice.getSyncService();
+        service.pullFile(sourcefile, destination, SyncService.getNullProgressMonitor());
+    }
     
     public void installPackage(String filename) throws Exception {
         currentDevice.installPackage(filename, false);

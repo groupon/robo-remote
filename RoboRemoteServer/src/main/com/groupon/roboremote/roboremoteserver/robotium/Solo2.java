@@ -41,6 +41,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.jayway.android.robotium.solo.Solo;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -288,7 +289,8 @@ public class Solo2 extends Solo{
         String resourceValue = "";
 
         Class r = Class.forName(namespace + "$string");
-        resourceValue = getCurrentActivity().getResources().getString(r.getField(resourceId).getInt(null));
+        Field f = r.getField(resourceId);
+        resourceValue = getCurrentActivity().getResources().getString(f.getInt(f));
 
         return resourceValue;
     }

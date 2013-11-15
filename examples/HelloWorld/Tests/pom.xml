@@ -75,17 +75,17 @@
         <dependency>
             <groupId>com.groupon.roboremote</groupId>
             <artifactId>roboremoteclient</artifactId>
-            <version>0.5-SNAPSHOT</version>
+            <version>0.5.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.groupon.roboremote.roboremoteclient</groupId>
             <artifactId>junit</artifactId>
-            <version>0.5-SNAPSHOT</version>
+            <version>0.5.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.groupon.roboremote</groupId>
             <artifactId>uiautomatorclient</artifactId>
-            <version>0.5-SNAPSHOT</version>
+            <version>0.5.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

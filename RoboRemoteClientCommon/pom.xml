@@ -37,7 +37,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremoteclientcommon</artifactId>
-    <version>0.5-SNAPSHOT</version>
+    <version>0.5.1-SNAPSHOT</version>
     <name>RoboRemote Client Common Library</name>
     <description>This is the desktop side common client component</description>
 
