@@ -32,6 +32,7 @@
 
 package com.groupon.roboremote.uiautomatorclient;
 
+import com.android.ddmlib.MultiLineReceiver;
 import com.groupon.roboremote.roboremoteclientcommon.DebugBridge;
 import com.groupon.roboremote.roboremoteclientcommon.Device;
 import com.groupon.roboremote.roboremoteclientcommon.Utils;
@@ -39,7 +40,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.groupon.roboremote.roboremoteclientcommon.logging.*;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.lang.Exception;
 import java.lang.String;
 import java.lang.Thread;
@@ -231,14 +234,42 @@ public class TestBase {
     }
 
     /**
+     * Multi line receiver that prints to the console
+     */
+    private static class MultiReceiver extends MultiLineReceiver {
+        boolean closed = false;
+
+        public MultiReceiver() {
+        }
+
+        public void processNewLines(java.lang.String[] lines) {
+            try {
+                for (String line: lines) {
+                    System.out.println(line);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        public boolean isCancelled() {
+            return closed;
+        }
+
+        public void close() {
+            closed = true;
+        }
+    }
+
+    /**
      * This thread contains the running RC test
      * DebugBridge does not return until the instrumentation finishes so we have to run it in its own thread
      */
     private static class AppThread extends Thread {
-        DebugBridge.MultiReceiver _receiver = null;
+        MultiReceiver _receiver = null;
 
         public void run() {
-            _receiver = new DebugBridge.MultiReceiver(true);
+            _receiver = new MultiReceiver();
             try {
                 // create adb tunnel
                 DebugBridge.get().createTunnel(_automator_port, _automator_port);

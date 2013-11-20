@@ -32,6 +32,7 @@
 
 package com.groupon.roboremote.roboremoteclient;
 
+import com.android.ddmlib.NullOutputReceiver;
 import com.groupon.roboremote.roboremoteclientcommon.DebugBridge;
 import com.groupon.roboremote.roboremoteclientcommon.Device;
 import com.groupon.roboremote.roboremoteclientcommon.Utils;
@@ -251,20 +252,15 @@ public class TestBase {
      * DebugBridge does not return until the instrumentation finishes so we have to run it in its own thread
      */
     private static class AppThread extends Thread {
-        DebugBridge.MultiReceiver _receiver = null;
-
         public void run() {
-            _receiver = new DebugBridge.MultiReceiver();
             try {
-                DebugBridge.get().runShellCommand("am instrument -e class "  + getTestClass() + " -e port " + _roboremote_port + " -w " + getTestRunner(), _receiver, 0);
+                DebugBridge.get().runShellCommand("am instrument -e class "  + getTestClass() + " -e port " + _roboremote_port + " -w " + getTestRunner(), new NullOutputReceiver(), 0);
             } catch (Exception e) {
 
             }
         }
 
         public void close() {
-            // close the receiver to kill the thread
-            _receiver.close();
         }
     }
 }

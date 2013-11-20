@@ -208,36 +208,30 @@ public class DebugBridge {
     }
 
     public void stopLogListener() throws Exception {
+        System.out.println("STOPPING log listener");
         if (loggerThread != null) {
             loggerThread.close();
             loggerThread.interrupt();
         }
     }
 
-    public static class MultiReceiver extends MultiLineReceiver {
+    /**
+     * Multi line receiver that writes to a file
+     */
+    public class MultiReceiver extends MultiLineReceiver {
         boolean closed = false;
         String _fileName = null;
         FileWriter fstream = null;
         BufferedWriter ostream = null;
-        Boolean writeToConsole = false;
 
-        public MultiReceiver(String outfile) throws Exception {
-            new MultiReceiver(outfile, false);
+        public MultiReceiver() {
+
         }
 
-        public MultiReceiver(String outfile, Boolean writeToConsole) throws Exception {
+        public MultiReceiver(String outfile) throws Exception {
             _fileName = outfile;
             fstream = new FileWriter(_fileName);
             ostream = new BufferedWriter(fstream);
-            this.writeToConsole = writeToConsole;
-        }
-
-        public MultiReceiver(Boolean writeToConsole) {
-            this.writeToConsole = writeToConsole;
-        }
-
-        public MultiReceiver() {
-            
         }
 
         public void processNewLines(java.lang.String[] lines) {
@@ -246,11 +240,9 @@ public class DebugBridge {
                     if (ostream != null) {
                         ostream.write(line + "\n");
                     }
-                    if (writeToConsole)
-                        System.out.println(line);
                 }
             } catch (Exception e) {
-                
+                e.printStackTrace();
             }
         }
 
@@ -267,7 +259,7 @@ public class DebugBridge {
      * This thread contains the running the log listener
      * DebugBridge does not return until the logcat finishes(never) so we have to run it in its own thread
      */
-    private static class LogThread extends Thread {
+    private class LogThread extends Thread {
         String _filename = "";
         MultiReceiver _receiver = null;
 
@@ -277,6 +269,7 @@ public class DebugBridge {
 
         public void run() {
             try {
+                logger.info("Logging to: {}", _filename);
                 _receiver = new MultiReceiver(_filename);
                 DebugBridge.get().runShellCommand("logcat -v time", _receiver, 0);
             } catch (Exception e) {

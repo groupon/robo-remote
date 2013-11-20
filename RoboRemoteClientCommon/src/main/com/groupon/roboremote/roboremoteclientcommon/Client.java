@@ -42,6 +42,7 @@ import java.lang.Exception;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.Thread;
+import java.net.URLEncoder;
 import java.util.Date;
 
 public class Client {
@@ -86,9 +87,7 @@ public class Client {
     }
 
     public JSONObject post_to_server(String verb, String postBody) throws Exception {
-        //postBody = postBody.replace("%", "%%");
-
-        String responseStr = com.groupon.roboremote.roboremoteclientcommon.http.Post.post(API_BASE_URL + ":" + API_PORT, verb, "request=" + postBody);
+        String responseStr = com.groupon.roboremote.roboremoteclientcommon.http.Post.post(API_BASE_URL + ":" + API_PORT, verb, "request=" + URLEncoder.encode(postBody));
 
         JSONObject response = new JSONObject(responseStr);
         return response;

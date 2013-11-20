@@ -114,14 +114,21 @@ public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
     public void setUp(Boolean relaunch, Boolean clearAppData, int port) {
         try
         {
-            String subname = name.getMethodName();
-
-            String test_name = this.getClass() + "_" + subname;
-            test_name = test_name.replaceFirst("class ", "");
-
-            setUp(test_name, relaunch, clearAppData, port);
+            setUp(getTestName(), relaunch, clearAppData, port);
         } catch (Exception e) {
             fail("Caught exception: " + e);
         }
+    }
+
+    /**
+     * This should be called if the test name is needed somewhere in a junit test
+     */
+    public String getTestName() {
+        String subname = name.getMethodName();
+
+        String test_name = this.getClass() + "_" + subname;
+        test_name = test_name.replaceFirst("class ", "");
+
+        return test_name;
     }
 }
