@@ -33,16 +33,21 @@
 import com.groupon.roboremote.roboremoteclientcommon.DebugBridge;
 import com.groupon.roboremote.roboremoteclientcommon.Device;
 import com.groupon.roboremote.uiautomatorclient.*;
+import com.groupon.roboremote.uiautomatorclient.components.UiDevice;
 import com.groupon.roboremote.uiautomatorclient.components.UiObject;
 import com.groupon.roboremote.uiautomatorclient.components.UiSelector;
-import org.junit.*;
+import junit.framework.Test;
 
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
 import org.json.*;
-import org.junit.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.rules.TestName;
+
+import java.lang.Exception;
 
 public class AutomatorTests extends TestBase {
     @Rule
@@ -63,12 +68,33 @@ public class AutomatorTests extends TestBase {
         tearDown();
     }
 
-    @Test
+    @org.junit.Test
     public void BVT() throws Exception {
         UiObject fooLabel = new UiObject(new UiSelector().call("text", "Foo").call("className", "android.widget.TextView"));
         assertTrue(fooLabel.call("exists").getBoolean(0));
         fooLabel.call("click");
         UiObject fooPage = new UiObject(new UiSelector().call("text", "Foo page").call("className", "android.widget.TextView"));
         assertTrue(fooPage.call("exists").getBoolean(0));
+    }
+
+    @org.junit.Test
+    public void NotificationTest() throws Exception {
+        // click Notification
+        UiObject fooLabel = new UiObject(new UiSelector().call("text", "Notification").call("className", "android.widget.TextView"));
+        assertTrue(fooLabel.call("exists").getBoolean(0));
+        fooLabel.call("click");
+
+        // open the notification shade
+        UiDevice.openNotification();
+
+        // identify and click notification
+        UiSelector selector = new UiSelector().call("className", "android.widget.TextView").call("text", "Test App Notification");
+        UiObject notification = new UiObject(selector);
+        assertTrue(notification.call("exists").getBoolean(0));
+        notification.call("clickAndWaitForNewWindow");
+
+        // verify page
+        UiObject notificationPage = new UiObject(new UiSelector().call("text", "Notification page").call("className", "android.widget.TextView"));
+        assertTrue(notificationPage.call("exists").getBoolean(0));
     }
 }

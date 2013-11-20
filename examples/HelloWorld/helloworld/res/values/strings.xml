@@ -41,5 +41,6 @@
         <item>Foo</item>
         <item>Bar</item>
         <item>Baz</item>
+        <item>Notification</item>
     </string-array>
 </resources>

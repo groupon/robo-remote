@@ -33,6 +33,10 @@
 package com.groupon.roboremote.example.helloworld;
 
 import android.app.ListActivity;
+import android.app.Notification;
+import android.app.Notification.Builder;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -61,18 +65,36 @@ public class HelloWorld extends ListActivity {
         lv.setOnItemClickListener(new OnItemClickListener() {
           public void onItemClick(AdapterView<?> parent, View view,
               int position, long id) {
-
               // selected item
               String product = ((TextView) view).getText().toString();
 
               // Launching new Activity on selecting single List Item
               Intent i = new Intent(getApplicationContext(), TestActivity.class);
+              i.putExtra("product", product.concat(" page"));
+
               if (product.equals("WebView")) {
                   i = new Intent(getApplicationContext(), WebviewActivity.class);
+              } else if (product.equals("Notification")) {
+                  // generate a notification instead of starting a new activity
+                  NotificationManager notificationManager = (NotificationManager)
+                          getSystemService(NOTIFICATION_SERVICE);
+
+                  PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), 0, i, 0);
+
+                  Notification n  = new Notification.Builder(getApplicationContext())
+                          .setContentTitle("Test App Notification")
+                          .setContentText("You've been notified!")
+                          .setContentIntent(pIntent)
+                          .setSmallIcon(android.R.drawable.ic_dialog_alert)
+                          .setAutoCancel(true).build();
+
+                  notificationManager.notify(0, n);
+                  System.out.println("sending notification");
+
+                  return;
               }
 
               // sending data to new activity
-              i.putExtra("product", product.concat(" page"));
               startActivity(i);
           }
         });
