@@ -243,88 +243,88 @@ public class Solo {
     }
 
     public static String[] getCurrentButtons() throws Exception {
-        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentButtons"));
+        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentViews", "android.widget.Button"));
         return abar.toArray(new String[0]);
     }
 
     public static String[] getCurrentCheckBoxes() throws Exception {
-        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentCheckBoxes"));
+        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentViews", "android.widget.CheckBox"));
         return abar.toArray(new String[0]);
     }
 
     public static String[] getCurrentDatePickers() throws Exception {
-        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentDatePickers"));
+        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentViews", "android.widget.DatePicker"));
         return abar.toArray(new String[0]);
     }
 
     public static String[] getCurrentEditTexts() throws Exception {
-        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentEditTexts"));
+        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentViews", "android.widget.EditText"));
         return abar.toArray(new String[0]);
     }
 
     public static String[] getCurrentGridViews() throws Exception {
-        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentGridViews"));
+        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentViews", "android.widget.EditText"));
         return abar.toArray(new String[0]);
     }
 
     public static String[] getCurrentImageButtons() throws Exception {
-        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentImageButtons"));
+        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentViews", "android.widgetImageButton"));
         return abar.toArray(new String[0]);
     }
 
     public static String[] getCurrentImageViews() throws Exception {
-        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentImageViews"));
+        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentViews", "android.widget.ImageView"));
         return abar.toArray(new String[0]);
     }
 
     public static String[] getCurrentImageViews(String parent) throws Exception {
-        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentImageViews", parent));
+        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentViews", "android.widgetImageView", parent));
         return abar.toArray(new String[0]);
     }
 
 
     public static String[] getCurrentListViews() throws Exception {
-        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentListViews"));
+        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentViews", "android.widget.ListView"));
         return abar.toArray(new String[0]);
     }
 
     public static String[] getCurrentProgressBars() throws Exception {
-        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentProgressBars"));
+        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentViews", "android.widget.ProgressBar"));
         return abar.toArray(new String[0]);
     }
 
     public static String[] getCurrentRadioButtons() throws Exception {
-        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentRadioButtons"));
+        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentViews", "android.widget.RadioButton"));
         return abar.toArray(new String[0]);
     }
 
     public static String[] getCurrentScrollViews() throws Exception {
-        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentScrollViews"));
+        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentViews", "android.widget.ScrollView"));
         return abar.toArray(new String[0]);
     }
 
     public static String[] getCurrentSlidingDrawers() throws Exception {
-        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentSlidingDrawers"));
+        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentViews", "android.widget.SlidingDrawer"));
         return abar.toArray(new String[0]);
     }
 
     public static String[] getCurrentSpinners() throws Exception {
-        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentSpinners"));
+        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentViews", "android.widget.Spinner"));
         return abar.toArray(new String[0]);
     }
 
     public static String[] getCurrentTextViews(String parent) throws Exception {
-        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentTextViews", parent));
+        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentViews", "android.widget.TextView", parent));
         return abar.toArray(new String[0]);
     }
 
     public static String[] getCurrentTimePickers() throws Exception {
-        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentTimePickers"));
+        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentViews", "android.widget.TimePicker"));
         return abar.toArray(new String[0]);
     }
 
     public static String[] getCurrentToggleButtons() throws Exception {
-        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentToggleButtons"));
+        ArrayList<String> abar = Utils.jsonArrayToStringList(Client.getInstance().map(Constants.ROBOTIUM_SOLO, "getCurrentViews", "android.widget.ToggleButton"));
         return abar.toArray(new String[0]);
     }
 

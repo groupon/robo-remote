@@ -34,6 +34,7 @@
 
 package com.groupon.roboremote.roboremoteclient.junit;
 
+import com.groupon.roboremote.roboremoteclientcommon.Utils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -73,7 +74,13 @@ public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
                         error = e;
                     }
 
+                    // tear down robotium remote
                     tearDown();
+
+                    // tear down uiautomator remote
+                    if (Utils.getEnv("ROBO_UIAUTOMATOR_JAR", null) != null) {
+                        com.groupon.roboremote.uiautomatorclient.TestBase.killApp();
+                    }
 
                     if (failed)
                     {
@@ -114,6 +121,14 @@ public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
     public void setUp(Boolean relaunch, Boolean clearAppData, int port) {
         try
         {
+            // try to setup UIAutomator if it is available
+            // base availability on ROBO_UIAUTOMATOR_JAR being set
+            if (Utils.getEnv("ROBO_UIAUTOMATOR_JAR", null) != null) {
+                logger.info("Starting UI Automator...");
+                com.groupon.roboremote.uiautomatorclient.TestBase.setUp(getTestName());
+            }
+
+            // setup robotium remote
             setUp(getTestName(), relaunch, clearAppData, port);
         } catch (Exception e) {
             fail("Caught exception: " + e);

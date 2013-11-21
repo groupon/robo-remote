@@ -98,7 +98,7 @@ public class ListView {
 
         // scroll to the top of this view if we already passed the index being looked for
         QueryBuilder builder = new QueryBuilder();
-        int firstVisiblePosition = builder.map("solo", "getCurrentListViews").call("get", listViewIndex).call("getFirstVisiblePosition").execute().getInt(0);
+        int firstVisiblePosition = builder.map("solo", "getCurrentViews", "android.widget.ListView").call("get", listViewIndex).call("getFirstVisiblePosition").execute().getInt(0);
         if (firstVisiblePosition > itemIndex)
             scrollToTop();
 
@@ -107,15 +107,15 @@ public class ListView {
         // need to get the wanted item onto the screen
         while (! found) {
             builder = new QueryBuilder();
-            firstVisiblePosition = builder.map("solo", "getCurrentListViews").call("get", listViewIndex).call("getFirstVisiblePosition").execute().getInt(0);
+            firstVisiblePosition = builder.map("solo", "getCurrentViews", "android.widget.ListView").call("get", listViewIndex).call("getFirstVisiblePosition").execute().getInt(0);
 
             builder = new QueryBuilder();
-            int headersViewsCount = builder.map("solo", "getCurrentListViews").call("get", listViewIndex).call("getHeaderViewsCount").execute().getInt(0);
+            int headersViewsCount = builder.map("solo", "getCurrentViews", "android.widget.ListView").call("get", listViewIndex).call("getHeaderViewsCount").execute().getInt(0);
 
             firstVisiblePosition = firstVisiblePosition - headersViewsCount;
 
             builder = new QueryBuilder();
-            int visibleChildCount = builder.map("solo", "getCurrentListViews").call("get", listViewIndex).call("getChildCount").execute().getInt(0);
+            int visibleChildCount = builder.map("solo", "getCurrentViews", "android.widget.ListView").call("get", listViewIndex).call("getChildCount").execute().getInt(0);
 
             int wantedPosition = itemIndex - firstVisiblePosition;
 
@@ -140,7 +140,7 @@ public class ListView {
         int listViewIndex = getListViewIndex(listRef);
 
         QueryBuilder builder = new QueryBuilder();
-        int childCount = builder.map("solo", "getCurrentListViews").call("get", listViewIndex).call("getAdapter").call("getCount").execute().getInt(0);
+        int childCount = builder.map("solo", "getCurrentViews", "android.widget.ListView").call("get", listViewIndex).call("getAdapter").call("getCount").execute().getInt(0);
 
         return childCount;
     }
@@ -167,7 +167,7 @@ public class ListView {
 
         int actualIndex = scrollToIndex(listRef, itemIndex);
 
-        String cellRef = new QueryBuilder().map("solo", "getCurrentListViews").call("get", listViewIndex).call("getChildAt", actualIndex).execute().getString(0);
+        String cellRef = new QueryBuilder().map("solo", "getCurrentViews", "android.widget.ListView").call("get", listViewIndex).call("getChildAt", actualIndex).execute().getString(0);
         
         return Solo.getTextFromView(cellRef);
     }
