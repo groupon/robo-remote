@@ -55,6 +55,7 @@ public class TestBase {
     static ArrayList<String> _automator_run_jars = null;
     static AppThread ap = null;
     static int _automator_port = Constants.UIAUTOMATOR_PORT;
+    static boolean isStarted = false;
 
     public static void onFailure() throws Exception {
         logger.warn("com.groupon.roboremote.uiautomatorclient.TestBase::OnFailure:: Taking screenshot");
@@ -63,42 +64,41 @@ public class TestBase {
     }
 
     public static void setUp(String testName) throws Exception {
-        setUp(testName, false, true, _automator_port);
+        setUp(testName, true, _automator_port);
     }
 
     public static void setUp(String testName, int port) throws Exception {
-        setUp(testName, false, true, port);
+        setUp(testName, true, port);
     }
 
     /**
      * This is the generic test setup function
-     * @param relaunch - true if this is an app relaunch
      * @param clearAppData - true if you want app data cleared, false otherwise
      */
-    public static void setUp(String testName, Boolean relaunch, Boolean clearAppData, int port) throws Exception {
+    public static void setUp(String testName, Boolean clearAppData, int port) throws Exception {
         // another port may have been passed in for use
         _automator_port = port;
 
         if (_automator_jars == null)
             setAppEnvironmentVariables();
 
-        if (! relaunch) {
+        // only do the following if isStarted==false OR the client is not already listening
+        // this allows a client that overrides this class to safely call setUp multiple times without destroying logs
+        if (!isStarted || !Client.getInstance().isListening()) {
             logger.info("Starting test {}", testName);
             Utils.setTestName(testName);
             Device.setupLogDirectories();
             deployTestJar();
-        }
 
-        // see if a server is already listening
-        boolean clientWasListening = false;
-        if (Client.getInstance().isListening()) {
-            clientWasListening = true;
+            // see if a server is already listening
+            boolean clientWasListening = false;
+            if (Client.getInstance().isListening()) {
+                clientWasListening = true;
 
-            // try to kill it
-             killApp();
-        }
+                // try to kill it
+                 killApp();
+            }
 
-        if (! relaunch) {
             // start log listener
             TestLogger.get().info("Clearing logcat");
             DebugBridge.get().clearLogCat();
@@ -111,13 +111,15 @@ public class TestBase {
             EmSingleton.intialize();
 
             EmSingleton.get().clearEvents();
+
+            // starting test runner
+            TestLogger.get().info("Starting RC Runner");
+
+            // start app
+            startApp();
+
+            isStarted = true;
         }
-
-        // starting test runner
-        TestLogger.get().info("Starting RC Runner");
-
-        // start app
-        startApp();
     }
 
     /**
@@ -145,6 +147,7 @@ public class TestBase {
 
         } finally {
             DebugBridge.get().close();
+            isStarted = false;
         }
     }
 
