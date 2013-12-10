@@ -48,7 +48,7 @@ public class UiDevice {
         } catch (Exception e) {
             if (e.getMessage().contains("Could not find method")) {
                 // try a different way
-                int displayHeight = Client.getInstance().map(Constants.UIAUTOMATOR_UIDEVICE, "getDisplayHeight").getInt(0);
+                int displayHeight = getDisplayHeight();
 
                 // Calculated a Y position to pull down to that is the display height minus 10%
                 int pullTo = displayHeight - (int)((double)displayHeight * .1);
@@ -102,23 +102,23 @@ public class UiDevice {
         return Client.getInstance().map(Constants.UIAUTOMATOR_UIDEVICE, "getCurrentPackageName").getString(0);
     }
 
-    public int getDisplayHeight() throws Exception {
+    public static int getDisplayHeight() throws Exception {
         return Client.getInstance().map(Constants.UIAUTOMATOR_UIDEVICE, "getDisplayHeight").getInt(0);
     }
 
-    public int getDisplayWidth() throws Exception {
+    public static int getDisplayWidth() throws Exception {
         return Client.getInstance().map(Constants.UIAUTOMATOR_UIDEVICE, "getDisplayWidth").getInt(0);
     }
 
-    public int getDisplayRotation() throws Exception {
+    public static int getDisplayRotation() throws Exception {
         return Client.getInstance().map(Constants.UIAUTOMATOR_UIDEVICE, "getDisplayRotation").getInt(0);
     }
 
-    public String getLastTraversedText() throws Exception {
+    public static String getLastTraversedText() throws Exception {
         return Client.getInstance().map(Constants.UIAUTOMATOR_UIDEVICE, "getLastTraversedText").getString(0);
     }
 
-    public String getProductName() throws Exception {
+    public static String getProductName() throws Exception {
         return Client.getInstance().map(Constants.UIAUTOMATOR_UIDEVICE, "getProductName").getString(0);
     }
 
