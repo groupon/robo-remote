@@ -43,4 +43,5 @@
         <item>Baz</item>
         <item>Notification</item>
     </string-array>
+    <string name="view">View</string>
 </resources>
