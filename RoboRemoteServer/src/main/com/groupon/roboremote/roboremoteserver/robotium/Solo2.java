@@ -37,8 +37,7 @@ import android.app.Instrumentation;
 import android.content.ComponentName;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.*;
 import com.jayway.android.robotium.solo.Solo;
 
 import java.lang.reflect.Field;
@@ -284,7 +283,14 @@ public class Solo2 extends Solo{
         this.enterText(textBox, value);
         this.waitForText(value);
     }
-    
+
+    /**
+     * Returns a string for a resourceId in the specified namespace
+     * @param namespace
+     * @param resourceId
+     * @return
+     * @throws Exception
+     */
     public String getLocalizedResource(String namespace, String resourceId) throws Exception {
         String resourceValue = "";
 
@@ -293,6 +299,19 @@ public class Solo2 extends Solo{
         resourceValue = getCurrentActivity().getResources().getString(f.getInt(f));
 
         return resourceValue;
+    }
+
+    /**
+     * Returns a string array for a specified string-array resourceId in the specified namespace
+     * @param namespace
+     * @param resourceId
+     * @return
+     * @throws Exception
+     */
+    public String[] getLocalizedResourceArray(String namespace, String resourceId) throws Exception {
+        Class r = Class.forName(namespace + "$string");
+        Field f = r.getField(resourceId);
+        return getCurrentActivity().getResources().getStringArray(f.getInt(f));
     }
     
     public int getResourceId(String namespace, String resourceType, String resourceName) throws Exception {
@@ -325,7 +344,9 @@ public class Solo2 extends Solo{
     
     private void getTextRecurViewGroup(ViewGroup view) {
         for (int x = 0; x < view.getChildCount(); x++) {
-            if (view.getChildAt(x).getClass().toString().contains("Layout")) {
+            if (view.getChildAt(x) instanceof LinearLayout
+                || view.getChildAt(x) instanceof RelativeLayout
+                || view.getChildAt(x) instanceof FrameLayout) {
                 getTextRecurViewGroup((ViewGroup)view.getChildAt(x));
             } else {
                 // it's a view

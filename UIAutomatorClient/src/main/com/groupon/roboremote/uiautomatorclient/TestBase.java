@@ -162,7 +162,7 @@ public class TestBase {
             throw new Exception("ROBO_UIAUTOMATOR_JAR is not set");
         }
 
-        _automator_jars = _automator_jar.split(System.getProperty("path.separator"));
+        _automator_jars = _automator_jar.split(File.pathSeparator);
     }
 
     /**
@@ -171,8 +171,6 @@ public class TestBase {
      * @throws Exception
      */
     public static void deployTestJar() throws Exception {
-        String pathSeparator = System.getProperty("file.separator");
-
         // we build a new list of jars that will be used for the launch command line
         _automator_run_jars = new ArrayList<String>();
 
@@ -181,7 +179,7 @@ public class TestBase {
             if (!jarFile.exists())
                 throw new Exception("Test jar does not exist: " + _automator_jar);
 
-            String[] destFileNameParts = jarFileName.split(pathSeparator);
+            String[] destFileNameParts = jarFileName.split(File.separator);
             String destFileName = "/data/local/tmp/" + destFileNameParts[destFileNameParts.length-1];
             _automator_run_jars.add(destFileName);
 
