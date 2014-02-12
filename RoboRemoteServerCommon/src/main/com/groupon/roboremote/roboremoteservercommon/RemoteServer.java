@@ -403,7 +403,7 @@ public abstract class RemoteServer {
                 }
 
                 // get just the class name
-                currentClsArg = currentClsArg.substring(currentClsArg.lastIndexOf(".") + 1);
+                currentClsArg = currentClsArg.substring(currentClsArg.lastIndexOf('.') + 1);
 
                 // it's possible that null was passed in.. if so we'll automatically say that it matches but was converted
                 if (currentClsArg.startsWith("JSONObject") && matchReturn.arguments[x - 1].toString().compareTo("null") == 0) {

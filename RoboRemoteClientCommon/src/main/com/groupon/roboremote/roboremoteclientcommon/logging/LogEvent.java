@@ -99,8 +99,7 @@ public class LogEvent {
     public Boolean checkMsgSubstring(String check)
     {
         int index = orignalString.indexOf(check);
-        boolean isSubstring = (index >= 0);
-        return isSubstring;
+        return index >= 0;
     }
 
     public String toString()
@@ -123,7 +122,7 @@ public class LogEvent {
         try{
         String [] splits = orignalString.split("[ ]+");
         // Sometimes the PID is of format ( XX) instead of (XX)
-        if(splits[2].indexOf(")") < 0)
+        if(splits[2].indexOf(')') < 0)
         {
             splits[2] += splits[3];
             ArrayList<String> formatted = new ArrayList<String>(Arrays.asList(splits));

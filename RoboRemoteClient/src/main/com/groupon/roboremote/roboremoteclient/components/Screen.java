@@ -40,14 +40,10 @@ public class Screen {
     private static final Logger logger = LoggerFactory.getLogger("test");
 
     public static int getScreenWidth() throws Exception {
-        QueryBuilder query = new QueryBuilder();
-        int width = query.map("solo", "getCurrentActivity").call("getWindow").call("getDecorView").call("getRootView").call("getWidth").execute().getInt(0);
-        return width;
+        return new QueryBuilder().map("solo", "getCurrentActivity").call("getWindow").call("getDecorView").call("getRootView").call("getWidth").execute().getInt(0);
     }
 
     public static int getScreenHeight() throws Exception {
-        QueryBuilder query = new QueryBuilder();
-        int height = query.map("solo", "getCurrentActivity").call("getWindow").call("getDecorView").call("getRootView").call("getHeight").execute().getInt(0);
-        return height;
+        return new QueryBuilder().map("solo", "getCurrentActivity").call("getWindow").call("getDecorView").call("getRootView").call("getHeight").execute().getInt(0);
     }
 }

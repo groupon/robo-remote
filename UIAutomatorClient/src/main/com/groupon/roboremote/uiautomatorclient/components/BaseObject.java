@@ -91,8 +91,7 @@ public class BaseObject {
      */
     public String toString() {
         try {
-            String stringVal = new QueryBuilder().retrieveResult(storedId).call("toString").execute().getString(0);
-            return stringVal;
+            return new QueryBuilder().retrieveResult(storedId).call("toString").execute().getString(0);
         } catch (Exception e) {
             return "";
         }

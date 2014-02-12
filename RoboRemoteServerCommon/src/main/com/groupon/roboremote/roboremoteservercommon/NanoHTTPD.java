@@ -49,6 +49,7 @@ import java.util.*;
  * See the end of the source file for distribution license
  * (Modified BSD licence)
  */
+@SuppressWarnings("PMD")
 public class NanoHTTPD
 {
     // ==================================================

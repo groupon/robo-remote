@@ -89,8 +89,7 @@ public class Client {
     public JSONObject post_to_server(String verb, String postBody) throws Exception {
         String responseStr = com.groupon.roboremote.roboremoteclientcommon.http.Post.post(API_BASE_URL + ":" + API_PORT, verb, "request=" + URLEncoder.encode(postBody));
 
-        JSONObject response = new JSONObject(responseStr);
-        return response;
+        return new JSONObject(responseStr);
     }
 
     public JSONArray map(String requestJson) throws Exception {
