@@ -208,13 +208,7 @@ public class Solo2 extends Solo{
         boolean stillScrolling = true;
         while (stillScrolling)
         {
-            TextView v = null;
-            try{
-                v = this.getText(text);
-            }
-            catch (Throwable t) {
-                
-            }
+            TextView v = this.getText(text);
 
             if(v != null)
             {

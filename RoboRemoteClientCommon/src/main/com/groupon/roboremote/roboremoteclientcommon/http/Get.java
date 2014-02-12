@@ -25,8 +25,9 @@ public class Get {
         BufferedReader in = new BufferedReader(new InputStreamReader(
                 yc.getInputStream()));
         String inputLine;
-        while ((inputLine = in.readLine()) != null)
+        while ((inputLine = in.readLine()) != null) {
             response += inputLine;
+        }
         in.close();
 
         return response;

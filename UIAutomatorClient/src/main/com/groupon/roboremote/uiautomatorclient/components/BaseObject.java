@@ -32,10 +32,8 @@
 
 package com.groupon.roboremote.uiautomatorclient.components;
 
-import com.groupon.roboremote.roboremoteclientcommon.Constants;
 import com.groupon.roboremote.uiautomatorclient.QueryBuilder;
 import org.json.JSONArray;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class BaseObject {
     String storedId;

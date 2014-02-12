@@ -34,25 +34,14 @@ package com.groupon.roboremote.roboremoteservercommon;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.*;
 
 import android.view.View;
-import dalvik.system.PathClassLoader;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
-import org.w3c.dom.Element;
 
 public abstract class RemoteServer {
     // get an instantiated class based on predefined keys(ex: solo for Robotium)
@@ -80,7 +69,7 @@ public abstract class RemoteServer {
 
     public class RCHttpd extends NanoHTTPD {
         private Object lastResponseObject = null;
-        private Hashtable<String, Object> storedResponses = new Hashtable<String, Object>();
+        private HashMap<String, Object> storedResponses = new HashMap<String, Object>();
 
         public RCHttpd(int port) throws IOException {
             super(port, new File("/"));
@@ -613,7 +602,6 @@ public abstract class RemoteServer {
                     // not sure what to do yet
                 }
             } catch (Exception e) {
-                e.printStackTrace();
                 System.out.println(e.getMessage());
             }
 
@@ -650,7 +638,7 @@ public abstract class RemoteServer {
             String[] StringArray = {"String"};
             String[] IntegerArray = {"Integer", "int", "Long", "long", "Float", "float"};
             String[] BooleanArray = {"Boolean", "boolean"};
-            Hashtable<String, String[]> typeHash = new Hashtable<String, String[]>();
+            HashMap<String, String[]> typeHash = new HashMap<String, String[]>();
             typeHash.put("String", StringArray);
             typeHash.put("Integer", IntegerArray);
             typeHash.put("Boolean", BooleanArray);
