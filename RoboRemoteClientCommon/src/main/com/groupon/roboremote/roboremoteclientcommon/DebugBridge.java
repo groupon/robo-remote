@@ -137,10 +137,11 @@ public class DebugBridge {
                 currentDevice = device;
                 break;
             }
-
-            if (!found)
-                throw new Exception("Could not find specified device");
         }
+
+        // throw an exception if we did not find the named device
+        if (!found)
+            throw new Exception("Could not find specified device");
     }
 
     public void close() {

@@ -115,8 +115,6 @@ public class QueryBuilder {
         if (query != null)
             op.put(Constants.REQUEST_INSTANTIATE, query);
 
-        java.util.Map<String, Object> operation = new LinkedHashMap<String, Object>();
-
         if (query != null)
             queryStringRepresentation += query;
 

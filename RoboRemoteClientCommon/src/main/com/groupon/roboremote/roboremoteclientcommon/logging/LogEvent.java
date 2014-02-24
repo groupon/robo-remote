@@ -159,39 +159,6 @@ public class LogEvent {
      */
     private long parseTime(String day, String hours)
     {
-        /*
-        Time timeToSet = new Time();
-        Time currentTime = new Time();
-        currentTime.setToNow();
-
-        // Parse fields
-        String[] daySplits = day.split("-");
-        if(daySplits.length < 2)
-            return 0;
-
-        String[] hourSplits = hours.split(":");
-        if(hourSplits.length < 2)
-            return 0;
-
-        String[] secondSplits = hourSplits[2].split("\\.");
-        if(secondSplits.length < 2)
-            return 0;
-
-        int _year = currentTime.year;
-        int _month = Integer.parseInt(daySplits[0])-1;
-        int _day = Integer.parseInt(daySplits[1]);
-        int _hour = Integer.parseInt(hourSplits[0]);
-        int _min = Integer.parseInt(hourSplits[1]);
-        int _sec = Integer.parseInt(secondSplits[0]);
-        int _mili = Integer.parseInt(secondSplits[1]);
-
-        //set(int second, int minute, int hour, int monthDay, int month, int year)
-        timeToSet.set(_sec, _min, _hour, _day, _month, _year);
-
-        // return calculated value
-        long parsedTimeInMili = timeToSet.toMillis(true) + (long)_mili;
-        return parsedTimeInMili;*/
-
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         Date utcDate = new Date();
         try {

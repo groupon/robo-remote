@@ -102,10 +102,9 @@ public class ListView {
         if (firstVisiblePosition > itemIndex)
             scrollToTop();
 
-        boolean found = false;
         boolean scrollDown = true;
         // need to get the wanted item onto the screen
-        while (! found) {
+        while (true) {
             builder = new QueryBuilder();
             firstVisiblePosition = builder.map("solo", "getCurrentViews", "android.widget.ListView").call("get", listViewIndex).call("getFirstVisiblePosition").execute().getInt(0);
 
@@ -120,10 +119,13 @@ public class ListView {
             int wantedPosition = itemIndex - firstVisiblePosition;
 
             if (wantedPosition >= visibleChildCount) {
+                // check to see if we can even scroll anymore
+                if (! scrollDown) {
+                    break;
+                }
+
                 scrollDown = Solo.scrollDownList(listViewIndex);
             } else {
-                found = true;
-
                 // return the position
                 return wantedPosition;
             }

@@ -51,7 +51,6 @@ public class HelloWorld extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.main);
 
         // storing string resources into Array
         String[] pages = getResources().getStringArray(R.array.pages);
