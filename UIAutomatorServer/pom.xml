@@ -35,7 +35,7 @@
         <dependency>
             <groupId>android.test.uiautomator</groupId>
             <artifactId>uiautomator</artifactId>
-            <version>4.3_r2</version>
+            <version>4.4.2_r2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -64,7 +64,7 @@
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.6.1</version>
+                <version>3.8.2</version>
                 <extensions>true</extensions>
                 <configuration>
 
