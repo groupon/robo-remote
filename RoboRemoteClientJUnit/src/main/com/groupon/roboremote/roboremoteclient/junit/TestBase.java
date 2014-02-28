@@ -34,6 +34,7 @@
 
 package com.groupon.roboremote.roboremoteclient.junit;
 
+import com.groupon.roboremote.Constants;
 import com.groupon.roboremote.roboremoteclientcommon.Utils;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -110,7 +111,7 @@ public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
 
     @Before
     public void setUp() throws Exception {
-        setUp(false, true, 8080);
+        setUp(false, true, Constants.ROBOREMOTE_SERVER_PORT);
     }
 
     /**

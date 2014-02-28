@@ -41,7 +41,6 @@ import org.slf4j.LoggerFactory;
 import java.lang.Exception;
 import java.lang.Object;
 import java.lang.String;
-import java.lang.Thread;
 import java.net.URLEncoder;
 import java.util.Date;
 
@@ -49,7 +48,7 @@ public class Client {
     private static final Logger logger = LoggerFactory.getLogger("test");
 
     private static String API_BASE_URL = "http://localhost";
-    protected int API_PORT = 8080;
+    protected int API_PORT = com.groupon.roboremote.Constants.ROBOREMOTE_SERVER_PORT;
 
     private static Client instance = null;
 

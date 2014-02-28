@@ -33,6 +33,7 @@
 package com.groupon.roboremote.uiautomatorclient;
 
 import com.android.ddmlib.MultiLineReceiver;
+import com.groupon.roboremote.Constants;
 import com.groupon.roboremote.roboremoteclientcommon.DebugBridge;
 import com.groupon.roboremote.roboremoteclientcommon.Device;
 import com.groupon.roboremote.roboremoteclientcommon.Utils;
@@ -40,9 +41,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.groupon.roboremote.roboremoteclientcommon.logging.*;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.lang.Exception;
 import java.lang.String;
 import java.lang.Thread;
@@ -54,7 +53,7 @@ public class TestBase {
     static String[] _automator_jars = null;
     static ArrayList<String> _automator_run_jars = null;
     static AppThread ap = null;
-    static int _automator_port = Constants.UIAUTOMATOR_PORT;
+    static int _automator_port = Constants.UIAUTOMATOR_SERVER_PORT;
     static boolean isStarted = false;
 
     public static void onFailure() throws Exception {

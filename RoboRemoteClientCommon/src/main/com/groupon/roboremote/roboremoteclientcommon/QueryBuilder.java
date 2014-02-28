@@ -41,7 +41,7 @@ public class QueryBuilder {
     JSONObject request = new JSONObject();
 
     String queryStringRepresentation = "";
-    protected int port = 8080;
+    protected int port = com.groupon.roboremote.Constants.ROBOREMOTE_SERVER_PORT;
 
     public QueryBuilder(int port) {
         this.port = port;

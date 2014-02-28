@@ -62,6 +62,7 @@
     </parent>
 
     <modules>
+        <module>RoboRemoteConstants</module>
         <module>RoboRemoteServerCommon</module>
         <module>RoboRemoteServer</module>
         <module>RoboRemoteClientCommon</module>

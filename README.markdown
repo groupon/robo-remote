@@ -69,7 +69,7 @@ The test executor requires a few environment variables to be set:
 	These can be alternatively defined if your tests have a @BeforeClass method that overrides the setUpApp() method from TestBase
 	<pre><code>@BeforeClass
     public static void setUpApp() {
-        Device.setAppEnvironmentVariables("com.groupon.roboremote.example.helloworld", "com.groupon.roboremote.example.helloworldtestrunner.Runner", "com.groupon.roboremote.example.helloworldtestrunner/android.test.InstrumentationTestRunner");
+        Device.setAppEnvironmentVariables("com.groupon.roboremote.example.helloworld", "com.groupon.roboremote.example.helloworldtestrunner.Runner", "com.groupon.roboremote.example.helloworldtestrunner/com.groupon.roboremote.roboremoteserver.RemoteTestRunner");
     }</code></pre>
 
 Once you have these two items along with your app then you can install the app under test and the test runner to your device and then begin executing tests against an attached device/emulator using desktop JUnit either from maven or the IDE of your choice.

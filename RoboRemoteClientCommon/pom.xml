@@ -116,6 +116,11 @@
             <artifactId>guava</artifactId>
             <version>13.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.groupon.roboremote</groupId>
+            <artifactId>roboremoteconstants</artifactId>
+            <version>0.5.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <sourceDirectory>src/main/</sourceDirectory>

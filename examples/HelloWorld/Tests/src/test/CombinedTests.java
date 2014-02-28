@@ -42,7 +42,7 @@ import static junit.framework.Assert.assertTrue;
 public class CombinedTests extends TestBase {
     @BeforeClass
     public static void setUpApp() {
-        setAppEnvironmentVariables("com.groupon.roboremote.example.helloworld", "com.groupon.roboremote.example.helloworldtestrunner.Runner", "com.groupon.roboremote.example.helloworldtestrunner/android.test.InstrumentationTestRunner");
+        setAppEnvironmentVariables("com.groupon.roboremote.example.helloworld", "com.groupon.roboremote.example.helloworldtestrunner.Runner", "com.groupon.roboremote.example.helloworldtestrunner/com.groupon.roboremote.roboremoteserver.RemoteTestRunner");
     }
 
     @Test

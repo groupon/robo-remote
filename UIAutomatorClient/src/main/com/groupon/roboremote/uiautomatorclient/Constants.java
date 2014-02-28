@@ -33,8 +33,6 @@
 package com.groupon.roboremote.uiautomatorclient;
 
 public class Constants {
-    public static final Integer UIAUTOMATOR_PORT = 8081;
-
     // robotium constants
     public static final String UIAUTOMATOR_UIDEVICE = "getUiDevice";
 }

@@ -120,6 +120,11 @@
             <artifactId>roboremoteclientcommon</artifactId>
             <version>0.5.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.groupon.roboremote</groupId>
+            <artifactId>roboremoteconstants</artifactId>
+            <version>0.5.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <sourceDirectory>src/main/</sourceDirectory>

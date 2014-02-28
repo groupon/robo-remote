@@ -35,7 +35,6 @@
       package="com.groupon.roboremote.example.helloworldtestrunner"
       android:versionCode="1"
       android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="7" />
     <instrumentation android:name="com.groupon.roboremote.roboremoteserver.RemoteTestRunner" android:targetPackage="com.groupon.roboremote.example.helloworld" />
 
     <application android:label="Runner">

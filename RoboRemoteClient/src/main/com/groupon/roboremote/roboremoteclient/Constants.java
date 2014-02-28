@@ -33,8 +33,6 @@
 package com.groupon.roboremote.roboremoteclient;
 
 public class Constants {
-    public static final Integer ROBOREMOTE_PORT = 8080;
-
     // robotium constants
     public static final String ROBOTIUM_SOLO = "solo";
 }

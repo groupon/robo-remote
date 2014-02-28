@@ -32,9 +32,9 @@
 
 package com.groupon.roboremote.roboremoteserver;
 
-import android.os.Bundle;
 import android.test.ActivityInstrumentationTestCase2;
 import android.app.Activity;
+import com.groupon.roboremote.Constants;
 import com.groupon.roboremote.roboremoteserver.robotium.*;
 
 public abstract class RemoteTest<T extends Activity> extends ActivityInstrumentationTestCase2 {
@@ -48,7 +48,7 @@ public abstract class RemoteTest<T extends Activity> extends ActivityInstrumenta
     public void startServer() throws Exception {
         RoboRemoteServer rrs = new RoboRemoteServer(solo, getInstrumentation());
 
-        int port = 8080;
+        int port = Constants.ROBOREMOTE_SERVER_PORT;
 
         if (System.getProperty("ROBOREMOTE_PORT") != null) {
             port = Integer.parseInt(System.getProperty("ROBOREMOTE_PORT"));

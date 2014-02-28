@@ -33,6 +33,7 @@
 package com.groupon.roboremote.roboremoteclient;
 
 import com.android.ddmlib.NullOutputReceiver;
+import com.groupon.roboremote.Constants;
 import com.groupon.roboremote.roboremoteclientcommon.DebugBridge;
 import com.groupon.roboremote.roboremoteclientcommon.Device;
 import com.groupon.roboremote.roboremoteclientcommon.Utils;
@@ -51,7 +52,7 @@ public class TestBase {
     static String test_class = null;
     static String test_runner = null;
     static AppThread ap = null;
-    static int _roboremote_port = 8080;
+    static int _roboremote_port = Constants.ROBOREMOTE_SERVER_PORT;
 
     public static void onFailure() throws Exception {
         logger.warn("TestBase::OnFailure:: Taking screenshot");
@@ -254,7 +255,7 @@ public class TestBase {
     private static class AppThread extends Thread {
         public void run() {
             try {
-                DebugBridge.get().runShellCommand("am instrument -e class "  + getTestClass() + " -e port " + _roboremote_port + " -w " + getTestRunner(), new NullOutputReceiver(), 0);
+                DebugBridge.get().runShellCommand("am instrument -e port " + _roboremote_port + " -w " + getTestRunner(), new NullOutputReceiver(), 0);
             } catch (Exception e) {
 
             }
