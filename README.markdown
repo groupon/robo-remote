@@ -64,7 +64,7 @@ public class Runner extends RemoteTest<HelloWorld> {
 The test executor requires a few environment variables to be set:
 	1. ROBO_APP_PACKAGE - This is the package name of the application under test(ex: com.groupon.roboremote.example.HelloWorld)
 	2. ROBO_TEST_CLASS - This is the class name that contains the test method we are usng(ex: com.groupon.roboremote.example.helloworldtestrunner.Runner)
-	3. ROBO_TEST_RUNNER - The instrumentation test runner to be used(ex: com.groupon.roboremote.example.helloworldtestrunner/android.test.InstrumentationTestRunner)
+	3. ROBO_TEST_RUNNER - The instrumentation test runner to be used(ex: com.groupon.roboremote.example.helloworldtestrunner/com.groupon.roboremote.roboremoteserver.RemoteTestRunner)
 
 	These can be alternatively defined if your tests have a @BeforeClass method that overrides the setUpApp() method from TestBase
 	<pre><code>@BeforeClass
@@ -107,7 +107,8 @@ An example project is provided in the examples/HelloWorld directory.  The direct
 * helloworldtestrunner - This is the test runner which starts up the RoboRemote HTTP listener and the application under test.
 * Tests - 
   * SampleTests - This contains the desktop JUnit based RoboRemote Robotium example tests for the HelloWorld project.  Under Tests/src/test is a SampleTests.java which contains a few tests demonstrating various RoboRemote functions.
-  * AutomatorTests - This contains the desktop JUnit based RoboRemote UiAutomator example tests for the HelloWorld project.  This also servers as an example of how to call various functions in the UiAutomatorClient TestBase to setup the test and run the application you would like to test.
+  * AutomatorTests - This contains the desktop JUnit based RoboRemote UiAutomator example tests for the HelloWorld project.  This also serves as an example of how to call various functions in the UiAutomatorClient TestBase to setup the test and run the application you would like to test.
+  * CombinedTests - This contains the desktop JUnit based RoboRemote Robotium/UiAutomator combined test example for the HelloWorld project.  It demonstrates how UiAutomator and Robotium calls can be mixed.
 
 ### Compiling the examples
 
@@ -128,6 +129,9 @@ Execute the following from examples/HelloWorld/Tests
 2. UiAutomator example:
    1. export ROBO_UIAUTOMATOR_JAR=&lt;path to source root>/UIAutomatorServer/target/uiautomatorserver.jar
    2. mvn test -DAutomatorTests 
+3. Combined example:
+   1. export ROBO_UIAUTOMATOR_JAR=&lt;path to source root>/UIAutomatorServer/target/uiautomatorserver.jar
+   2. mvn test -DCombinedTests 
 
 
 ## Architecture
