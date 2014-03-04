@@ -34,12 +34,16 @@ package com.groupon.roboremote.roboremoteclientcommon.logging;
 
 import com.android.ddmlib.MultiLineReceiver;
 import com.groupon.roboremote.roboremoteclientcommon.DebugBridge;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.*;
 
 public class EventManager {
+    public static final Logger logger = LoggerFactory.getLogger(EventManager.class);
+
     private ArrayList<String> args = null;
     private long startTime;
     private long lastEventTime;
@@ -230,7 +234,7 @@ public class EventManager {
                 DebugBridge.get().runShellCommand("logcat -c");
                 DebugBridge.get().runShellCommand("logcat -v time", _receiver, 0);
             } catch (Exception e) {
-                System.out.println("INTERRUPTED!!!");
+                logger.error("LogThread interrupted: {}", e);
             }
         }
 

@@ -51,17 +51,17 @@ public abstract class RemoteServer {
     protected abstract View getView(String viewName);
 
     public void startServer(int port) throws Exception {
-        System.out.println("- Starting HTTP service");
+        System.out.println("startServer:: Starting HTTP service");
         try
         {
             new RCHttpd(port);
         }
         catch( IOException ioe )
         {
-            System.out.println("Couldn't start server:\n" + ioe);
+            System.out.println("startServer:: Couldn't start server:\n" + ioe);
             System.exit( -1 );
         }
-        System.out.println("Listening on port " + port + ". Kill test to stop.\n");
+        System.out.println("startServer:: Listening on port " + port + ". Kill test to stop.\n");
         while(true) {
             Thread.sleep(5000);
         }
@@ -107,7 +107,7 @@ public abstract class RemoteServer {
             Object currentClassObject = null;
             for (int x = 0; x < operations.length(); x++) {
                 JSONObject operation = operations.getJSONObject(x);
-                System.out.println("Current op: " + operation);
+                System.out.println("processOperations:: Current operation: " + operation);
 
                 Object[] classArgs = new Object[0];
 
@@ -157,7 +157,7 @@ public abstract class RemoteServer {
                     }
                 }
 
-                System.out.println("Working class: " + currentClassObject);
+                System.out.println("processOperations:: Working class: " + currentClassObject);
 
                 // the op type could be an Constants.REQUEST_OPERATION or a Constants.REQUEST_FIELD or REQUEST_STORE or REQUEST_REMOVE
                 // operations are method calls
@@ -213,7 +213,6 @@ public abstract class RemoteServer {
                     resultArray.put(currentClassObject);
                     returnObject.put(Constants.RESULT_RESULTS, resultArray);
                     returnObject.put(Constants.RESULT_OUTCOME, Constants.RESULT_SUCCESS);
-                    System.out.println(returnObject);
                 } else if (operation.has(Constants.REQUEST_FIELD)) {
                     // we actually want a field accessor
                     String fieldName = operation.getString(Constants.REQUEST_FIELD);
@@ -602,10 +601,10 @@ public abstract class RemoteServer {
                     // not sure what to do yet
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println("processPost:: POST failed: " + e.getMessage());
             }
 
-            System.out.println("Return value: " + returnVal);
+            System.out.println("processPost:: Return value: " + returnVal);
             return returnVal;
         }
 

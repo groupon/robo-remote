@@ -204,12 +204,13 @@ public class DebugBridge {
     }
 
     public void startLogListener(String filename) throws Exception {
+        logger.info("Starting log listener");
         loggerThread = new LogThread(filename);
         loggerThread.start();
     }
 
     public void stopLogListener() throws Exception {
-        System.out.println("STOPPING log listener");
+        logger.info("Stopping log listener");
         if (loggerThread != null) {
             loggerThread.close();
             loggerThread.interrupt();
@@ -274,7 +275,7 @@ public class DebugBridge {
                 _receiver = new MultiReceiver(_filename);
                 DebugBridge.get().runShellCommand("logcat -v time", _receiver, 0);
             } catch (Exception e) {
-                System.out.println("INTERRUPTED!!!");
+                logger.error("LogThread interrupted: {}", e);
             }
         }
 

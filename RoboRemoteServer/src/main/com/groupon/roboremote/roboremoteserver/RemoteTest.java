@@ -54,7 +54,7 @@ public abstract class RemoteTest<T extends Activity> extends ActivityInstrumenta
             port = Integer.parseInt(System.getProperty("ROBOREMOTE_PORT"));
         }
 
-        System.out.println("Starting on port: " + port);
+        System.out.println("RoboRemote: Starting on port: " + port);
         rrs.startServer(port);
     }
 
