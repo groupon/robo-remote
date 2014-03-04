@@ -33,6 +33,6 @@ package com.groupon.roboremote;
 
 public class Constants {
     // Port constants
-    public static final int ROBOREMOTE_SERVER_PORT = 8080;
-    public static final int UIAUTOMATOR_SERVER_PORT = 8080;
+    public static final int ROBOREMOTE_SERVER_PORT = 20300;
+    public static final int UIAUTOMATOR_SERVER_PORT = 20301;
 }
