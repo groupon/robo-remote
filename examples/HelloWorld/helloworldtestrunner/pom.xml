@@ -42,6 +42,14 @@
     <packaging>apk</packaging>
     <name>Runner</name>
 
+    <properties>
+        <com.groupon.roboremote-version>0.5.1-SNAPSHOT</com.groupon.roboremote-version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Disable kicking off tests during build. Can do this through command line with : -Dandroid.enableIntegrationTest=true -->
+        <android.enableIntegrationTest>false</android.enableIntegrationTest>
+    </properties>
+
     <parent>
         <groupId>com.groupon.roboremote.example</groupId>
         <artifactId>helloworldaggregator</artifactId>
@@ -70,13 +78,13 @@
         <dependency>
             <groupId>com.groupon.roboremote</groupId>
             <artifactId>roboremoteserver</artifactId>
-            <version>0.5.1-SNAPSHOT</version>
+            <version>${com.groupon.roboremote-version}</version>
             <type>apklib</type>
         </dependency>
         <dependency>
             <groupId>com.groupon.roboremote</groupId>
             <artifactId>roboremoteservercommon</artifactId>
-            <version>0.5.1-SNAPSHOT</version>
+            <version>${com.groupon.roboremote-version}</version>
             <type>jar</type>
         </dependency>
         <dependency>
@@ -86,12 +94,6 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- Disable kicking off tests during build. Can do this through command line with : -Dandroid.enableIntegrationTest=true -->
-        <android.enableIntegrationTest>false</android.enableIntegrationTest>
-    </properties>
 
     <build>
         <sourceDirectory>src/main/</sourceDirectory>

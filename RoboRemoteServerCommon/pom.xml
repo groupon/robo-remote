@@ -36,7 +36,7 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremoteservercommon</artifactId>
-    <version>0.5.1-SNAPSHOT</version>
+    <version>${com.groupon.roboremote-version}</version>
     <packaging>jar</packaging>
     <name>RoboRemote Server Common Library</name>
     <description>This is the common remote server library</description>
@@ -61,6 +61,14 @@
         <version>7</version>
     </parent>
 
+    <properties>
+        <com.groupon.roboremote-version>0.5.1-SNAPSHOT</com.groupon.roboremote-version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Disable kicking off tests during build. Can do this through command line with : -Dandroid.enableIntegrationTest=true -->
+        <android.enableIntegrationTest>false</android.enableIntegrationTest>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>android</groupId>
@@ -74,12 +82,6 @@
             <version>1.1</version>
         </dependency>
     </dependencies>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- Disable kicking off tests during build. Can do this through command line with : -Dandroid.enableIntegrationTest=true -->
-        <android.enableIntegrationTest>false</android.enableIntegrationTest>
-    </properties>
 
     <build>
         <sourceDirectory>src/main/</sourceDirectory>
