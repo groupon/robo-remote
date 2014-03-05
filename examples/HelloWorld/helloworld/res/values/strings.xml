@@ -44,4 +44,7 @@
         <item>Notification</item>
     </string-array>
     <string name="view">View</string>
+    <string name="notification">Notification</string>
+    <string name="notification_title">Test App Notification</string>
+    <string name="notification_text">You\'ve been notified!</string>
 </resources>
