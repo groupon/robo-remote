@@ -28,8 +28,8 @@ To use UiAutomator Remote you only need tests with a few setup steps as follows(
    2. OR Call setAppEnvironmentVariables("location of jar")  in a @BeforeClass
 3. In @Before call super.setUp("test name") and then any commands you need in order to start the app under test4. In @After call tearDown()
 
-To get the JAR file either build it from source(in the UIAutomatorServer directory) or get it from maven(replace 0.5-SNAPSHOT with the latest version #): 
-<pre><code>mvn org.apache.maven.plugins:maven-dependency-plugin:2.4:get -DrepoUrl=http://oss.sonatype.org/content/repositories/snapshots -Dartifact=com.groupon.roboremote:uiautomatorserver:0.5-SNAPSHOT -Ddest=uiautomatorserver.jar</code></pre>
+To get the JAR file either build it from source(in the UIAutomatorServer directory) or get it from maven(replace 0.5.1-SNAPSHOT with the latest version #): 
+<pre><code>mvn org.apache.maven.plugins:maven-dependency-plugin:2.4:get -DrepoUrl=http://oss.sonatype.org/content/repositories/snapshots -Dartifact=com.groupon.roboremote:uiautomatorserver:0.5.1-SNAPSHOT -Ddest=uiautomatorserver.jar</code></pre>
 
 ### Maven Depenendencies
 #### Tests
@@ -38,8 +38,19 @@ These are the maven dependencies you need to declare in your tests pom:
 <pre><code>&lt;dependency>
 	&lt;groupId>com.groupon.roboremote&lt;/groupId>
     &lt;artifactId>uiautomatorclient&lt;/artifactId>
-    &lt;version>0.5-SNAPSHOT&lt;/version>
+    &lt;version>0.5.1-SNAPSHOT&lt;/version>
 &lt;/dependency></code></pre>
+
+*NOTE*: You must add the sonatype snapshots repo to your repositories list.  Once 0.5.1 is final this will not be necessary.  Add the repository as follows:
+
+<pre><code>&lt;repository>
+    &lt;id>oss-sonatype&lt;/id>
+    &lt;name>oss-sonatype&lt;/name>
+    &lt;url>https://oss.sonatype.org/content/repositories/snapshots/&lt;/url>
+    &lt;snapshots>
+        &lt;enabled>true</enabled>
+    &lt;/snapshots>
+&lt;/repository></code></pre>
 
 
 ## Getting Started - Robotium Remote
@@ -260,7 +271,10 @@ You may have a neeed to retrieve content from fields in a class.  This can be do
 <pre><code>solo.DELETE</code></pre>
 
 *RoboRemote client request*:
-<pre><code>int DELETE = Client.mapField("solo", "DELETE", 0).getInt(0)</code></pre>
+<pre><code>int DELETE = Client.getInstance()mapField("solo", "DELETE").getInt(0)</code></pre>
+
+*Access inner class field("android.os.Build.VERSION.SDK_INT")*:
+<pre><code>int apiLevel = Client.getInstance()mapField("android.os.Build$VERSION", "SDK_INT").getInt(0)</code></pre>
 
 #### Method Chaining
 

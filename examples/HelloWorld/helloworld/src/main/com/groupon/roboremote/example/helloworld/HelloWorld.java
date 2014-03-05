@@ -81,14 +81,14 @@ public class HelloWorld extends ListActivity {
                   PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), 0, i, 0);
 
                   Notification n  = new Notification.Builder(getApplicationContext())
-                          .setContentTitle("Test App Notification")
-                          .setContentText("You've been notified!")
+                          .setContentTitle(getString(R.string.notification_title))
+                          .setContentText(getString(R.string.notification_text))
                           .setContentIntent(pIntent)
                           .setSmallIcon(android.R.drawable.ic_dialog_alert)
                           .setAutoCancel(true).build();
 
                   notificationManager.notify(0, n);
-                  System.out.println("sending notification");
+                  System.out.println("HelloWorld:: Sending notification");
 
                   return;
               }
