@@ -271,7 +271,10 @@ You may have a neeed to retrieve content from fields in a class.  This can be do
 <pre><code>solo.DELETE</code></pre>
 
 *RoboRemote client request*:
-<pre><code>int DELETE = Client.mapField("solo", "DELETE", 0).getInt(0)</code></pre>
+<pre><code>int DELETE = Client.getInstance()mapField("solo", "DELETE").getInt(0)</code></pre>
+
+*Access inner class field("android.os.Build.VERSION.SDK_INT")*:
+<pre><code>int apiLevel = Client.getInstance()mapField("android.os.Build$VERSION", "SDK_INT").getInt(0)</code></pre>
 
 #### Method Chaining
 
