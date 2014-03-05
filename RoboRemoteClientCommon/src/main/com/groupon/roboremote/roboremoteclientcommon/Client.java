@@ -95,7 +95,8 @@ public class Client {
         org.json.JSONObject result = post_to_server(Constants.REQUEST_MAP, requestJson);
 
         if (result.getString(Constants.RESULT_OUTCOME).compareTo(Constants.RESULT_SUCCESS) != 0) {
-            throw new Exception("Client::map:: " + "failed because: " + result.getString(Constants.RESULT_REASON));
+            String reason = result.has(Constants.RESULT_REASON) ? result.getString(Constants.RESULT_REASON) : "No reason provided";
+            throw new Exception("Client::map:: " + "failed because: " + reason);
         }
 
         JSONArray results = new JSONArray();
