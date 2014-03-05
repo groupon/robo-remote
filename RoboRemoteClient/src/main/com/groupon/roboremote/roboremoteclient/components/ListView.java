@@ -1,39 +1,39 @@
 /*
- * Copyright (c) 2012, Groupon, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- *
- * Neither the name of GROUPON nor the names of its contributors may be
- * used to endorse or promote products derived from this software without
- * specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
- * IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
- * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
- * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
- * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</div>
+        Copyright (c) 2012, 2013, 2014, Groupon, Inc.
+        All rights reserved.
+
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions
+        are met:
+
+        Redistributions of source code must retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+
+        Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+        Neither the name of GROUPON nor the names of its contributors may be
+        used to endorse or promote products derived from this software without
+        specific prior written permission.
+
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+        IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+        TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+        PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+        HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+        SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+        TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+        PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+        LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+        NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+        SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package com.groupon.roboremote.roboremoteclient.components;
 
-import com.groupon.roboremote.roboremoteclient.QueryBuilder;
 import com.groupon.roboremote.roboremoteclient.Solo;
+import com.groupon.roboremote.roboremoteclient.QueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,32 +98,34 @@ public class ListView {
 
         // scroll to the top of this view if we already passed the index being looked for
         QueryBuilder builder = new QueryBuilder();
-        int firstVisiblePosition = builder.map("solo", "getCurrentListViews").call("get", listViewIndex).call("getFirstVisiblePosition").execute().getInt(0);
+        int firstVisiblePosition = builder.map("solo", "getCurrentViews", "android.widget.ListView").call("get", listViewIndex).call("getFirstVisiblePosition").execute().getInt(0);
         if (firstVisiblePosition > itemIndex)
             scrollToTop();
 
-        boolean found = false;
         boolean scrollDown = true;
         // need to get the wanted item onto the screen
-        while (! found) {
+        while (true) {
             builder = new QueryBuilder();
-            firstVisiblePosition = builder.map("solo", "getCurrentListViews").call("get", listViewIndex).call("getFirstVisiblePosition").execute().getInt(0);
+            firstVisiblePosition = builder.map("solo", "getCurrentViews", "android.widget.ListView").call("get", listViewIndex).call("getFirstVisiblePosition").execute().getInt(0);
 
             builder = new QueryBuilder();
-            int headersViewsCount = builder.map("solo", "getCurrentListViews").call("get", listViewIndex).call("getHeaderViewsCount").execute().getInt(0);
+            int headersViewsCount = builder.map("solo", "getCurrentViews", "android.widget.ListView").call("get", listViewIndex).call("getHeaderViewsCount").execute().getInt(0);
 
             firstVisiblePosition = firstVisiblePosition - headersViewsCount;
 
             builder = new QueryBuilder();
-            int visibleChildCount = builder.map("solo", "getCurrentListViews").call("get", listViewIndex).call("getChildCount").execute().getInt(0);
+            int visibleChildCount = builder.map("solo", "getCurrentViews", "android.widget.ListView").call("get", listViewIndex).call("getChildCount").execute().getInt(0);
 
             int wantedPosition = itemIndex - firstVisiblePosition;
 
             if (wantedPosition >= visibleChildCount) {
+                // check to see if we can even scroll anymore
+                if (! scrollDown) {
+                    break;
+                }
+
                 scrollDown = Solo.scrollDownList(listViewIndex);
             } else {
-                found = true;
-
                 // return the position
                 return wantedPosition;
             }
@@ -140,7 +142,7 @@ public class ListView {
         int listViewIndex = getListViewIndex(listRef);
 
         QueryBuilder builder = new QueryBuilder();
-        int childCount = builder.map("solo", "getCurrentListViews").call("get", listViewIndex).call("getAdapter").call("getCount").execute().getInt(0);
+        int childCount = builder.map("solo", "getCurrentViews", "android.widget.ListView").call("get", listViewIndex).call("getAdapter").call("getCount").execute().getInt(0);
 
         return childCount;
     }
@@ -167,7 +169,7 @@ public class ListView {
 
         int actualIndex = scrollToIndex(listRef, itemIndex);
 
-        String cellRef = new QueryBuilder().map("solo", "getCurrentListViews").call("get", listViewIndex).call("getChildAt", actualIndex).execute().getString(0);
+        String cellRef = new QueryBuilder().map("solo", "getCurrentViews", "android.widget.ListView").call("get", listViewIndex).call("getChildAt", actualIndex).execute().getString(0);
         
         return Solo.getTextFromView(cellRef);
     }

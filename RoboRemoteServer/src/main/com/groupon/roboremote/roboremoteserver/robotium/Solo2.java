@@ -1,33 +1,33 @@
 /*
- * Copyright (c) 2012, Groupon, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- *
- * Neither the name of GROUPON nor the names of its contributors may be
- * used to endorse or promote products derived from this software without
- * specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
- * IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
- * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
- * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
- * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</div>
+        Copyright (c) 2012, 2013, 2014, Groupon, Inc.
+        All rights reserved.
+
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions
+        are met:
+
+        Redistributions of source code must retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+
+        Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+        Neither the name of GROUPON nor the names of its contributors may be
+        used to endorse or promote products derived from this software without
+        specific prior written permission.
+
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+        IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+        TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+        PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+        HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+        SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+        TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+        PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+        LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+        NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+        SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package com.groupon.roboremote.roboremoteserver.robotium;
@@ -37,10 +37,10 @@ import android.app.Instrumentation;
 import android.content.ComponentName;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.*;
 import com.jayway.android.robotium.solo.Solo;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -208,13 +208,7 @@ public class Solo2 extends Solo{
         boolean stillScrolling = true;
         while (stillScrolling)
         {
-            TextView v = null;
-            try{
-                v = this.getText(text);
-            }
-            catch (Throwable t) {
-                
-            }
+            TextView v = this.getText(text);
 
             if(v != null)
             {
@@ -283,14 +277,35 @@ public class Solo2 extends Solo{
         this.enterText(textBox, value);
         this.waitForText(value);
     }
-    
+
+    /**
+     * Returns a string for a resourceId in the specified namespace
+     * @param namespace
+     * @param resourceId
+     * @return
+     * @throws Exception
+     */
     public String getLocalizedResource(String namespace, String resourceId) throws Exception {
         String resourceValue = "";
 
         Class r = Class.forName(namespace + "$string");
-        resourceValue = getCurrentActivity().getResources().getString(r.getField(resourceId).getInt(null));
+        Field f = r.getField(resourceId);
+        resourceValue = getCurrentActivity().getResources().getString(f.getInt(f));
 
         return resourceValue;
+    }
+
+    /**
+     * Returns a string array for a specified string-array resourceId in the specified namespace
+     * @param namespace
+     * @param resourceId
+     * @return
+     * @throws Exception
+     */
+    public String[] getLocalizedResourceArray(String namespace, String resourceId) throws Exception {
+        Class r = Class.forName(namespace + "$string");
+        Field f = r.getField(resourceId);
+        return getCurrentActivity().getResources().getStringArray(f.getInt(f));
     }
     
     public int getResourceId(String namespace, String resourceType, String resourceName) throws Exception {
@@ -323,7 +338,9 @@ public class Solo2 extends Solo{
     
     private void getTextRecurViewGroup(ViewGroup view) {
         for (int x = 0; x < view.getChildCount(); x++) {
-            if (view.getChildAt(x).getClass().toString().contains("Layout")) {
+            if (view.getChildAt(x) instanceof LinearLayout
+                || view.getChildAt(x) instanceof RelativeLayout
+                || view.getChildAt(x) instanceof FrameLayout) {
                 getTextRecurViewGroup((ViewGroup)view.getChildAt(x));
             } else {
                 // it's a view

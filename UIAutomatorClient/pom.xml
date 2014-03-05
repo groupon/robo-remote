@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+        Copyright (c) 2012, 2013, 2014, Groupon, Inc.
+        All rights reserved.
+
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions
+        are met:
+
+        Redistributions of source code must retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+
+        Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+        Neither the name of GROUPON nor the names of its contributors may be
+        used to endorse or promote products derived from this software without
+        specific prior written permission.
+
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+        IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+        TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+        PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+        HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+        SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+        TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+        PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+        LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+        NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+        SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.groupon.roboremote</groupId>
+    <artifactId>uiautomatorclient</artifactId>
+    <version>${com.groupon.roboremote-version}</version>
+    <name>UiAutomator Client</name>
+    <description>This is the desktop side component of UIAutomator Remote</description>
+
+    <licenses>
+        <license>
+            <name>BSD 3 Clause</name>
+            <url>http://www.opensource.org/licenses/bsd-3-clause</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>git@github.com:groupon/robo-remote.git</url>
+        <connection>scm:git:git@github.com:groupon/robo-remote.git</connection>
+        <developerConnection>scm:git:git@github.com:groupon/robo-remote.git</developerConnection>
+    </scm>
+
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
+    <properties>
+        <com.groupon.roboremote-version>0.5.1-SNAPSHOT</com.groupon.roboremote-version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Disable kicking off tests during build. Can do this through command line with : -Dandroid.enableIntegrationTest=true -->
+        <android.enableIntegrationTest>false</android.enableIntegrationTest>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.1.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20090211</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>0.9.29</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>0.9.29</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-examples</artifactId>
+            <version>0.9.29</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.android.tools</groupId>
+            <artifactId>ddmlib</artifactId>
+            <version>r13</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>13.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.groupon.roboremote</groupId>
+            <artifactId>roboremoteclientcommon</artifactId>
+            <version>${com.groupon.roboremote-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.groupon.roboremote</groupId>
+            <artifactId>roboremoteconstants</artifactId>
+            <version>${com.groupon.roboremote-version}</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <sourceDirectory>src/main/</sourceDirectory>
+        <testSourceDirectory>src/test/</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.9</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-junit47</artifactId>
+                        <version>2.9</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
