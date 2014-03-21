@@ -139,10 +139,10 @@ Execute the following from examples/HelloWorld/Tests
 1. Robotium example: mvn test -Dtest=SampleTests
 2. UiAutomator example:
    1. export ROBO_UIAUTOMATOR_JAR=&lt;path to source root>/UIAutomatorServer/target/uiautomatorserver.jar
-   2. mvn test -DAutomatorTests 
+   2. mvn test -Dtest=AutomatorTests 
 3. Combined example:
    1. export ROBO_UIAUTOMATOR_JAR=&lt;path to source root>/UIAutomatorServer/target/uiautomatorserver.jar
-   2. mvn test -DCombinedTests 
+   2. mvn test -Dtest=CombinedTests 
 
 
 ## Architecture
