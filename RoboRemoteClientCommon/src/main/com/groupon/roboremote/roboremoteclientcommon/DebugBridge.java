@@ -66,11 +66,16 @@ public class DebugBridge {
         waitForConnected();
         waitForDevices();
 
-        // select first device by default
-        if (bridge.getDevices().length == 0)
-            throw new Exception("There are no attached devices");
+        // check for serial number
+        if (Utils.getEnv("ROBO_SERIAL_NUMBER", null) != null) {
+            this.selectDeviceBySerialNumber(Utils.getEnv("ROBO_SERIAL_NUMBER", null));
+        } else {
+            // select first device by default
+            if (bridge.getDevices().length == 0)
+                throw new Exception("There are no attached devices");
 
-        currentDevice = bridge.getDevices()[0];
+            currentDevice = bridge.getDevices()[0];
+        }
     }
 
     public boolean isEmulator() throws Exception {
@@ -129,7 +134,7 @@ public class DebugBridge {
         return deviceNames.toArray(new String[0]);
     }
 
-    public void selectDevice(String avdName) throws Exception {
+    public void selectDeviceByAVDName(String avdName) throws Exception {
         boolean found = false;
         for (IDevice device : bridge.getDevices()) {
             if (device.getAvdName().equals(avdName)) {
@@ -142,6 +147,25 @@ public class DebugBridge {
         // throw an exception if we did not find the named device
         if (!found)
             throw new Exception("Could not find specified device");
+
+        logger.info("Now using device: {}", avdName);
+    }
+
+    public void selectDeviceBySerialNumber(String serialNumber) throws Exception {
+        boolean found = false;
+        for (IDevice device : bridge.getDevices()) {
+            if (device.getSerialNumber().equals(serialNumber)) {
+                found = true;
+                currentDevice = device;
+                break;
+            }
+        }
+
+        // throw an exception if we did not find the named device
+        if (!found)
+            throw new Exception("Could not find specified device");
+
+        logger.info("Now using device: {}", serialNumber);
     }
 
     public void close() {

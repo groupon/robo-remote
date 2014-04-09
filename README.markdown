@@ -11,6 +11,10 @@ RoboRemote is loosely modeled after Frank for iOS.
 * 2.3+ for Robotium
 * 4.2.2+ for UIAutomator
 
+### Specifying Device to Use
+If you want to specify a device by serial # for either Robotium or UiAutomator then the ROBO_SERIAL_NUMBER environment variable should be set to the serial number of the device/emulator
+
+
 ## Requirements
 ***
 ### UiAutomator Remote
