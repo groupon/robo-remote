@@ -36,6 +36,7 @@ import org.json.JSONArray;
 
 import java.lang.Exception;
 import java.lang.String;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -67,5 +68,13 @@ public class Utils {
         }
 
         return defaultValue;
+    }
+
+    public static int getFreePort() throws Exception {
+        ServerSocket serverSocket = new ServerSocket(0);
+        int port = serverSocket.getLocalPort();
+        serverSocket.close();
+
+        return port;
     }
 }

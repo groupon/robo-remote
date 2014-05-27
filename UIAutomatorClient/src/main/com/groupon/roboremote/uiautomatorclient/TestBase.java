@@ -63,21 +63,14 @@ public class TestBase {
     }
 
     public static void setUp(String testName) throws Exception {
-        setUp(testName, true, _automator_port);
-    }
-
-    public static void setUp(String testName, int port) throws Exception {
-        setUp(testName, true, port);
+        setUp(testName, true);
     }
 
     /**
      * This is the generic test setup function
      * @param clearAppData - true if you want app data cleared, false otherwise
      */
-    public static void setUp(String testName, Boolean clearAppData, int port) throws Exception {
-        // another port may have been passed in for use
-        _automator_port = port;
-
+    public static void setUp(String testName, Boolean clearAppData) throws Exception {
         if (_automator_jars == null)
             setAppEnvironmentVariables();
 
@@ -272,6 +265,7 @@ public class TestBase {
             _receiver = new MultiReceiver();
             try {
                 // create adb tunnel
+                _automator_port = Utils.getFreePort();
                 DebugBridge.get().createTunnel(_automator_port, _automator_port);
 
                 // build jar list
