@@ -61,11 +61,7 @@ public class TestBase {
     }
     
     public static void setUp(String testName) throws Exception {
-        setUp(testName, false, true, _roboremote_port);
-    }
-
-    public static void setUp(String testName, int port) throws Exception {
-        setUp(testName, false, true, port);
+        setUp(testName, false, true);
     }
 
     /**
@@ -81,14 +77,14 @@ public class TestBase {
      * @param relaunch - true if this is an app relaunch
      * @param clearAppData - true if you want app data cleared, false otherwise
      */
-    public static void setUp(String testName, Boolean relaunch, Boolean clearAppData, int port) throws Exception {
-        // another port may have been passed in for use
-        _roboremote_port = port;
-
+    public static void setUp(String testName, Boolean relaunch, Boolean clearAppData) throws Exception {
         if (! relaunch) {
             logger.info("Starting test {}", testName);
             Utils.setTestName(testName);
             Device.setupLogDirectories();
+
+            // find a useable port
+            _roboremote_port = Utils.getFreePort();
 
             // create adb tunnel
             DebugBridge.get().createTunnel(_roboremote_port, _roboremote_port);

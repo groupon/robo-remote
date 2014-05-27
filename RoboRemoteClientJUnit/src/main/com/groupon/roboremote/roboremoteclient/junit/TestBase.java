@@ -109,7 +109,7 @@ public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
 
     @Before
     public void setUp() throws Exception {
-        setUp(false, true, Constants.ROBOREMOTE_SERVER_PORT);
+        setUp(false, true);
     }
 
     /**
@@ -117,7 +117,7 @@ public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
      * @param relaunch - true if this is an app relaunch
      * @param clearAppData - true if you want app data cleared, false otherwise
      */
-    public void setUp(Boolean relaunch, Boolean clearAppData, int port) {
+    public void setUp(Boolean relaunch, Boolean clearAppData) {
         try
         {
             // try to setup UIAutomator if it is available
@@ -128,7 +128,7 @@ public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
             }
 
             // setup robotium remote
-            setUp(getTestName(), relaunch, clearAppData, port);
+            setUp(getTestName(), relaunch, clearAppData);
         } catch (Exception e) {
             fail("Caught exception: " + e);
         }

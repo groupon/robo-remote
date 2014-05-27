@@ -70,4 +70,6 @@ public class CombinedTests extends TestBase {
         UiObject viewPage = new UiObject(new UiSelector().call("text", view + " page").call("className", "android.widget.TextView"));
         assertTrue(viewPage.call("exists").getBoolean(0));
     }
+
+
 }
