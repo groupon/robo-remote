@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/RoboRemoteClient" />
+            <option value="$PROJECT_DIR$/RoboRemoteClientCommon" />
+            <option value="$PROJECT_DIR$/RoboRemoteClientJUnit" />
+            <option value="$PROJECT_DIR$/RoboRemoteConstants" />
+            <option value="$PROJECT_DIR$/RoboRemoteServer" />
+            <option value="$PROJECT_DIR$/RoboRemoteServerCommon" />
+            <option value="$PROJECT_DIR$/UIAutomatorClient" />
+            <option value="$PROJECT_DIR$/UIAutomatorServer" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
+

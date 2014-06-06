@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/RoboRemoteClient/RoboRemoteClient.iml" filepath="$PROJECT_DIR$/RoboRemoteClient/RoboRemoteClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RoboRemoteClientCommon/RoboRemoteClientCommon.iml" filepath="$PROJECT_DIR$/RoboRemoteClientCommon/RoboRemoteClientCommon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RoboRemoteClientJUnit/RoboRemoteClientJUnit.iml" filepath="$PROJECT_DIR$/RoboRemoteClientJUnit/RoboRemoteClientJUnit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RoboRemoteConstants/RoboRemoteConstants.iml" filepath="$PROJECT_DIR$/RoboRemoteConstants/RoboRemoteConstants.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RoboRemoteServer/RoboRemoteServer.iml" filepath="$PROJECT_DIR$/RoboRemoteServer/RoboRemoteServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RoboRemoteServerCommon/RoboRemoteServerCommon.iml" filepath="$PROJECT_DIR$/RoboRemoteServerCommon/RoboRemoteServerCommon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UIAutomatorClient/UIAutomatorClient.iml" filepath="$PROJECT_DIR$/UIAutomatorClient/UIAutomatorClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UIAutomatorServer/UIAutomatorServer.iml" filepath="$PROJECT_DIR$/UIAutomatorServer/UIAutomatorServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robo-remote.iml" filepath="$PROJECT_DIR$/robo-remote.iml" />
+    </modules>
+  </component>
+</project>
+
