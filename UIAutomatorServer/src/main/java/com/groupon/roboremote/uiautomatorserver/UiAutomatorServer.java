@@ -35,7 +35,6 @@ package com.groupon.roboremote.uiautomatorserver;
 import android.view.View;
 import com.android.uiautomator.core.UiDevice;
 import com.groupon.roboremote.roboremoteservercommon.RemoteServer;
-import java.util.ArrayList;
 
 public class UiAutomatorServer extends RemoteServer {
     UiDevice device = null;

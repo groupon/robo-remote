@@ -5,9 +5,6 @@ import android.view.View;
 import com.groupon.roboremote.roboremoteserver.robotium.Solo2;
 import com.groupon.roboremote.roboremoteservercommon.RemoteServer;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 /**
  * Created with IntelliJ IDEA.
  * User: davidv

@@ -414,7 +414,7 @@ public abstract class RemoteServer {
 
                 // see if one of the knownTypes matches the current paramClass
                 String paramClassStr = paramClass.toString().substring(paramClass.toString().lastIndexOf(" ") + 1);
-                String paramClassStrEnd = paramClass.toString().substring(paramClass.toString().lastIndexOf(".") + 1);
+                String paramClassStrEnd = paramClass.toString().substring(paramClass.toString().lastIndexOf("") + 1);
                 for (String knowType: knownTypes) {
                     if (knowType.compareTo(paramClassStrEnd) == 0) {
                         matchReturn.matches++;

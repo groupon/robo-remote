@@ -1,0 +1,8 @@
+include ":RoboRemoteClient"
+include ":RoboRemoteClientCommon"
+include ":RoboRemoteClientJUnit"
+include ":RoboRemoteConstants"
+include ":UIAutomatorClient"
+include ":RoboRemoteServerCommon"
+include ":RoboRemoteServer"
+include ":UIAutomatorServer"
