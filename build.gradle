@@ -1,0 +1,23 @@
+allprojects {
+    group = GROUP
+    version = VERSION
+}
+
+subprojects {
+    repositories{
+        mavenCentral()
+    }
+}
+
+configure(subprojects - project(":UIAutomatorServer") - project(":RoboRemoteServer")) {
+    apply plugin: 'java'
+    sourceCompatibility = 1.6
+    targetCompatibility = 1.6
+}
+
+project(":UIAutomatorServer") {
+}
+
+project(":RoboRemoteServer"){
+
+}

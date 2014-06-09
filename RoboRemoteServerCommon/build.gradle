@@ -1,0 +1,12 @@
+dependencies {
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version:'1.1'
+    compile(group: 'com.google.android', name: 'android', version:'4.0.1.2')
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/'
+        }
+    }
+}

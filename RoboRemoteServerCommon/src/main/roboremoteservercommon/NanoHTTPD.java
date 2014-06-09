@@ -247,7 +247,7 @@ public class NanoHTTPD
 
         // Defaults
         int port = 80;
-        File wwwroot = new File(".").getAbsoluteFile();
+        File wwwroot = new File("").getAbsoluteFile();
 
         // Show licence if requested
         for ( int i=0; i<args.length; ++i )
@@ -843,7 +843,7 @@ public class NanoHTTPD
                 uri = uri.substring(0, uri.indexOf( '?' ));
 
             // Prohibit getting out of current directory
-            if ( uri.startsWith( ".." ) || uri.endsWith( ".." ) || uri.indexOf( "../" ) >= 0 )
+            if ( uri.startsWith("build/source/aidl") || uri.endsWith("build/source/aidl") || uri.indexOf( "../" ) >= 0 )
                 res = new Response( HTTP_FORBIDDEN, MIME_PLAINTEXT,
                         "FORBIDDEN: Won't serve ../ for security reasons." );
         }
@@ -911,9 +911,9 @@ public class NanoHTTPD
                                 if ( len < 1024 )
                                     msg += len + " bytes";
                                 else if ( len < 1024 * 1024 )
-                                    msg += len/1024 + "." + (len%1024/10%100) + " KB";
+                                    msg += len/1024 + "" + (len%1024/10%100) + " KB";
                                 else
-                                    msg += len/(1024*1024) + "." + len%(1024*1024)/10%100 + " MB";
+                                    msg += len/(1024*1024) + "" + len%(1024*1024)/10%100 + " MB";
 
                                 msg += ")</font>";
                             }

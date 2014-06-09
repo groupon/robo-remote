@@ -1,0 +1,18 @@
+dependencies {
+    compile project(":RoboRemoteClient")
+    compile project(":UIAutomatorClient")
+
+    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.6.1'
+    compile group: 'ch.qos.logback', name: 'logback-core', version:'0.9.29'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version:'0.9.29'
+    compile group: 'ch.qos.logback', name: 'logback-examples', version:'0.9.29'
+    compile group: 'junit', name: 'junit', version:'4.10'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/'
+        }
+    }
+}
