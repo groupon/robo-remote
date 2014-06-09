@@ -31,96 +31,82 @@
         SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.groupon.roboremote.example</groupId>
-    <artifactId>helloworldtestrunner</artifactId>
-    <version>1</version>
-    <packaging>apk</packaging>
-    <name>Runner</name>
 
-    <properties>
-        <com.groupon.roboremote-version>0.5.1-SNAPSHOT</com.groupon.roboremote-version>
+    <groupId>com.groupon.roboremote</groupId>
+    <artifactId>roboremoteserver</artifactId>
+    <version>${com.groupon.roboremote-version}</version>
+    <packaging>apklib</packaging>
+    <name>RoboRemoteServer APKLib</name>
+    <description>This is the Android side component of RoboRemote</description>
 
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- Disable kicking off tests during build. Can do this through command line with : -Dandroid.enableIntegrationTest=true -->
-        <android.enableIntegrationTest>false</android.enableIntegrationTest>
-    </properties>
+    <licenses>
+        <license>
+            <name>BSD 3 Clause</name>
+            <url>http://www.opensource.org/licenses/bsd-3-clause</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>git@github.com:groupon/robo-remote.git</url>
+        <connection>scm:git:git@github.com:groupon/robo-remote.git</connection>
+        <developerConnection>scm:git:git@github.com:groupon/robo-remote.git</developerConnection>
+    </scm>
 
     <parent>
-        <groupId>com.groupon.roboremote.example</groupId>
-        <artifactId>helloworldaggregator</artifactId>
-        <version>1.0</version>
+        <groupId>com.groupon.roboremote</groupId>
+        <artifactId>roboremoteserveraggregator</artifactId>
+        <version>0.5.1-SNAPSHOT</version>
     </parent>
-
-    <repositories>
-        <repository>
-            <id>oss-sonatype</id>
-            <name>oss-sonatype</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>com.google.android</groupId>
+            <groupId>com.jayway.android.robotium</groupId>
+            <artifactId>robotium-solo</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>android</groupId>
             <artifactId>android</artifactId>
-            <version>2.3.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>android-test</artifactId>
-            <version>1.6_r2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
-            <version>1.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.groupon.roboremote</groupId>
-            <artifactId>roboremoteserver</artifactId>
-            <version>${com.groupon.roboremote-version}</version>
-            <type>apklib</type>
         </dependency>
         <dependency>
             <groupId>com.groupon.roboremote</groupId>
             <artifactId>roboremoteservercommon</artifactId>
-            <version>${com.groupon.roboremote-version}</version>
-            <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>com.groupon.roboremote.example</groupId>
-            <artifactId>HelloWorld</artifactId>
-            <version>1.0</version>
-            <scope>provided</scope>
+            <groupId>com.groupon.roboremote</groupId>
+            <artifactId>roboremoteconstants</artifactId>
         </dependency>
     </dependencies>
 
     <build>
         <sourceDirectory>src/main/</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>res</directory>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.9</version>
-                <configuration>
-                    <skipTests>true</skipTests>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.8.2</version>
+                <version>3.9.0-rc.2</version>
                 <configuration>
                     <dex>
                         <jvmArguments>
@@ -128,10 +114,6 @@
                             <jvmArgument>-Xmx512m</jvmArgument>
                         </jvmArguments>
                     </dex>
-                    <test>
-                        <skip>true</skip>
-                    </test>
-                    <extractDuplicates>true</extractDuplicates>
                     <sdk>
                         <platform>14</platform>
                     </sdk>
@@ -140,13 +122,14 @@
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>2.0.2</version>
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
             </plugin>
         </plugins>
+
         <pluginManagement>
             <plugins>
                 <plugin>
