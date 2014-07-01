@@ -61,7 +61,7 @@
     </parent>
 
     <properties>
-        <com.groupon.roboremote-version>0.5.1-SNAPSHOT</com.groupon.roboremote-version>
+        <com.groupon.roboremote-version>0.6.0-b1</com.groupon.roboremote-version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Disable kicking off tests during build. Can do this through command line with : -Dandroid.enableIntegrationTest=true -->
@@ -107,9 +107,9 @@
             <version>0.9.29</version>
         </dependency>
         <dependency>
-            <groupId>com.google.android.tools</groupId>
+            <groupId>com.android.tools.ddms</groupId>
             <artifactId>ddmlib</artifactId>
-            <version>r13</version>
+            <version>22.8.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

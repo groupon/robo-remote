@@ -18,7 +18,7 @@ If you want to specify a device by serial # for either Robotium or UiAutomator t
 ## Requirements
 ***
 ### UiAutomator Remote
-UiAutomator remote requires Android API Level 18 to be installed as a maven artifact.  It is suggested that the maven android sdk deployer is used for this(https://github.com/mosabua/maven-android-sdk-deployer).  Use the tool to install API 18(mvn install -P 4.3) libraries.  This will install the android and uiautomator library that is required. 
+UiAutomator remote requires Android API Level 18 to be installed as a maven artifact.  It is suggested that the maven android sdk deployer is used for this(https://github.com/mosabua/maven-android-sdk-deployer).  Use the tool to install API 18(mvn install -P 4.3) libraries.  This will install the android and uiautomator library that is required.
 
 *Note*: An API Level 17(4.2.2) system can be used to execute tests but calls to UiAutomator functions that require API 18 will fail.
 
@@ -32,7 +32,7 @@ To use UiAutomator Remote you only need tests with a few setup steps as follows(
    2. OR Call setAppEnvironmentVariables("location of jar")  in a @BeforeClass
 3. In @Before call super.setUp("test name") and then any commands you need in order to start the app under test4. In @After call tearDown()
 
-To get the JAR file either build it from source(in the UIAutomatorServer directory) or get it from maven(replace 0.5.1-SNAPSHOT with the latest version #): 
+To get the JAR file either build it from source(in the UIAutomatorServer directory) or get it from maven(replace 0.5.1-SNAPSHOT with the latest version #):
 <pre><code>mvn org.apache.maven.plugins:maven-dependency-plugin:2.4:get -DrepoUrl=http://oss.sonatype.org/content/repositories/snapshots -Dartifact=com.groupon.roboremote:uiautomatorserver:0.5.1-SNAPSHOT -Ddest=uiautomatorserver.jar</code></pre>
 
 ### Maven Depenendencies
@@ -120,7 +120,7 @@ An example project is provided in the examples/HelloWorld directory.  The direct
 
 * helloworld - This is the application under test which provides a simple list view and an activity to launch based on pressing an itme in the list view
 * helloworldtestrunner - This is the test runner which starts up the RoboRemote HTTP listener and the application under test.
-* Tests - 
+* Tests -
   * SampleTests - This contains the desktop JUnit based RoboRemote Robotium example tests for the HelloWorld project.  Under Tests/src/test is a SampleTests.java which contains a few tests demonstrating various RoboRemote functions.
   * AutomatorTests - This contains the desktop JUnit based RoboRemote UiAutomator example tests for the HelloWorld project.  This also serves as an example of how to call various functions in the UiAutomatorClient TestBase to setup the test and run the application you would like to test.
   * CombinedTests - This contains the desktop JUnit based RoboRemote Robotium/UiAutomator combined test example for the HelloWorld project.  It demonstrates how UiAutomator and Robotium calls can be mixed.
@@ -143,10 +143,15 @@ Execute the following from examples/HelloWorld/Tests
 1. Robotium example: mvn test -Dtest=SampleTests
 2. UiAutomator example:
    1. export ROBO_UIAUTOMATOR_JAR=&lt;path to source root>/UIAutomatorServer/target/uiautomatorserver.jar
-   2. mvn test -Dtest=AutomatorTests 
+   2. mvn test -Dtest=AutomatorTests
 3. Combined example:
    1. export ROBO_UIAUTOMATOR_JAR=&lt;path to source root>/UIAutomatorServer/target/uiautomatorserver.jar
-   2. mvn test -Dtest=CombinedTests 
+   2. mvn test -Dtest=CombinedTests
+
+
+## Building RoboRemote from Source
+***
+In order to build roboremote from source you need to deploy the maven Android modules using the maven-android-sdk-deployer(https://github.com/mosabua/maven-android-sdk-deployer).  Install at least versions 4.1, 4.2, 4.3 and 4.4 to get started.  After these are installed it is as simple as running "mvn clean install"
 
 
 ## Architecture
@@ -208,7 +213,7 @@ RoboRemoteClient provides com.groupon.roboremote.RoboRemoteClient.Solo which map
 
 **Example Robotium Solo request**
 
-*Traditional Robotium Syntax*: 
+*Traditional Robotium Syntax*:
 <pre><code>View tView = solo.getView(android.widget.EditText.class, 0);
 solo.enterText(tView, "Text to enter");</code></pre>
 *RoboRemote client request*(using com.groupon.roboremote.RoboRemoteClient.Solo):
@@ -243,12 +248,12 @@ RoboRemoteClientCommon also provides a method(in com.groupon.roboremote.RoboRemo
 *RoboRemote client request*:
 <pre><code>Client.map("java.lang.System", "exit", 0)</code></pre>
 
-***Note about function calls***: You can call methods in static/non-static classes, but cannot call methods in already instantiated classes.  In order to use already instantiated classes you will have to add hook methods in your test runner(explained in the Getting Started section of this README).  The only exception to this is the Robotium Solo class.  This class is pre-instantiated and can be referenced as "solo" in a map call.
+***Note about function calls***: You can call methods in static/non-static classes, but cannot call methods in already instantiated classes.  In order to use already instantiated classes you will have to add hook methods in your test runner(explained in the Getting Started section of this README).  The only exceptions to this are the Robotium Solo class and the test instrumentation.  Robotium is pre-instantiated and can be referenced as "solo" in a map call.  The test instrumentation can be referenced as "testclass" in a map call.
 
 **Complex function calls**
 Robotium 4.x introduced some more complex function calls for web elements.  The functions take a By parameter.  To support this the system provides a method of storing and retrieving objects.  An example is:
 
-*Traditional Syntax*: 
+*Traditional Syntax*:
 <pre><code>solo.waitForWebElement(By.textContent("myText"))</code></pre>
 
 *RoboRemote client request*:
@@ -325,5 +330,3 @@ public class TestHook {
 **JUnit** - <http://www.junit.org/>
 
 **Frank** - <https://github.com/moredip/Frank>
-
-

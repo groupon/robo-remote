@@ -66,21 +66,19 @@ public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
                         base.evaluate();
                     } catch (AssertionError e) {
                         // call global onFailure
-                        onFailure();
+                        try {
+                            onFailure();
+                        } catch (Exception ee) {
+                            // don't want a new failure here to change the the teardown flow
+                            // just swallow this error
+                        }
 
                         failed = true;
 
                         error = e;
                     }
 
-                    // tear down robotium remote
-                    tearDown();
-
-                    // tear down uiautomator remote
-                    if (Utils.getEnv("ROBO_UIAUTOMATOR_JAR", null) != null) {
-                        com.groupon.roboremote.uiautomatorclient.TestBase.killApp();
-                    }
-
+                    logger.info("Calling onFail/onPass functions");
                     if (failed)
                     {
                         // do failure stuff here
@@ -93,6 +91,18 @@ public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
                         onPass(m);
 
                     }
+
+                    // tear down robotium remote
+                    logger.info("Calling tearDown");
+                    tearDown();
+
+                    // tear down uiautomator remote
+                    if (Utils.getEnv("ROBO_UIAUTOMATOR_JAR", null) != null) {
+                        logger.info("Killing UiAutomator");
+                        com.groupon.roboremote.uiautomatorclient.TestBase.killApp();
+                    }
+
+
 
                     // If there is an error to re-throw.. throw it..
                     if (error != null)
@@ -130,7 +140,8 @@ public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
             // setup robotium remote
             setUp(getTestName(), relaunch, clearAppData);
         } catch (Exception e) {
-            fail("Caught exception: " + e);
+            e.printStackTrace();
+            fail("Caught exception: " + e + ", " + e.getMessage());
         }
     }
 

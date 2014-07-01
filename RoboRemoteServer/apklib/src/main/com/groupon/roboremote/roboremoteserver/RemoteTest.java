@@ -32,6 +32,9 @@
 
 package com.groupon.roboremote.roboremoteserver;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.test.ActivityInstrumentationTestCase2;
 import android.app.Activity;
 import com.groupon.roboremote.Constants;
@@ -40,14 +43,15 @@ import com.groupon.roboremote.roboremoteserver.robotium.*;
 public abstract class RemoteTest<T extends Activity> extends ActivityInstrumentationTestCase2 {
     protected Solo2 solo;
     private Object lastResponseObject = null;
+    private Boolean appStarted = false;
+    private RoboRemoteServer rrs = null;
 
     public RemoteTest(Class<T> activityClass) throws ClassNotFoundException {
         super("blah", activityClass);
+        rrs = new RoboRemoteServer(null, getInstrumentation(), this);
     }
 
     public void startServer() throws Exception {
-        RoboRemoteServer rrs = new RoboRemoteServer(solo, getInstrumentation());
-
         int port = Constants.ROBOREMOTE_SERVER_PORT;
 
         if (System.getProperty("ROBOREMOTE_PORT") != null) {
@@ -58,12 +62,16 @@ public abstract class RemoteTest<T extends Activity> extends ActivityInstrumenta
         rrs.startServer(port);
     }
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    public void startApp() {
         // Initialize Robotium Solo singleton
         solo = new Solo2(getInstrumentation(), getActivity());
         SoloSingleton.set(solo);
+        rrs.setSolo(solo);
+    }
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        startApp();
     }
 }

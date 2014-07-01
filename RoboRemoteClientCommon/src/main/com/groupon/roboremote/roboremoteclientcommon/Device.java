@@ -84,12 +84,12 @@ public class Device {
     	Files.copy(failureFile, destFile);
     }
 
-    public static void setupLogDirectories() throws Exception {
+    public static void setupLogDirectories(String testName) throws Exception {
         String currentDir = new File("").getAbsolutePath();
 
         // clear the final log directory
         File log_dir = new File(currentDir + File.separator + "logs" 
-              + File.separator + Utils.getTestName() + File.separator + "test.log");
+              + File.separator + testName + File.separator + "test.log");
         TestLogger.get().info("Log directory: {}", log_dir.getParent());
         
         Files.createParentDirs(log_dir);
