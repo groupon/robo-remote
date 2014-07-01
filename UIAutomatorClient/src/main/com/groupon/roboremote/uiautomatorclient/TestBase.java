@@ -78,8 +78,7 @@ public class TestBase {
         // this allows a client that overrides this class to safely call setUp multiple times without destroying logs
         if (!isStarted || !Client.getInstance().isListening()) {
             logger.info("Starting test {}", testName);
-            Utils.setTestName(testName);
-            Device.setupLogDirectories();
+            Device.setupLogDirectories(testName);
             deployTestJar();
 
             // see if a server is already listening
@@ -138,7 +137,6 @@ public class TestBase {
         } catch (Exception e) {
 
         } finally {
-            DebugBridge.get().close();
             isStarted = false;
         }
     }

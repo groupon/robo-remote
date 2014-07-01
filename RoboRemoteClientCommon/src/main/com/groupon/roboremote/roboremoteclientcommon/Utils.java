@@ -41,16 +41,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class Utils {
-    public static String testName = null;
-
-    public static void setTestName(String name) {
-        testName = name;
-    }
-
-    public static String getTestName() {
-        return testName;
-    }
-
     public static ArrayList<String> jsonArrayToStringList(JSONArray arry) throws Exception {
         ArrayList<String> newArray = new ArrayList<String>();
         for (int x = 0; x < arry.length(); x++) {

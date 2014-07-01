@@ -18,10 +18,28 @@ import java.util.Collections;
 public class RoboRemoteServer extends RemoteServer {
     Solo2 solo = null;
     Instrumentation instrumentation = null;
+    RemoteTest testClass = null;
 
     public RoboRemoteServer(Solo2 solo, Instrumentation instrumentation) {
+        new RoboRemoteServer(solo, instrumentation, null);
+    }
+
+    public RoboRemoteServer(Solo2 solo, Instrumentation instrumentation, RemoteTest testClass) {
+        setSolo(solo);
+        setInstrumentation(instrumentation);
+        setTestClass(testClass);
+    }
+
+    public void setSolo(Solo2 solo) {
         this.solo = solo;
+    }
+
+    public void setInstrumentation(Instrumentation instrumentation) {
         this.instrumentation = instrumentation;
+    }
+
+    public void setTestClass(RemoteTest testClass) {
+        this.testClass = testClass;
     }
 
     /**
@@ -32,6 +50,8 @@ public class RoboRemoteServer extends RemoteServer {
     protected Object getInstantiatedClass(String query) {
         if (query.equals(Constants.ROBOTIUM_SOLO)) {
             return solo;
+        } else if (query.equals(Constants.REMOTE_TEST_CLASS)) {
+            return testClass;
         }
         return null;
     }

@@ -34,6 +34,7 @@ package com.groupon.roboremote.roboremoteserver;
 
 public class Constants {
     public static final String ROBOTIUM_SOLO = "solo";
+    public static final String REMOTE_TEST_CLASS = "testclass";
 
     public static final String TYPE_EQUIVALENT_IDENTIFIER = "TYPE";
 }

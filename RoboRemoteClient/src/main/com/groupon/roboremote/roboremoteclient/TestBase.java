@@ -80,8 +80,7 @@ public class TestBase {
     public static void setUp(String testName, Boolean relaunch, Boolean clearAppData) throws Exception {
         if (! relaunch) {
             logger.info("Starting test {}", testName);
-            Utils.setTestName(testName);
-            Device.setupLogDirectories();
+            Device.setupLogDirectories(testName);
 
             // find a useable port
             _roboremote_port = Utils.getFreePort();
@@ -157,7 +156,7 @@ public class TestBase {
         } catch (Exception e) {
 
         } finally {
-            DebugBridge.get().close();
+            DebugBridge.destroy();
         }
     }
 
