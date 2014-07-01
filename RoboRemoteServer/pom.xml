@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-        Copyright (c) 2012, 2013, 2014, Groupon, Inc.
+        Copyright (c) 2014, Groupon, Inc.
         All rights reserved.
 
         Redistribution and use in source and binary forms, with or without
@@ -35,11 +35,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.groupon.roboremote</groupId>
-    <artifactId>roboremoteserver</artifactId>
-    <version>${com.groupon.roboremote-version}</version>
-    <packaging>aar</packaging>
-    <name>RoboRemote Server</name>
-    <description>This is the Android side component of RoboRemote</description>
+    <artifactId>roboremoteserveraggregator</artifactId>
+    <version>0.5.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>RoboRemoteServer Aggregator</name>
+    <description>This is the aggregator for RoboRemoteServer</description>
 
     <licenses>
         <license>
@@ -61,6 +61,7 @@
         <version>7</version>
     </parent>
 
+    
     <properties>
         <com.groupon.roboremote-version>0.6.0-b1</com.groupon.roboremote-version>
 
@@ -69,90 +70,45 @@
         <android.enableIntegrationTest>false</android.enableIntegrationTest>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.jayway.android.robotium</groupId>
-            <artifactId>robotium-solo</artifactId>
-            <version>4.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>android</groupId>
-            <artifactId>android</artifactId>
-            <version>4.2.2_r2</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.android</groupId>
-            <artifactId>android-test</artifactId>
-            <version>1.6_r2</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.json-simple</groupId>
-            <artifactId>json-simple</artifactId>
-            <version>1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.groupon.roboremote</groupId>
-            <artifactId>roboremoteservercommon</artifactId>
-            <version>${com.groupon.roboremote-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.groupon.roboremote</groupId>
-            <artifactId>roboremoteconstants</artifactId>
-            <version>${com.groupon.roboremote-version}</version>
-        </dependency>
-    </dependencies>
+    <dependencyManagement>
+      <dependencies>
+          <dependency>
+              <groupId>com.jayway.android.robotium</groupId>
+              <artifactId>robotium-solo</artifactId>
+              <version>4.3.1</version>
+          </dependency>
+          <dependency>
+              <groupId>android</groupId>
+              <artifactId>android</artifactId>
+              <version>4.2.2_r2</version>
+              <scope>provided</scope>
+          </dependency>
+          <dependency>
+              <groupId>com.google.android</groupId>
+              <artifactId>android-test</artifactId>
+              <version>1.6_r2</version>
+              <scope>provided</scope>
+          </dependency>
+          <dependency>
+              <groupId>com.googlecode.json-simple</groupId>
+              <artifactId>json-simple</artifactId>
+              <version>1.1</version>
+          </dependency>
+          <dependency>
+              <groupId>com.groupon.roboremote</groupId>
+              <artifactId>roboremoteservercommon</artifactId>
+              <version>${com.groupon.roboremote-version}</version>
+          </dependency>
+          <dependency>
+              <groupId>com.groupon.roboremote</groupId>
+              <artifactId>roboremoteconstants</artifactId>
+              <version>${com.groupon.roboremote-version}</version>
+          </dependency>
+      </dependencies>
+    </dependencyManagement>
 
-    <build>
-        <sourceDirectory>src/main/</sourceDirectory>
-        <resources>
-            <resource>
-                <directory>res</directory>
-            </resource>
-        </resources>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.9</version>
-            </plugin>
-            <plugin>
-                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
-                <artifactId>android-maven-plugin</artifactId>
-                <version>3.8.2</version>
-                <configuration>
-                    <dex>
-                        <jvmArguments>
-                            <argument>-Xms256m</argument>
-                            <jvmArgument>-Xmx512m</jvmArgument>
-                        </jvmArguments>
-                    </dex>
-                    <sdk>
-                        <platform>14</platform>
-                    </sdk>
-                </configuration>
-                <extensions>true</extensions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
-        </plugins>
-
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.9</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-
-    </build>
+    <modules>
+        <module>apklib</module>
+        <module>aar</module>
+    </modules>
 </project>
