@@ -33,7 +33,7 @@ To use UiAutomator Remote you only need tests with a few setup steps as follows(
 3. In @Before call super.setUp("test name") and then any commands you need in order to start the app under test4. In @After call tearDown()
 
 To get the JAR file either build it from source(in the UIAutomatorServer directory) or get it from maven(replace 0.6.0-b1 with the latest version #):
-<pre><code>mvn org.apache.maven.plugins:maven-dependency-plugin:2.4:get -DrepoUrl=http://oss.sonatype.org/content/repositories/snapshots -Dartifact=com.groupon.roboremote:uiautomatorserver:0.5.1-SNAPSHOT -Ddest=uiautomatorserver.jar</code></pre>
+<pre><code>mvn org.apache.maven.plugins:maven-dependency-plugin:2.4:get -DrepoUrl=http://oss.sonatype.org/content/repositories/snapshots -Dartifact=com.groupon.roboremote:uiautomatorserver:0.6.0-b1 -Ddest=uiautomatorserver.jar</code></pre>
 
 ### Maven Depenendencies
 #### Tests
