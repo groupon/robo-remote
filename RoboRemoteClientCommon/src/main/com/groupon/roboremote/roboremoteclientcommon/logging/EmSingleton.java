@@ -32,7 +32,12 @@
 
 package com.groupon.roboremote.roboremoteclientcommon.logging;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class EmSingleton {
+    private static final Logger logger = LoggerFactory.getLogger(EmSingleton.class);
+
     /* Here is the instance of the Singleton */
     private static EventManager instance_ = null;
 
@@ -45,7 +50,7 @@ public class EmSingleton {
         super();
     }
 
-    public static void intialize() throws Exception {
+    private static void intialize() throws Exception {
         synchronized (syncObject_) {
             instance_ = new EventManager();
         }
@@ -60,6 +65,10 @@ public class EmSingleton {
 
     public static void release() {
         synchronized (syncObject_) {
+            try {
+                instance_.stopLogListener();
+            } catch (Exception e) {
+            }
             instance_ = null;
         }
     }

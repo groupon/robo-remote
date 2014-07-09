@@ -95,9 +95,6 @@ public class EventManager {
         isr = null;
         br = null;
 
-        // kill all logcats
-        DebugBridge.get().stopLogListener();
-
         stopLogListener();
     }
 
@@ -175,8 +172,10 @@ public class EventManager {
     }
 
     public void startLogListener() throws Exception {
-        loggerThread = new LogThread();
-        loggerThread.start();
+        if (loggerThread == null) {
+            loggerThread = new LogThread();
+            loggerThread.start();
+        }
     }
 
     public void stopLogListener() throws Exception {
@@ -184,6 +183,8 @@ public class EventManager {
             loggerThread.close();
             loggerThread.interrupt();
         }
+
+        loggerThread = null;
     }
 
     /**
@@ -236,6 +237,8 @@ public class EventManager {
             } catch (Exception e) {
                 logger.error("LogThread interrupted: {}", e);
             }
+
+            logger.info("LogThread exited");
         }
 
         public void close() {

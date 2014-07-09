@@ -97,7 +97,7 @@ public class SampleTests extends TestBase {
             // OK.. I see how that works.. but that line is reallllly long.. how else can I use that?
             // Now we will use the same mechanism for something more complicated.. like getting the real size of our listview
             query = new QueryBuilder();
-            query.map("solo", "getCurrentListViews");
+            query.map("solo", "getCurrentViews", "android.widget.ListView");
             query.call("get", 0);
             query.call("getAdapter");
             query.call("getCount");
@@ -145,12 +145,20 @@ public class SampleTests extends TestBase {
             
             QueryBuilder builder = new QueryBuilder();
             // request the HTML content via javascript
-            builder.map("solo", "getView", "com.groupon.roboremote.example.helloworld.support.TestableWebView", 0).call("loadUrl", "javascript:window.HTMLOUT.showHTML(document.body.innerHTML);void(0);").execute();
+            String[] views = Solo.getViews();
+            int y = 0;
+            for (String view : views) {
+                if (view.startsWith("com.groupon.roboremote.example.helloworld.support.TestableWebView")) {
+                    builder.map("solo", "getViews").call("get", y).storeResult("webview").execute();
+                    break;
+                }
+                y++;
+            }
+            new QueryBuilder().map(QueryBuilder.getStoredValue("webview"), "loadUrl", "javascript:window.HTMLOUT.showHTML(document.body.innerHTML);void(0);").execute();
 
             // wait for the content to be available to the test
             for (int x = 0; x < 10; x++) {
-                builder = new QueryBuilder();
-                Boolean available = builder.map("solo", "getView", "com.groupon.roboremote.example.helloworld.support.TestableWebView", 0).callField("htmlContentSet").execute().getBoolean(0);
+                Boolean available = new QueryBuilder().mapField(QueryBuilder.getStoredValue("webview"), "htmlContentSet").execute().getBoolean(0);
                 if (available)
                     break;
                 
@@ -165,7 +173,7 @@ public class SampleTests extends TestBase {
             
             // now try to get retstr from the view
             builder = new QueryBuilder();
-            String htmlContent = builder.map("solo", "getView", "com.groupon.roboremote.example.helloworld.support.TestableWebView", 0).callField("htmlContent").execute().getString(0);
+            String htmlContent = new QueryBuilder().mapField(QueryBuilder.getStoredValue("webview"), "htmlContent").execute().getString(0);
 
             assertTrue(htmlContent.equals("Testing text"));
         } catch (Exception e) {

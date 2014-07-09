@@ -48,21 +48,21 @@ import java.lang.Thread;
 import java.util.ArrayList;
 
 public class TestBase {
-    public static final Logger logger = LoggerFactory.getLogger("test");
-    static String _automator_jar = null;
-    static String[] _automator_jars = null;
-    static ArrayList<String> _automator_run_jars = null;
-    static AppThread ap = null;
-    static int _automator_port = Constants.UIAUTOMATOR_SERVER_PORT;
-    static boolean isStarted = false;
+    protected static final Logger logger = LoggerFactory.getLogger("test");
+    private static String _automator_jar = null;
+    private static String[] _automator_jars = null;
+    private static ArrayList<String> _automator_run_jars = null;
+    private static AppThread ap = null;
+    private static boolean isStarted = false;
+    private static LogcatLogger logcatLogger = null;
 
-    public static void onFailure() throws Exception {
+    public void onFailure() throws Exception {
         logger.warn("com.groupon.roboremote.uiautomatorclient.TestBase::OnFailure:: Taking screenshot");
         DebugBridge.get().getScreenShot("FAILURE.png");
         Device.storeFailurePng();
     }
 
-    public static void setUp(String testName) throws Exception {
+    public void setUp(String testName) throws Exception {
         setUp(testName, true);
     }
 
@@ -70,7 +70,7 @@ public class TestBase {
      * This is the generic test setup function
      * @param clearAppData - true if you want app data cleared, false otherwise
      */
-    public static void setUp(String testName, Boolean clearAppData) throws Exception {
+    public void setUp(String testName, Boolean clearAppData) throws Exception {
         if (_automator_jars == null)
             setAppEnvironmentVariables();
 
@@ -90,17 +90,14 @@ public class TestBase {
                  killApp();
             }
 
-            // start log listener
-            TestLogger.get().info("Clearing logcat");
-            DebugBridge.get().clearLogCat();
-
             TestLogger.get().info("Starting logcat");
-            DebugBridge.get().startLogListener(System.getProperty("java.io.tmpdir") +
-                    File.separator + "adb_uiauto.log");
+            if (logcatLogger == null) {
+                logcatLogger = new LogcatLogger(System.getProperty("java.io.tmpdir") +
+                        File.separator + "adb_uiauto.log");
+            }
+            logcatLogger.startLogListener();
 
-            // set up logger
-            EmSingleton.intialize();
-
+            // set up event manager
             EmSingleton.get().clearEvents();
 
             // starting test runner
@@ -113,31 +110,26 @@ public class TestBase {
         }
     }
 
-    /**
-     * Get the port that the automator is running on
-     * @return
-     */
-    public static int getAutomatorPort() {
-        return _automator_port;
-    }
-
     // This is called in the failure method override above
     public void tearDown() throws Exception {
         try
         {
-            EmSingleton.get().close();
+            EmSingleton.release();
             killApp();
 
-            // stop logcat
-            TestLogger.get().info("Stopping logcat");
-            DebugBridge.get().stopLogListener();
-
-            // store logs
-            Device.storeLogs("adb_uiauto.log", "uiauto.log");
         } catch (Exception e) {
 
         } finally {
+            // stop logcat
+            TestLogger.get().info("Stopping logcat");
+            logcatLogger.stopLogListener();
+            logcatLogger = null;
+
+            // store logs
+            Device.storeLogs("adb_uiauto.log", "uiauto.log");
+
             isStarted = false;
+            DebugBridge.destroy();
         }
     }
 
@@ -160,7 +152,7 @@ public class TestBase {
      * @return
      * @throws Exception
      */
-    public static void deployTestJar() throws Exception {
+    public void deployTestJar() throws Exception {
         // we build a new list of jars that will be used for the launch command line
         _automator_run_jars = new ArrayList<String>();
 
@@ -177,7 +169,7 @@ public class TestBase {
         }
     }
 
-    public static void startApp() throws Exception {
+    public void startApp() throws Exception {
         ap = new AppThread();
         ap.start();
 
@@ -194,7 +186,7 @@ public class TestBase {
         }
     }
 
-    public static void killApp() throws Exception {
+    public void killApp() throws Exception {
         // try to kill just by calling exit
         try {
             Client.getInstance().map("java.lang.System", "exit", 0);
@@ -263,8 +255,8 @@ public class TestBase {
             _receiver = new MultiReceiver();
             try {
                 // create adb tunnel
-                _automator_port = Utils.getFreePort();
-                DebugBridge.get().createTunnel(_automator_port, _automator_port);
+                PortSingleton.getInstance().setPort(Utils.getFreePort());
+                DebugBridge.get().createTunnel(PortSingleton.getInstance().getPort(), PortSingleton.getInstance().getPort());
 
                 // build jar list
                 String jarList = "";
@@ -273,7 +265,7 @@ public class TestBase {
                 }
 
                 // run uiautomator
-                String uiAutomatorCommand = "uiautomator runtest " + jarList + "-c com.groupon.roboremote.uiautomatorserver.RemoteTest -e port " + _automator_port;
+                String uiAutomatorCommand = "uiautomator runtest " + jarList + "-c com.groupon.roboremote.uiautomatorserver.RemoteTest -e port " + PortSingleton.getInstance().getPort();
                 logger.info("Executing: {}", uiAutomatorCommand);
                 DebugBridge.get().runShellCommand(uiAutomatorCommand, _receiver, 0);
             } catch (Exception e) {

@@ -47,29 +47,21 @@ import java.lang.String;
 import java.lang.Thread;
 
 public class TestBase {
-    public static final Logger logger = LoggerFactory.getLogger("test");
-    static String app_package = null;
-    static String test_class = null;
-    static String test_runner = null;
-    static AppThread ap = null;
-    static int _roboremote_port = Constants.ROBOREMOTE_SERVER_PORT;
+    protected final Logger logger = LoggerFactory.getLogger("test");
+    private static String app_package = null;
+    private static String test_class = null;
+    private static String test_runner = null;
+    private AppThread ap = null;
+    private LogcatLogger logcatLogger = null;
 
-    public static void onFailure() throws Exception {
+    public void onFailure() throws Exception {
         logger.warn("TestBase::OnFailure:: Taking screenshot");
         DebugBridge.get().getScreenShot("FAILURE.png");
         Device.storeFailurePng();
     }
     
-    public static void setUp(String testName) throws Exception {
+    public void setUp(String testName) throws Exception {
         setUp(testName, false, true);
-    }
-
-    /**
-     * Get the port that the automator is running on
-     * @return
-     */
-    public static int getRoboRemotePort() {
-        return _roboremote_port;
     }
 
     /**
@@ -77,16 +69,16 @@ public class TestBase {
      * @param relaunch - true if this is an app relaunch
      * @param clearAppData - true if you want app data cleared, false otherwise
      */
-    public static void setUp(String testName, Boolean relaunch, Boolean clearAppData) throws Exception {
+    public void setUp(String testName, Boolean relaunch, Boolean clearAppData) throws Exception {
         if (! relaunch) {
             logger.info("Starting test {}", testName);
             Device.setupLogDirectories(testName);
 
             // find a useable port
-            _roboremote_port = Utils.getFreePort();
+            PortSingleton.getInstance().setPort(Utils.getFreePort());
 
             // create adb tunnel
-            DebugBridge.get().createTunnel(_roboremote_port, _roboremote_port);
+            DebugBridge.get().createTunnel(PortSingleton.getInstance().getPort(), PortSingleton.getInstance().getPort());
         }
 
         // see if a server is already listening
@@ -119,17 +111,14 @@ public class TestBase {
         }
 
         if (! relaunch) {
-            // start log listener
-            TestLogger.get().info("Clearing logcat");
-            DebugBridge.get().clearLogCat();
-
             TestLogger.get().info("Starting logcat");
-            DebugBridge.get().startLogListener(System.getProperty("java.io.tmpdir") + 
-            		File.separator + "adb_robo.log");
+            if (logcatLogger == null) {
+                logcatLogger = new LogcatLogger(System.getProperty("java.io.tmpdir") +
+                        File.separator + "adb_robo.log");
+            }
+            logcatLogger.startLogListener();
 
-            // set up logger
-            EmSingleton.intialize();
-
+            // set up event manager
             EmSingleton.get().clearEvents();
         }
 
@@ -149,10 +138,14 @@ public class TestBase {
 
             // stop logcat
             TestLogger.get().info("Stopping logcat");
-            DebugBridge.get().stopLogListener();
+            logcatLogger.stopLogListener();
+            logcatLogger = null;
 
             // store logs
             Device.storeLogs("adb_robo.log", "robo.log");
+
+            // stop EventManager
+            EmSingleton.release();
         } catch (Exception e) {
 
         } finally {
@@ -184,19 +177,19 @@ public class TestBase {
         }
     }
 
-    public static String getTestClass() {
+    public String getTestClass() {
         return test_class;
     }
 
-    public static String getTestRunner() {
+    public String getTestRunner() {
         return test_runner;
     }
 
-    public static String getAppPackage() {
+    public String getAppPackage() {
         return app_package;
     }
 
-    public static void startApp() throws Exception {
+    public void startApp() throws Exception {
         ap = new AppThread();
         ap.start();
 
@@ -213,7 +206,7 @@ public class TestBase {
         }
     }
 
-    public static void killApp() throws Exception {
+    public void killApp() throws Exception {
         // try to kill just by calling exit
         try {
             Client.getInstance().map("java.lang.System", "exit", 0);
@@ -247,10 +240,10 @@ public class TestBase {
      * This thread contains the running RC test
      * DebugBridge does not return until the instrumentation finishes so we have to run it in its own thread
      */
-    private static class AppThread extends Thread {
+    private class AppThread extends Thread {
         public void run() {
             try {
-                DebugBridge.get().runShellCommand("am instrument -e port " + _roboremote_port + " -w " + getTestRunner(), new NullOutputReceiver(), 0);
+                DebugBridge.get().runShellCommand("am instrument -e port " + PortSingleton.getInstance().getPort() + " -w " + getTestRunner(), new NullOutputReceiver(), 0);
             } catch (Exception e) {
 
             }
