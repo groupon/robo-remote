@@ -34,6 +34,6 @@ package com.groupon.roboremote.roboremoteclient;
 
 public class QueryBuilder extends com.groupon.roboremote.roboremoteclientcommon.QueryBuilder {
     public QueryBuilder() {
-        super(TestBase.getRoboRemotePort());
+        super(PortSingleton.getInstance().getPort());
     }
 }

@@ -32,8 +32,8 @@ To use UiAutomator Remote you only need tests with a few setup steps as follows(
    2. OR Call setAppEnvironmentVariables("location of jar")  in a @BeforeClass
 3. In @Before call super.setUp("test name") and then any commands you need in order to start the app under test4. In @After call tearDown()
 
-To get the JAR file either build it from source(in the UIAutomatorServer directory) or get it from maven(replace 0.6.0-b1 with the latest version #):
-<pre><code>mvn org.apache.maven.plugins:maven-dependency-plugin:2.4:get -DrepoUrl=http://oss.sonatype.org/content/repositories/snapshots -Dartifact=com.groupon.roboremote:uiautomatorserver:0.6.0-b1 -Ddest=uiautomatorserver.jar</code></pre>
+To get the JAR file either build it from source(in the UIAutomatorServer directory) or get it from maven(replace 0.6.0-b2 with the latest version #):
+<pre><code>mvn org.apache.maven.plugins:maven-dependency-plugin:2.4:get -DrepoUrl=http://oss.sonatype.org/content/repositories/snapshots -Dartifact=com.groupon.roboremote:uiautomatorserver:0.6.0-b2 -Ddest=uiautomatorserver.jar</code></pre>
 
 ### Maven Depenendencies
 #### Tests
@@ -42,7 +42,7 @@ These are the maven dependencies you need to declare in your tests pom:
 <pre><code>&lt;dependency>
 	&lt;groupId>com.groupon.roboremote&lt;/groupId>
     &lt;artifactId>uiautomatorclient&lt;/artifactId>
-    &lt;version>0.6.0-b1&lt;/version>
+    &lt;version>0.6.0-b2&lt;/version>
 &lt;/dependency></code></pre>
 
 *NOTE*: You must add the sonatype snapshots repo to your repositories list.  Once 0.5.1 is final this will not be necessary.  Add the repository as follows:
@@ -96,7 +96,7 @@ These are the maven dependencies you need to declare in your test runner pom:
 <pre><code>&lt;dependency>
     &lt;groupId>com.groupon.roboremote&lt;/groupId>
     &lt;artifactId>roboremoteserver&lt;/artifactId>
-    &lt;version>0.6.0-b1&lt;/version>
+    &lt;version>0.6.0-b2&lt;/version>
     &lt;type>apklib&lt;/type>
 &lt;/dependency></code></pre>
 
@@ -105,7 +105,7 @@ If you are using Gradle an AAR is also provided:
 <pre><code>&lt;dependency>
     &lt;groupId>com.groupon.roboremote&lt;/groupId>
     &lt;artifactId>roboremoteserveraar&lt;/artifactId>
-    &lt;version>0.6.0-b1&lt;/version>
+    &lt;version>0.6.0-b2&lt;/version>
     &lt;type>aar&lt;/type>
 &lt;/dependency></code></pre>
 
@@ -115,12 +115,12 @@ These are the maven dependencies you need to declare in your tests pom:
 <pre><code>&lt;dependency>
     &lt;groupId>com.groupon.roboremote&lt;/groupId>
     &lt;artifactId>roboremoteclient&lt;/artifactId>
-    &lt;version>0.6.0-b1&lt;/version>
+    &lt;version>0.6.0-b2&lt;/version>
 &lt;/dependency>
 &lt;dependency>
     &lt;groupId>com.groupon.roboremote.roboremoteclient&lt;/groupId>
     &lt;artifactId>junit&lt;/artifactId>
-    &lt;version>0.6.0-b1&lt;/version>
+    &lt;version>0.6.0-b2&lt;/version>
 &lt;/dependency></code></pre>
 
 ## Examples

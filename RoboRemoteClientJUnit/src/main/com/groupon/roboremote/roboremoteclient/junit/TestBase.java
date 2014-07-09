@@ -44,6 +44,8 @@ import org.junit.runners.model.Statement;
 import static org.junit.Assert.fail;
 
 public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
+    private com.groupon.roboremote.uiautomatorclient.TestBase uiAutomatorTestBase = null;
+
     @Rule
     public TestName name = new TestName();
     protected void onFail(FrameworkMethod m){}
@@ -99,10 +101,10 @@ public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
                     // tear down uiautomator remote
                     if (Utils.getEnv("ROBO_UIAUTOMATOR_JAR", null) != null) {
                         logger.info("Killing UiAutomator");
-                        com.groupon.roboremote.uiautomatorclient.TestBase.killApp();
+                        uiAutomatorTestBase.killApp();
+                        uiAutomatorTestBase.tearDown();
+                        uiAutomatorTestBase = null;
                     }
-
-
 
                     // If there is an error to re-throw.. throw it..
                     if (error != null)
@@ -134,7 +136,12 @@ public class TestBase extends com.groupon.roboremote.roboremoteclient.TestBase {
             // base availability on ROBO_UIAUTOMATOR_JAR being set
             if (Utils.getEnv("ROBO_UIAUTOMATOR_JAR", null) != null) {
                 logger.info("Starting UI Automator...");
-                com.groupon.roboremote.uiautomatorclient.TestBase.setUp(getTestName());
+                if (uiAutomatorTestBase == null) {
+                    uiAutomatorTestBase = new com.groupon.roboremote.uiautomatorclient.TestBase();
+                }
+                uiAutomatorTestBase.setUp(getTestName());
+            } else {
+                logger.info("Not starting UI Automator. Please set the ROBO_UIAUTOMATOR_JAR environment variable.");
             }
 
             // setup robotium remote

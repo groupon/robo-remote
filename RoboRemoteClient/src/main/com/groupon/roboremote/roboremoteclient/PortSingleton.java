@@ -1,5 +1,5 @@
 /*
-        Copyright (c) 2012, 2013, 2014, Groupon, Inc.
+        Copyright (c) 2014, Groupon, Inc.
         All rights reserved.
 
         Redistribution and use in source and binary forms, with or without
@@ -30,21 +30,25 @@
         SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.groupon.roboremote.uiautomatorclient;
+package com.groupon.roboremote.roboremoteclient;
 
-public class Client extends com.groupon.roboremote.roboremoteclientcommon.Client {
-    private static Client instance = null;
+public class PortSingleton {
+    private static PortSingleton _instance = null;
+    private static int _port = com.groupon.roboremote.Constants.ROBOREMOTE_SERVER_PORT;
 
-    /**
-     * Gets a client instance on the uiautomator port
-     * @return
-     */
-    public static Client getInstance() {
-        if(instance == null) {
-            instance = new Client();
+    protected static PortSingleton getInstance() {
+        if(_instance == null) {
+            _instance = new PortSingleton();
         }
 
-        instance.API_PORT = PortSingleton.getInstance().getPort();
-        return instance;
+        return _instance;
+    }
+
+    protected void setPort(int port) {
+        _port = port;
+    }
+
+    protected int getPort() {
+        return _port;
     }
 }

@@ -50,8 +50,6 @@ public class DebugBridge {
 
     private IDevice currentDevice = null;
 
-    private LogThread loggerThread = null;
-
     public static DebugBridge get() throws Exception {
         if (_debugBridge == null) {
             _debugBridge = new DebugBridge();
@@ -129,18 +127,32 @@ public class DebugBridge {
         logger.info("Done starting debug bridge");
     }
 
+    public void terminate() {
+        bridge.terminate();
+    }
+
     public boolean isEmulator() throws Exception {
         return currentDevice.isEmulator();
     }
 
-    public void runShellCommand(String command) throws Exception {
-        
-        currentDevice.executeShellCommand(command, new NullOutputReceiver());
+    public void runShellCommand(String command) {
+        try {
+            currentDevice.executeShellCommand(command, new NullOutputReceiver());
+        } catch (Exception e) {
+            // since this has a NullOutputReceiver it occasionally fails
+            // catch the error and print some warning logs
+            logger.warn("Error recieved: {}", e);
+        }
     }
 
-    public void runShellCommand(String command, int timeout) throws Exception {
-
-        currentDevice.executeShellCommand(command, new NullOutputReceiver(), timeout);
+    public void runShellCommand(String command, int timeout) {
+        try {
+            currentDevice.executeShellCommand(command, new NullOutputReceiver(), timeout);
+        } catch (Exception e) {
+            // since this has a NullOutputReceiver it occasionally fails
+            // catch the error and print some warning logs
+            logger.warn("Error recieved: {}", e);
+        }
     }
 
     public void runShellCommand(String command, IShellOutputReceiver receiver, int timeout) throws Exception {
@@ -277,87 +289,5 @@ public class DebugBridge {
      */
     public void clearLogCat() throws Exception {
         DebugBridge.get().runShellCommand("logcat -c");
-    }
-
-    public void startLogListener(String filename) throws Exception {
-        logger.info("Starting log listener");
-        loggerThread = new LogThread(filename);
-        loggerThread.start();
-    }
-
-    public void stopLogListener() throws Exception {
-        logger.info("Stopping log listener");
-        if (loggerThread != null) {
-            loggerThread.close();
-            loggerThread.interrupt();
-        }
-    }
-
-    /**
-     * Multi line receiver that writes to a file
-     */
-    public class MultiReceiver extends MultiLineReceiver {
-        boolean closed = false;
-        String _fileName = null;
-        FileWriter fstream = null;
-        BufferedWriter ostream = null;
-
-        public MultiReceiver() {
-
-        }
-
-        public MultiReceiver(String outfile) throws Exception {
-            _fileName = outfile;
-            fstream = new FileWriter(_fileName);
-            ostream = new BufferedWriter(fstream);
-        }
-
-        public void processNewLines(java.lang.String[] lines) {
-            try {
-                for (String line: lines) {
-                    if (ostream != null) {
-                        ostream.write(line + "\n");
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        public boolean isCancelled() {
-            return closed;
-        }
-
-        public void close() {
-            closed = true;
-        }
-    }
-
-    /**
-     * This thread contains the running the log listener
-     * DebugBridge does not return until the logcat finishes(never) so we have to run it in its own thread
-     */
-    private class LogThread extends Thread {
-        String _filename = "";
-        MultiReceiver _receiver = null;
-
-        public LogThread(String filename) {
-            _filename = filename;
-        }
-
-        public void run() {
-            try {
-                logger.info("Logging to: {}", _filename);
-                _receiver = new MultiReceiver(_filename);
-                DebugBridge.get().runShellCommand("logcat -v time", _receiver, 0);
-            } catch (Exception e) {
-                logger.error("LogThread interrupted: {}", e);
-            }
-        }
-
-        public void close() {
-            // cause an exception in the receiver to kill the command
-            _receiver.close();
-        }
     }
 }
