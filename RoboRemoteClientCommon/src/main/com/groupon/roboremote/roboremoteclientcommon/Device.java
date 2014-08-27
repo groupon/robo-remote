@@ -71,7 +71,11 @@ public class Device {
     public static void storeLogs(String sourceLogFileName, String destLogFileName) throws Exception {
         // assumes eventmanager is running
         // store logs
-    	File tmpLogFile = new File(System.getProperty("java.io.tmpdir") + File.separator + sourceLogFileName);
+        String tmpdir = System.getProperty("java.io.tmpdir");
+        if (tmpdir == null || tmpdir == "null") {
+            tmpdir = "/tmp";
+        }
+    	File tmpLogFile = new File(tmpdir + File.separator + sourceLogFileName);
     	File destFile = new File(current_log_dir + File.separator + destLogFileName);
     	
         Files.copy(tmpLogFile, destFile);

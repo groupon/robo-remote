@@ -33,7 +33,11 @@
 package com.groupon.roboremote.roboremoteclientcommon;
 
 import org.json.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.lang.Exception;
 import java.lang.String;
 import java.net.ServerSocket;
@@ -41,6 +45,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class Utils {
+    public static final Logger logger = LoggerFactory.getLogger(Utils.class);
+
     public static ArrayList<String> jsonArrayToStringList(JSONArray arry) throws Exception {
         ArrayList<String> newArray = new ArrayList<String>();
         for (int x = 0; x < arry.length(); x++) {
@@ -66,5 +72,56 @@ public class Utils {
         serverSocket.close();
 
         return port;
+    }
+
+    public static String executeLocalCommand(String[] command) {
+        StringBuffer output = new StringBuffer();
+
+        Process p;
+        try {
+            p = Runtime.getRuntime().exec(command);
+            p.waitFor();
+            BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                output.append(line + "\n");
+            }
+
+            reader =
+                    new BufferedReader(new InputStreamReader(p.getErrorStream()));
+
+            line = "";
+            while ((line = reader.readLine()) != null) {
+                output.append(line + "\n");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return output.toString();
+    }
+
+    public static void clearStaleADBTunnels(String type) throws Exception {
+        // looks for PID style files with the specified type, removes tunnels and deletes files
+        String lsResult = executeLocalCommand(new String[] {"adb", "-s", DebugBridge.get().getSerialNumber(), "shell", "ls", "/data/local/tmp"});
+        String[] lsResults = lsResult.split(System.getProperty("line.separator"));
+        for (String file : lsResults) {
+            if (file.startsWith(type + "_PORT_")) {
+                String portStr = file.replace(type + "_PORT_", "");
+                int port = Integer.parseInt(portStr);
+                DebugBridge.get().deleteTunnel(port, port);
+                DebugBridge.get().runShellCommand("rm /data/local/tmp/" + file);
+
+                logger.info("Removed stale port forward: {}", port);
+            }
+        }
+    }
+
+    public static void addADBTunnelWithPIDFile(String type, int port) throws Exception {
+        DebugBridge.get().createTunnel(port, port);
+        DebugBridge.get().runShellCommand("touch /data/local/tmp/" + type + "_PORT_" + port);
     }
 }

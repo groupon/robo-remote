@@ -74,11 +74,14 @@ public class TestBase {
             logger.info("Starting test {}", testName);
             Device.setupLogDirectories(testName);
 
+            // clear stale ports
+            Utils.clearStaleADBTunnels("ROBO");
+
             // find a useable port
             PortSingleton.getInstance().setPort(Utils.getFreePort());
 
             // create adb tunnel
-            DebugBridge.get().createTunnel(PortSingleton.getInstance().getPort(), PortSingleton.getInstance().getPort());
+            Utils.addADBTunnelWithPIDFile("ROBO", PortSingleton.getInstance().getPort());
         }
 
         // see if a server is already listening
@@ -135,6 +138,9 @@ public class TestBase {
         {
             EmSingleton.get().close();
             killApp();
+
+            // clear stale ADB ports
+            Utils.clearStaleADBTunnels("ROBO");
 
             // stop logcat
             TestLogger.get().info("Stopping logcat");

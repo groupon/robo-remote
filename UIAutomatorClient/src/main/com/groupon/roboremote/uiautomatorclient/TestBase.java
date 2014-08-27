@@ -120,6 +120,9 @@ public class TestBase {
         } catch (Exception e) {
 
         } finally {
+            // clear adb ports
+            Utils.clearStaleADBTunnels("UIA");
+
             // stop logcat
             TestLogger.get().info("Stopping logcat");
             logcatLogger.stopLogListener();
@@ -254,9 +257,12 @@ public class TestBase {
         public void run() {
             _receiver = new MultiReceiver();
             try {
+                // clear stale ports
+                Utils.clearStaleADBTunnels("UIA");
+
                 // create adb tunnel
                 PortSingleton.getInstance().setPort(Utils.getFreePort());
-                DebugBridge.get().createTunnel(PortSingleton.getInstance().getPort(), PortSingleton.getInstance().getPort());
+                Utils.addADBTunnelWithPIDFile("UIA", PortSingleton.getInstance().getPort());
 
                 // build jar list
                 String jarList = "";

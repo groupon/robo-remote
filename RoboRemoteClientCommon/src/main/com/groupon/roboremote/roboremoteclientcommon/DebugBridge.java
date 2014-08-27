@@ -161,7 +161,13 @@ public class DebugBridge {
     }
 
     public void createTunnel(int fromPort, int toPort) throws Exception {
+
+
         currentDevice.createForward(fromPort, toPort);
+    }
+
+    public void deleteTunnel(int fromPort, int toPort) throws Exception {
+        currentDevice.removeForward(fromPort, toPort);
     }
 
     public void waitForConnected() throws Exception {
@@ -234,6 +240,10 @@ public class DebugBridge {
             throw new Exception("Could not find specified device");
 
         logger.info("Now using device: {}", serialNumber);
+    }
+
+    public String getSerialNumber() {
+        return currentDevice.getSerialNumber();
     }
 
     public void getScreenShot(String filename) throws Exception {
