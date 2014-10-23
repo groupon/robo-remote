@@ -143,17 +143,25 @@ public abstract class RemoteServer {
                     if (delegatedClassObject != null) {
                         currentClassObject = delegatedClassObject;
                     } else {
-                        Class c = Class.forName(query);
                         try {
-                            // try instantiating.. if that doesn't work then it is probably a static class
-                            currentClassObject = instantiateClass(c, classArgs);
+                            Class c = Class.forName(query);
+                            try {
+                                // try instantiating.. if that doesn't work then it is probably a static class
+                                currentClassObject = instantiateClass(c, classArgs);
+                            } catch (Exception e) {
+
+                            }
+
+                            // if we still don't have one then assume it is static and assign to the found class
+                            if (currentClassObject == null)
+                                currentClassObject = c;
                         } catch (Exception e) {
-
+                            // if we get here that means class resolution failed
+                            // we'll return an error
+                            returnObject.put(Constants.RESULT_OUTCOME, Constants.RESULT_FAILED);
+                            returnObject.put(Constants.RESULT_REASON, "Could not resolve class: " + query);
+                            return returnObject;
                         }
-
-                        // if we still don't have one then assume it is static and assign to the found class
-                        if (currentClassObject == null)
-                            currentClassObject = c;
                     }
                 }
 
