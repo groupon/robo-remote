@@ -93,13 +93,13 @@ public class Client {
 
     public JSONArray map(String requestJson) throws Exception {
         org.json.JSONObject result = post_to_server(Constants.REQUEST_MAP, requestJson);
-
         if (result.getString(Constants.RESULT_OUTCOME).compareTo(Constants.RESULT_SUCCESS) != 0) {
             String reason = result.has(Constants.RESULT_REASON) ? result.getString(Constants.RESULT_REASON) : "No reason provided";
             throw new Exception("Client::map:: " + "failed because: " + reason);
         }
 
         JSONArray results = new JSONArray();
+
 
         results = result.getJSONArray(Constants.RESULT_RESULTS);
 

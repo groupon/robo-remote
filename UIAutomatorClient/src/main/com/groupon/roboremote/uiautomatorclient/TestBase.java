@@ -231,7 +231,8 @@ public class TestBase {
         public void processNewLines(java.lang.String[] lines) {
             try {
                 for (String line: lines) {
-                    System.out.println(line);
+                    // TODO: add log levels
+                    //System.out.println(line);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
