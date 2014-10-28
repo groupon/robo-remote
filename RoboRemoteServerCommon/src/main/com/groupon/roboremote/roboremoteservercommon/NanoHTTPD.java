@@ -3,6 +3,7 @@ package com.groupon.roboremote.roboremoteservercommon;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.*;
 
@@ -710,9 +711,17 @@ public class NanoHTTPD
             {
                 String e = st.nextToken();
                 int sep = e.indexOf( '=' );
-                if ( sep >= 0 )
-                    p.put( decodePercent( e.substring( 0, sep )).trim(),
-                            decodePercent( e.substring( sep+1 )));
+                if ( sep >= 0 ) {
+                    try {
+                        // try to decode with UTF-8
+                        p.put(decodePercent(e.substring(0, sep)).trim(),
+                                URLDecoder.decode(e.substring(sep + 1), "UTF-8"));
+                    } catch (UnsupportedEncodingException uee) {
+                        // fall back to original functionality
+                        p.put(decodePercent(e.substring(0, sep)).trim(),
+                                decodePercent(e.substring(sep + 1)));
+                    }
+                }
             }
         }
 
