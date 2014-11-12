@@ -112,7 +112,12 @@ public class Utils {
             if (file.startsWith(type + "_PORT_")) {
                 String portStr = file.replace(type + "_PORT_", "");
                 int port = Integer.parseInt(portStr);
-                DebugBridge.get().deleteTunnel(port, port);
+                try {
+                    DebugBridge.get().deleteTunnel(port, port);
+                } catch (Exception e) {
+                    // ddmlib will throw an exception if the tunnel doesn't exist
+                    logger.info("Exception deleting tunnel ignored.  Tunnel may not have existed.");
+                }
                 DebugBridge.get().runShellCommand("rm /data/local/tmp/" + file);
 
                 logger.info("Removed stale port forward: {}", port);
