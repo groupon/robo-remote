@@ -54,16 +54,6 @@ public class Device {
         DebugBridge.get().runShellCommand("pm clear " + packageName);
     }
 
-    static void delete(File f) throws IOException {
-      if (f.isDirectory()) {
-        for (File c : f.listFiles()) {
-          delete(c);
-        }
-      }
-      if (!f.delete())
-        throw new FileNotFoundException("Failed to delete file: " + f);
-    }
-
     /**
      * Stores the specified log for this test
      * @throws Exception
@@ -89,20 +79,27 @@ public class Device {
     }
 
     public static void setupLogDirectories(String testName) throws Exception {
-        String currentDir = new File("").getAbsolutePath();
+        File log_dir = new File(getLogDirectory(testName) + File.separator + "test.log");
 
-        // clear the final log directory
-        File log_dir = new File(currentDir + File.separator + "logs" 
-              + File.separator + testName + File.separator + "test.log");
         TestLogger.get().info("Log directory: {}", log_dir.getParent());
         
         Files.createParentDirs(log_dir);
 
         // clear existing files from this location
         if (log_dir.exists()) {
-            delete(log_dir);
+            Utils.deleteDirectory(log_dir);
         }
 
         current_log_dir = log_dir.getParent();
+    }
+
+    public static String getLogDirectory(String testName) {
+        String currentDir = new File("").getAbsolutePath();
+
+        // clear the final log directory
+        File log_dir = new File(currentDir + File.separator + "logs"
+                + File.separator + testName + File.separator + "test.log");
+
+        return log_dir.getParent();
     }
 }

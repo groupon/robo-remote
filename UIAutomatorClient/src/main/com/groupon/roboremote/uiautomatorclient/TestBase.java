@@ -33,7 +33,6 @@
 package com.groupon.roboremote.uiautomatorclient;
 
 import com.android.ddmlib.MultiLineReceiver;
-import com.groupon.roboremote.Constants;
 import com.groupon.roboremote.roboremoteclientcommon.DebugBridge;
 import com.groupon.roboremote.roboremoteclientcommon.Device;
 import com.groupon.roboremote.roboremoteclientcommon.Utils;
@@ -217,6 +216,15 @@ public class TestBase {
 
             Thread.sleep(2000);
         }
+    }
+
+    /**
+     * Gives external access to the logcat logger.  This is useful for runners that want to only call setup once
+     * and need to restart the logger on their own
+     * @return
+     */
+    public LogcatLogger getLogcatLogger() {
+        return logcatLogger;
     }
 
     /**

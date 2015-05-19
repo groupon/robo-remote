@@ -273,11 +273,13 @@ public class DebugBridge {
     public void push(String sourcefile, String destination) throws Exception {
         SyncService service = currentDevice.getSyncService();
         service.pushFile(sourcefile, destination, SyncService.getNullProgressMonitor());
+        service.close();
     }
 
     public void pull(String sourcefile, String destination) throws Exception {
         SyncService service = currentDevice.getSyncService();
         service.pullFile(sourcefile, destination, SyncService.getNullProgressMonitor());
+        service.close();
     }
     
     public void installPackage(String filename) throws Exception {

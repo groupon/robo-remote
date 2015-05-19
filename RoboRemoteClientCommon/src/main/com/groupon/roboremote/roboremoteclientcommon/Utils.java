@@ -36,8 +36,7 @@ import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.Exception;
 import java.lang.String;
 import java.net.ServerSocket;
@@ -56,14 +55,25 @@ public class Utils {
         return newArray;
     }
 
+    /**
+     * returns values for a key in the following order:
+     * 1. First checks environment variables
+     * 2. Falls back to system properties
+     *
+     * @param name
+     * @param defaultValue
+     * @return
+     */
     public static String getEnv(String name, String defaultValue) {
         Map<String, String> env = System.getenv();
 
+        // try to get value from environment variables
         if (env.get(name) != null) {
             return env.get(name);
         }
 
-        return defaultValue;
+        // fall back to system properties
+        return System.getProperty(name, defaultValue);
     }
 
     public static int getFreePort() throws Exception {
@@ -128,5 +138,15 @@ public class Utils {
     public static void addADBTunnelWithPIDFile(String type, int port) throws Exception {
         DebugBridge.get().createTunnel(port, port);
         DebugBridge.get().runShellCommand("touch /data/local/tmp/" + type + "_PORT_" + port);
+    }
+
+    public static void deleteDirectory(File f) throws IOException {
+        if (f.isDirectory()) {
+            for (File c : f.listFiles()) {
+                deleteDirectory(c);
+            }
+        }
+        if (!f.delete())
+            throw new FileNotFoundException("Failed to delete file: " + f);
     }
 }
