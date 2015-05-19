@@ -51,7 +51,7 @@ public class LogbackAppender extends AppenderBase<ILoggingEvent> {
     public void append(ILoggingEvent event) {
         if (layout == null) {
             layout = new PatternLayout();
-            layout.setPattern("[%le] - %class{36}:%L %M - %msg");
+            layout.setPattern("[%le] - %d{HH:mm:ss.SSS} - %class{36}:%L %M - %msg");
             layout.setContext(this.context);
             layout.start();
         }
