@@ -36,7 +36,7 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremoteserver</artifactId>
-    <version>0.6.0-b14-SNAPSHOT</version>
+    <version>0.6.1-b1-SNAPSHOT</version>
     <packaging>apklib</packaging>
     <name>RoboRemoteServer APKLib</name>
     <description>This is the Android side component of RoboRemote</description>
@@ -58,18 +58,31 @@
     <parent>
         <groupId>com.groupon.roboremote</groupId>
         <artifactId>roboremoteserveraggregator</artifactId>
-        <version>0.6.0-b14-SNAPSHOT</version>
+        <version>0.6.1-b1-SNAPSHOT</version>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>com.jayway.android.robotium</groupId>
             <artifactId>robotium-solo</artifactId>
+            <version>5.4.1</version>
         </dependency>
         <dependency>
             <groupId>android</groupId>
             <artifactId>android</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.android.support.test</groupId>
+            <artifactId>runner</artifactId>
+            <version>0.3</version>
+            <type>aar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.android.support.test</groupId>
+            <artifactId>rules</artifactId>
+            <version>0.3</version>
+            <type>aar</type>
         </dependency>
         <dependency>
             <groupId>com.google.android</groupId>
@@ -115,7 +128,7 @@
                         </jvmArguments>
                     </dex>
                     <sdk>
-                        <platform>14</platform>
+                        <platform>17</platform>
                     </sdk>
                 </configuration>
                 <extensions>true</extensions>

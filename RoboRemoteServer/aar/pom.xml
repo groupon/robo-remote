@@ -36,7 +36,7 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremoteserveraar</artifactId>
-    <version>0.6.0-b14-SNAPSHOT</version>
+    <version>0.6.1-b1-SNAPSHOT</version>
     <packaging>aar</packaging>
     <name>RoboRemoteServer AAR</name>
     <description>This is the Android side component of RoboRemote</description>
@@ -58,13 +58,19 @@
     <parent>
         <groupId>com.groupon.roboremote</groupId>
         <artifactId>roboremoteserveraggregator</artifactId>
-        <version>0.6.0-b14-SNAPSHOT</version>
+        <version>0.6.1-b1-SNAPSHOT</version>
     </parent>
 
     <dependencies>
         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+        </dependency>
+        <dependency>
             <groupId>com.jayway.android.robotium</groupId>
             <artifactId>robotium-solo</artifactId>
+            <version>5.4.1</version>
         </dependency>
         <dependency>
             <groupId>android</groupId>
@@ -75,6 +81,18 @@
             <groupId>com.google.android</groupId>
             <artifactId>android-test</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.android.support.test</groupId>
+            <artifactId>runner</artifactId>
+            <version>0.3</version>
+            <type>aar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.android.support.test</groupId>
+            <artifactId>rules</artifactId>
+            <version>0.3</version>
+            <type>aar</type>
         </dependency>
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
@@ -115,7 +133,7 @@
                         </jvmArguments>
                     </dex>
                     <sdk>
-                        <platform>14</platform>
+                        <platform>17</platform>
                     </sdk>
                     <androidManifestFile>../apklib/AndroidManifest.xml</androidManifestFile>
                     <resourceDirectory>../apklib/res</resourceDirectory>

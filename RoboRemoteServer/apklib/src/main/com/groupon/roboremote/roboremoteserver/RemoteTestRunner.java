@@ -33,9 +33,10 @@
 package com.groupon.roboremote.roboremoteserver;
 
 import android.os.Bundle;
-import android.test.InstrumentationTestRunner;
 
-public class RemoteTestRunner extends InstrumentationTestRunner {
+import android.support.test.runner.AndroidJUnitRunner;
+
+public class RemoteTestRunner extends AndroidJUnitRunner {
     @Override
     public void onCreate(Bundle arguments) {
         //process you parameters here.
