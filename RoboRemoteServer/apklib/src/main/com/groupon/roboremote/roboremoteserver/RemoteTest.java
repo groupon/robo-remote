@@ -32,23 +32,32 @@
 
 package com.groupon.roboremote.roboremoteserver;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.test.ActivityInstrumentationTestCase2;
+import org.junit.Before;
+import org.junit.Rule;
 import android.app.Activity;
+import android.app.Instrumentation;
 import com.groupon.roboremote.Constants;
 import com.groupon.roboremote.roboremoteserver.robotium.*;
 
-public abstract class RemoteTest<T extends Activity> extends ActivityInstrumentationTestCase2 {
+import android.support.test.InstrumentationRegistry;
+import android.support.test.rule.ActivityTestRule;
+
+public abstract class RemoteTest<T extends Activity> {
     protected Solo2 solo;
     private Object lastResponseObject = null;
     private Boolean appStarted = false;
     private RoboRemoteServer rrs = null;
 
+    @Rule
+    public ActivityTestRule<T> mActivityRule;
+
     public RemoteTest(Class<T> activityClass) throws ClassNotFoundException {
-        super("blah", activityClass);
         rrs = new RoboRemoteServer(null, getInstrumentation(), this);
+        mActivityRule = new ActivityTestRule(activityClass);
+    }
+
+    public Instrumentation getInstrumentation() {
+        return InstrumentationRegistry.getInstrumentation();
     }
 
     public void startServer() throws Exception {
@@ -64,14 +73,13 @@ public abstract class RemoteTest<T extends Activity> extends ActivityInstrumenta
 
     public void startApp() {
         // Initialize Robotium Solo singleton
-        solo = new Solo2(getInstrumentation(), getActivity());
+        solo = new Solo2(getInstrumentation());//, mActivityRule.getActivity());
         SoloSingleton.set(solo);
         rrs.setSolo(solo);
     }
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setup() throws Exception {
         startApp();
     }
 }

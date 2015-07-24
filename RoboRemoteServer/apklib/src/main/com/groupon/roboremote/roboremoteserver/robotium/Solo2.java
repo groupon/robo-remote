@@ -38,7 +38,7 @@ import android.content.ComponentName;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.jayway.android.robotium.solo.Solo;
+import com.robotium.solo.Solo;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

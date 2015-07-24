@@ -4,7 +4,7 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>uiautomatorserver</artifactId>
-    <version>0.6.0-b14-SNAPSHOT</version>
+    <version>0.6.1-b1-SNAPSHOT</version>
     <packaging>apk</packaging>
     <name>RoboRemote UIAutomator Server</name>
     <description>This is the Android side component of RoboRemote</description>
@@ -30,7 +30,7 @@
     </parent>
 
     <properties>
-        <com.groupon.roboremote-version>0.6.0-b14-SNAPSHOT</com.groupon.roboremote-version>
+        <com.groupon.roboremote-version>0.6.1-b1-SNAPSHOT</com.groupon.roboremote-version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Disable kicking off tests during build. Can do this through command line with : -Dandroid.enableIntegrationTest=true -->
@@ -41,13 +41,13 @@
         <dependency>
             <groupId>android.test.uiautomator</groupId>
             <artifactId>uiautomator</artifactId>
-            <version>4.4.2_r3</version>
+            <version>4.4.2_r4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>android</groupId>
             <artifactId>android</artifactId>
-            <version>4.3_r2</version>
+            <version>4.4.2_r4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
