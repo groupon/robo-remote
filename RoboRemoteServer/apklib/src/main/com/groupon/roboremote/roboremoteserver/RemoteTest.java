@@ -73,7 +73,7 @@ public abstract class RemoteTest<T extends Activity> {
 
     public void startApp() {
         // Initialize Robotium Solo singleton
-        solo = new Solo2(getInstrumentation());//, mActivityRule.getActivity());
+        solo = new Solo2(getInstrumentation(), mActivityRule.getActivity());
         SoloSingleton.set(solo);
         rrs.setSolo(solo);
     }
