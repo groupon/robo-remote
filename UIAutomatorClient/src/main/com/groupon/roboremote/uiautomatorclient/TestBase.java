@@ -31,14 +31,13 @@
  */
 
 package com.groupon.roboremote.uiautomatorclient;
-
 import com.android.ddmlib.MultiLineReceiver;
 import com.groupon.roboremote.roboremoteclientcommon.DebugBridge;
 import com.groupon.roboremote.roboremoteclientcommon.Device;
 import com.groupon.roboremote.roboremoteclientcommon.Utils;
+import com.groupon.roboremote.roboremoteclientcommon.logging.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.groupon.roboremote.roboremoteclientcommon.logging.*;
 
 import java.io.File;
 import java.lang.Exception;
@@ -157,17 +156,20 @@ public class TestBase {
     public void deployTestJar() throws Exception {
         // we build a new list of jars that will be used for the launch command line
         _automator_run_jars = new ArrayList<String>();
-
         for (String jarFileName: _automator_jars) {
             File jarFile = new File(jarFileName);
             if (!jarFile.exists())
                 throw new Exception("Test jar does not exist: " + _automator_jar);
 
             String[] destFileNameParts = jarFileName.split(File.separator);
-            String destFileName = "/data/local/tmp/" + destFileNameParts[destFileNameParts.length-1];
+            String destFileName = "/data/local/tmp/" + destFileNameParts[destFileNameParts.length - 1];
             _automator_run_jars.add(destFileName);
 
-            DebugBridge.get().push(jarFileName, destFileName);
+            // do adb push to /data/local/tmp if file does not exist on device
+            if(!Utils.fileExistsOnDevice(destFileNameParts[destFileNameParts.length - 1])) {
+                logger.info("Push file to device :" + destFileName);
+                DebugBridge.get().push(jarFileName, destFileName);
+            }
         }
     }
 

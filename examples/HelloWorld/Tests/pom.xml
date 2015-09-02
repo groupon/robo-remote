@@ -41,7 +41,7 @@
     <version>1.0</version>
 
     <properties>
-        <com.groupon.roboremote-version>0.6.0-b14-SNAPSHOT</com.groupon.roboremote-version>
+        <com.groupon.roboremote-version>0.6.1-b3-SNAPSHOT</com.groupon.roboremote-version>
     </properties>
 
     <parent>

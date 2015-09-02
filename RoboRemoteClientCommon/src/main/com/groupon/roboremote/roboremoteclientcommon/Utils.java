@@ -135,6 +135,22 @@ public class Utils {
         }
     }
 
+  /**
+   * Check if file exists on device at /data/local/tmp location
+   * @param jarFile - jar File name to check
+   *
+   * @return true if file exists
+   * @throws Exception
+   */
+  public static boolean fileExistsOnDevice(String jarFile) throws Exception {
+      String lsResult = executeLocalCommand(new String[] {"adb", "-s", DebugBridge.get().getSerialNumber(), "shell", "ls", "/data/local/tmp |", "grep", jarFile});
+         if(lsResult.contains(jarFile)){
+           return true;
+    }
+
+       return false;
+  }
+
     public static void addADBTunnelWithPIDFile(String type, int port) throws Exception {
         DebugBridge.get().createTunnel(port, port);
         DebugBridge.get().runShellCommand("touch /data/local/tmp/" + type + "_PORT_" + port);

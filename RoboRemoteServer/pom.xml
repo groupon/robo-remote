@@ -36,7 +36,7 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremoteserveraggregator</artifactId>
-    <version>0.6.1-b1-SNAPSHOT</version>
+    <version>0.6.1-b3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>RoboRemoteServer Aggregator</name>
     <description>This is the aggregator for RoboRemoteServer</description>
@@ -63,7 +63,7 @@
 
     
     <properties>
-        <com.groupon.roboremote-version>0.6.1-b1-SNAPSHOT</com.groupon.roboremote-version>
+        <com.groupon.roboremote-version>0.6.1-b3-SNAPSHOT</com.groupon.roboremote-version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Disable kicking off tests during build. Can do this through command line with : -Dandroid.enableIntegrationTest=true -->
