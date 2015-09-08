@@ -143,12 +143,16 @@ public class Utils {
    * @throws Exception
    */
   public static boolean fileExistsOnDevice(String jarFile) throws Exception {
-      String lsResult = executeLocalCommand(new String[] {"adb", "-s", DebugBridge.get().getSerialNumber(), "shell", "ls", "/data/local/tmp |", "grep", jarFile});
-         if(lsResult.contains(jarFile)){
-           return true;
-    }
+      String lsResult = executeLocalCommand(new String[] {"adb", "-s", DebugBridge.get().getSerialNumber(), "shell", "ls", "/data/local/tmp"});
+      String[] lsResults = lsResult.split(System.getProperty("line.separator"));
+      for (String file : lsResults) {
+          if (file.contains(jarFile)) {
+             logger.info("Found file at /data/local/tmp :" + jarFile);
+             return true;
+          }
+     }
 
-       return false;
+     return false;
   }
 
     public static void addADBTunnelWithPIDFile(String type, int port) throws Exception {
