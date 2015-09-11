@@ -69,15 +69,17 @@ public class TestBase {
      * @param clearAppData - true if you want app data cleared, false otherwise
      */
     public void setUp(String testName, Boolean clearAppData) throws Exception {
-        if (_automator_jars == null)
-            setAppEnvironmentVariables();
+        if (_automator_jars == null) {
+             setAppEnvironmentVariables();
+            // push files to device only once at the beginning after setting the App environment variables
+            deployTestJar();
+        }
 
         // only do the following if isStarted==false OR the client is not already listening
         // this allows a client that overrides this class to safely call setUp multiple times without destroying logs
         if (!isStarted || !Client.getInstance().isListening()) {
             logger.info("Starting test {}", testName);
             Device.setupLogDirectories(testName);
-            deployTestJar();
 
             // see if a server is already listening
             boolean clientWasListening = false;
@@ -165,11 +167,9 @@ public class TestBase {
             String destFileName = "/data/local/tmp/" + destFileNameParts[destFileNameParts.length - 1];
             _automator_run_jars.add(destFileName);
 
-            // do adb push to /data/local/tmp if file does not exist on device
-            if(!Utils.fileExistsOnDevice(destFileNameParts[destFileNameParts.length - 1])) {
-                logger.info("Push file to device :" + destFileName);
-                DebugBridge.get().push(jarFileName, destFileName);
-            }
+            logger.info("Push file to device :" + destFileName);
+            DebugBridge.get().push(jarFileName, destFileName);
+
         }
     }
 
