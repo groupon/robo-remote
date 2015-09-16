@@ -36,9 +36,11 @@ import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.lang.Exception;
-import java.lang.String;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.Map;
@@ -134,26 +136,6 @@ public class Utils {
             }
         }
     }
-
-  /**
-   * Check if file exists on device at /data/local/tmp location
-   * @param jarFile - jar File name to check
-   *
-   * @return true if file exists
-   * @throws Exception
-   */
-  public static boolean fileExistsOnDevice(String jarFile) throws Exception {
-      String lsResult = executeLocalCommand(new String[] {"adb", "-s", DebugBridge.get().getSerialNumber(), "shell", "ls", "/data/local/tmp"});
-      String[] lsResults = lsResult.split(System.getProperty("line.separator"));
-      for (String file : lsResults) {
-          if (file.contains(jarFile)) {
-             logger.info("Found file at /data/local/tmp :" + jarFile);
-             return true;
-          }
-     }
-
-     return false;
-  }
 
     public static void addADBTunnelWithPIDFile(String type, int port) throws Exception {
         DebugBridge.get().createTunnel(port, port);
