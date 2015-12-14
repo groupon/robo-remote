@@ -43,7 +43,7 @@
     <name>Runner</name>
 
     <properties>
-        <com.groupon.roboremote-version>0.6.0-b14-SNAPSHOT</com.groupon.roboremote-version>
+        <com.groupon.roboremote-version>0.6.1-b3-SNAPSHOT</com.groupon.roboremote-version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Disable kicking off tests during build. Can do this through command line with : -Dandroid.enableIntegrationTest=true -->
@@ -68,6 +68,11 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+        </dependency>
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>

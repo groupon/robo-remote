@@ -31,14 +31,13 @@
  */
 
 package com.groupon.roboremote.uiautomatorclient;
-
 import com.android.ddmlib.MultiLineReceiver;
 import com.groupon.roboremote.roboremoteclientcommon.DebugBridge;
 import com.groupon.roboremote.roboremoteclientcommon.Device;
 import com.groupon.roboremote.roboremoteclientcommon.Utils;
+import com.groupon.roboremote.roboremoteclientcommon.logging.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.groupon.roboremote.roboremoteclientcommon.logging.*;
 
 import java.io.File;
 import java.lang.Exception;
@@ -70,15 +69,17 @@ public class TestBase {
      * @param clearAppData - true if you want app data cleared, false otherwise
      */
     public void setUp(String testName, Boolean clearAppData) throws Exception {
-        if (_automator_jars == null)
-            setAppEnvironmentVariables();
+        if (_automator_jars == null) {
+             setAppEnvironmentVariables();
+            // push files to device only once at the beginning after setting the App environment variables
+            deployTestJar();
+        }
 
         // only do the following if isStarted==false OR the client is not already listening
         // this allows a client that overrides this class to safely call setUp multiple times without destroying logs
         if (!isStarted || !Client.getInstance().isListening()) {
             logger.info("Starting test {}", testName);
             Device.setupLogDirectories(testName);
-            deployTestJar();
 
             // see if a server is already listening
             boolean clientWasListening = false;
@@ -157,17 +158,18 @@ public class TestBase {
     public void deployTestJar() throws Exception {
         // we build a new list of jars that will be used for the launch command line
         _automator_run_jars = new ArrayList<String>();
-
         for (String jarFileName: _automator_jars) {
             File jarFile = new File(jarFileName);
             if (!jarFile.exists())
                 throw new Exception("Test jar does not exist: " + _automator_jar);
 
             String[] destFileNameParts = jarFileName.split(File.separator);
-            String destFileName = "/data/local/tmp/" + destFileNameParts[destFileNameParts.length-1];
+            String destFileName = "/data/local/tmp/" + destFileNameParts[destFileNameParts.length - 1];
             _automator_run_jars.add(destFileName);
 
+            logger.info("Push file to device :" + destFileName);
             DebugBridge.get().push(jarFileName, destFileName);
+
         }
     }
 
