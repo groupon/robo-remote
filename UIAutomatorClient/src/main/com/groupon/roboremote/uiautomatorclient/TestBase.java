@@ -53,6 +53,7 @@ public class TestBase {
     private static AppThread ap = null;
     private static boolean isStarted = false;
     private static LogcatLogger logcatLogger = null;
+    private static String app_package = null;
 
     public void onFailure() throws Exception {
         logger.warn("com.groupon.roboremote.uiautomatorclient.TestBase::OnFailure:: Taking screenshot");
@@ -73,6 +74,10 @@ public class TestBase {
              setAppEnvironmentVariables();
             // push files to device only once at the beginning after setting the App environment variables
             deployTestJar();
+        }
+
+        if (clearAppData) {
+            clearAppData();
         }
 
         // only do the following if isStarted==false OR the client is not already listening
@@ -134,6 +139,16 @@ public class TestBase {
             isStarted = false;
             DebugBridge.destroy();
         }
+    }
+
+    public static void clearAppData() throws Exception {
+        // clear app data - this has the side effect of killing a running app
+        // TODO: this only works on 2.3+.. need a solution for 2.1+
+        Device.clearAppData(app_package);
+    }
+
+    public static void setAppPackage(String appPackage) {
+        app_package = appPackage;
     }
 
     public static void setAppEnvironmentVariables(String ... automator_jars) {
