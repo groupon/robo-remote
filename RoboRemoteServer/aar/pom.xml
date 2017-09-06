@@ -122,9 +122,9 @@
                 <version>2.9</version>
             </plugin>
             <plugin>
-                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <groupId>com.simpligility.maven.plugins</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.9.0-rc.2</version>
+                <version>4.0.0</version>
                 <configuration>
                     <dex>
                         <jvmArguments>
@@ -135,7 +135,7 @@
                     <sdk>
                         <platform>17</platform>
                     </sdk>
-                    <androidManifestFile>../apklib/AndroidManifest.xml</androidManifestFile>
+                    <androidManifestFile>../apklib/src/main/AndroidManifest.xml</androidManifestFile>
                     <resourceDirectory>../apklib/res</resourceDirectory>
                 </configuration>
                 <extensions>true</extensions>

@@ -29,6 +29,17 @@
         <version>9</version>
     </parent>
 
+    <repositories>
+        <repository>
+            <id>boundlessgeo</id>
+            <url>http://repo.boundlessgeo.com/main/</url>
+        </repository>
+        <repository>
+            <id>google</id>
+            <url>https://maven.google.com</url>
+        </repository>
+    </repositories>
+
     <properties>
         <com.groupon.roboremote-version>0.6.2-b0-SNAPSHOT</com.groupon.roboremote-version>
 
@@ -67,9 +78,9 @@
         <finalName>uiautomatorserver</finalName>
         <plugins>
             <plugin>
-                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <groupId>com.simpligility.maven.plugins</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.8.2</version>
+                <version>4.0.0</version>
                 <extensions>true</extensions>
                 <configuration>
 
