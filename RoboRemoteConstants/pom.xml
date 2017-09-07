@@ -35,7 +35,7 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremoteconstants</artifactId>
-    <version>0.6.2-b0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>RoboRemote Constants Library</name>
     <description>This is the constants library for RoboRemote</description>
