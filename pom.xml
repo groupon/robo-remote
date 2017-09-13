@@ -36,7 +36,7 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremote</artifactId>
-    <version>0.6.2-b0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <name>RoboRemote</name>
     <description>This is the aggregator for RoboRemote</description>
@@ -53,7 +53,8 @@
         <url>git@github.com:groupon/robo-remote.git</url>
         <connection>scm:git:git@github.com:groupon/robo-remote.git</connection>
         <developerConnection>scm:git:git@github.com:groupon/robo-remote.git</developerConnection>
-    </scm>
+      <tag>roboremote-1.0.0</tag>
+  </scm>
 
     <parent>
         <groupId>org.sonatype.oss</groupId>
