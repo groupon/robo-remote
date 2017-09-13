@@ -36,7 +36,7 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremoteservercommon</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>RoboRemote Server Common Library</name>
     <description>This is the common remote server library</description>
@@ -53,7 +53,7 @@
         <url>git@github.com:groupon/robo-remote.git</url>
         <connection>scm:git:git@github.com:groupon/robo-remote.git</connection>
         <developerConnection>scm:git:git@github.com:groupon/robo-remote.git</developerConnection>
-      <tag>roboremote-1.0.0</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <parent>
