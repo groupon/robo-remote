@@ -36,7 +36,7 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>uiautomatorclient</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>0.6.2-b0-SNAPSHOT</version>
     <name>UiAutomator Client</name>
     <description>This is the desktop side component of UIAutomator Remote</description>
 
@@ -52,8 +52,7 @@
         <url>git@github.com:groupon/robo-remote.git</url>
         <connection>scm:git:git@github.com:groupon/robo-remote.git</connection>
         <developerConnection>scm:git:git@github.com:groupon/robo-remote.git</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+    </scm>
 
     <parent>
         <groupId>org.sonatype.oss</groupId>
@@ -62,7 +61,7 @@
     </parent>
 
     <properties>
-        <com.groupon.roboremote-version>1.0.1-SNAPSHOT</com.groupon.roboremote-version>
+        <com.groupon.roboremote-version>0.6.2-b0-SNAPSHOT</com.groupon.roboremote-version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Disable kicking off tests during build. Can do this through command line with : -Dandroid.enableIntegrationTest=true -->
