@@ -36,7 +36,7 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremoteserveraar</artifactId>
-    <version>1.0.0</version>
+    <version>0.6.2-b0-SNAPSHOT</version>
     <packaging>aar</packaging>
     <name>RoboRemoteServer AAR</name>
     <description>This is the Android side component of RoboRemote</description>
@@ -53,13 +53,12 @@
         <url>git@github.com:groupon/robo-remote.git</url>
         <connection>scm:git:git@github.com:groupon/robo-remote.git</connection>
         <developerConnection>scm:git:git@github.com:groupon/robo-remote.git</developerConnection>
-      <tag>roboremote-1.0.0</tag>
-  </scm>
+    </scm>
 
     <parent>
         <groupId>com.groupon.roboremote</groupId>
         <artifactId>roboremoteserveraggregator</artifactId>
-        <version>1.0.0</version>
+        <version>0.6.2-b0-SNAPSHOT</version>
     </parent>
 
     <dependencies>
