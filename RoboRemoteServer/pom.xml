@@ -36,7 +36,7 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremoteserveraggregator</artifactId>
-    <version>1.0.0</version>
+    <version>0.6.2-b0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>RoboRemoteServer Aggregator</name>
     <description>This is the aggregator for RoboRemoteServer</description>
@@ -53,8 +53,7 @@
         <url>git@github.com:groupon/robo-remote.git</url>
         <connection>scm:git:git@github.com:groupon/robo-remote.git</connection>
         <developerConnection>scm:git:git@github.com:groupon/robo-remote.git</developerConnection>
-      <tag>roboremote-1.0.0</tag>
-  </scm>
+    </scm>
 
     <parent>
         <groupId>org.sonatype.oss</groupId>
@@ -74,6 +73,8 @@
     </repositories>
 
     <properties>
+        <com.groupon.roboremote-version>0.6.2-b0-SNAPSHOT</com.groupon.roboremote-version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Disable kicking off tests during build. Can do this through command line with : -Dandroid.enableIntegrationTest=true -->
         <android.enableIntegrationTest>false</android.enableIntegrationTest>
@@ -106,12 +107,12 @@
           <dependency>
               <groupId>com.groupon.roboremote</groupId>
               <artifactId>roboremoteservercommon</artifactId>
-              <version>${project.version}</version>
+              <version>${com.groupon.roboremote-version}</version>
           </dependency>
           <dependency>
               <groupId>com.groupon.roboremote</groupId>
               <artifactId>roboremoteconstants</artifactId>
-              <version>${project.version}</version>
+              <version>${com.groupon.roboremote-version}</version>
           </dependency>
       </dependencies>
     </dependencyManagement>
