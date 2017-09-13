@@ -40,10 +40,6 @@
     <artifactId>HelloWorldTests</artifactId>
     <version>1.0</version>
 
-    <properties>
-        <com.groupon.roboremote-version>0.6.2-b0-SNAPSHOT</com.groupon.roboremote-version>
-    </properties>
-
     <parent>
         <artifactId>helloworldaggregator</artifactId>
         <groupId>com.groupon.roboremote.example</groupId>
@@ -90,17 +86,17 @@
         <dependency>
             <groupId>com.groupon.roboremote</groupId>
             <artifactId>roboremoteclient</artifactId>
-            <version>${com.groupon.roboremote-version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.groupon.roboremote.roboremoteclient</groupId>
             <artifactId>junit</artifactId>
-            <version>${com.groupon.roboremote-version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.groupon.roboremote</groupId>
             <artifactId>uiautomatorclient</artifactId>
-            <version>${com.groupon.roboremote-version}</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

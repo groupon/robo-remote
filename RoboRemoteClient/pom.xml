@@ -52,8 +52,8 @@
         <url>git@github.com:groupon/robo-remote.git</url>
         <connection>scm:git:git@github.com:groupon/robo-remote.git</connection>
         <developerConnection>scm:git:git@github.com:groupon/robo-remote.git</developerConnection>
-      <tag>roboremote-1.0.0</tag>
-  </scm>
+        <tag>roboremote-1.0.0</tag>
+    </scm>
 
     <parent>
         <groupId>org.sonatype.oss</groupId>
@@ -62,8 +62,6 @@
     </parent>
 
     <properties>
-        <com.groupon.roboremote-version>1.0.0</com.groupon.roboremote-version>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Disable kicking off tests during build. Can do this through command line with : -Dandroid.enableIntegrationTest=true -->
         <android.enableIntegrationTest>false</android.enableIntegrationTest>
@@ -127,12 +125,12 @@
         <dependency>
             <groupId>com.groupon.roboremote</groupId>
             <artifactId>roboremoteclientcommon</artifactId>
-            <version>${com.groupon.roboremote-version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.groupon.roboremote</groupId>
             <artifactId>roboremoteconstants</artifactId>
-            <version>${com.groupon.roboremote-version}</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <build>
