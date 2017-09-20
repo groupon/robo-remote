@@ -4,7 +4,6 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>uiautomatorserver</artifactId>
-    <version>0.6.2-b0-SNAPSHOT</version>
     <packaging>apk</packaging>
     <name>RoboRemote UIAutomator Server</name>
     <description>This is the Android side component of RoboRemote</description>
@@ -24,9 +23,9 @@
     </scm>
 
     <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>9</version>
+        <groupId>com.groupon.roboremote</groupId>
+        <artifactId>roboremote</artifactId>
+        <version>0.6.2-b0-SNAPSHOT</version>
     </parent>
 
     <repositories>

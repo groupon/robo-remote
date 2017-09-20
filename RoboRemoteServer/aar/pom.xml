@@ -36,7 +36,6 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremoteserveraar</artifactId>
-    <version>0.6.2-b0-SNAPSHOT</version>
     <packaging>aar</packaging>
     <name>RoboRemoteServer AAR</name>
     <description>This is the Android side component of RoboRemote</description>
@@ -65,7 +64,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.12</version>
         </dependency>
         <dependency>
             <groupId>com.jayway.android.robotium</groupId>
@@ -75,11 +74,6 @@
         <dependency>
             <groupId>android</groupId>
             <artifactId>android</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.android</groupId>
-            <artifactId>android-test</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -35,7 +35,6 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremoteclientcommon</artifactId>
-    <version>0.6.2-b0-SNAPSHOT</version>
     <name>RoboRemote Client Common Library</name>
     <description>This is the desktop side common client component</description>
 
@@ -54,9 +53,9 @@
     </scm>
 
     <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>9</version>
+        <groupId>com.groupon.roboremote</groupId>
+        <artifactId>roboremote</artifactId>
+        <version>0.6.2-b0-SNAPSHOT</version>
     </parent>
 
     <properties>
@@ -122,7 +121,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>13.0.1</version>
+            <version>15.0</version>
         </dependency>
     </dependencies>
     <build>

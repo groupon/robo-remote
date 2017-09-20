@@ -36,7 +36,6 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremoteserveraggregator</artifactId>
-    <version>0.6.2-b0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>RoboRemoteServer Aggregator</name>
     <description>This is the aggregator for RoboRemoteServer</description>
@@ -56,9 +55,9 @@
     </scm>
 
     <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>9</version>
+        <groupId>com.groupon.roboremote</groupId>
+        <artifactId>roboremote</artifactId>
+        <version>0.6.2-b0-SNAPSHOT</version>
     </parent>
 
     <repositories>

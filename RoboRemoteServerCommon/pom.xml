@@ -36,7 +36,6 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremoteservercommon</artifactId>
-    <version>0.6.2-b0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>RoboRemote Server Common Library</name>
     <description>This is the common remote server library</description>
@@ -56,9 +55,9 @@
     </scm>
 
     <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>9</version>
+        <groupId>com.groupon.roboremote</groupId>
+        <artifactId>roboremote</artifactId>
+        <version>0.6.2-b0-SNAPSHOT</version>
     </parent>
 
     <repositories>
