@@ -61,6 +61,17 @@
         <version>0.6.2-b0-SNAPSHOT</version>
     </parent>
 
+    <repositories>
+        <repository>
+            <id>boundlessgeo</id>
+            <url>http://repo.boundlessgeo.com/main/</url>
+        </repository>
+        <repository>
+            <id>google</id>
+            <url>https://maven.google.com</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>com.jayway.android.robotium</groupId>
@@ -117,9 +128,16 @@
                 <version>2.9</version>
             </plugin>
             <plugin>
-                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.simpligility.maven.plugins</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.9.0-rc.2</version>
+                <version>4.0.0</version>
                 <configuration>
                     <dex>
                         <jvmArguments>
@@ -130,6 +148,7 @@
                     <sdk>
                         <platform>17</platform>
                     </sdk>
+                    <failOnNonStandardStructure>false</failOnNonStandardStructure>
                 </configuration>
                 <extensions>true</extensions>
             </plugin>

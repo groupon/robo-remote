@@ -61,8 +61,6 @@
     </parent>
 
     <properties>
-        <com.groupon.roboremote-version>0.6.2-b0-SNAPSHOT</com.groupon.roboremote-version>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Disable kicking off tests during build. Can do this through command line with : -Dandroid.enableIntegrationTest=true -->
         <android.enableIntegrationTest>false</android.enableIntegrationTest>
@@ -77,6 +75,13 @@
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>

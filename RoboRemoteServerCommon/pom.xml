@@ -61,9 +61,14 @@
         <version>9</version>
     </parent>
 
-    <properties>
-        <com.groupon.roboremote-version>0.6.2-b0-SNAPSHOT</com.groupon.roboremote-version>
+    <repositories>
+        <repository>
+            <id>boundlessgeo</id>
+            <url>http://repo.boundlessgeo.com/main/</url>
+        </repository>
+    </repositories>
 
+    <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Disable kicking off tests during build. Can do this through command line with : -Dandroid.enableIntegrationTest=true -->
         <android.enableIntegrationTest>false</android.enableIntegrationTest>
@@ -92,9 +97,16 @@
                 <version>2.9</version>
             </plugin>
             <plugin>
-                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.simpligility.maven.plugins</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.8.2</version>
+                <version>4.0.0</version>
                 <configuration>
                     <dex>
                         <jvmArguments>

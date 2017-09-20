@@ -61,10 +61,18 @@
         <version>9</version>
     </parent>
 
-    
-    <properties>
-        <com.groupon.roboremote-version>0.6.2-b0-SNAPSHOT</com.groupon.roboremote-version>
+    <repositories>
+        <repository>
+            <id>boundlessgeo</id>
+            <url>http://repo.boundlessgeo.com/main/</url>
+        </repository>
+        <repository>
+            <id>google</id>
+            <url>https://maven.google.com</url>
+        </repository>
+    </repositories>
 
+    <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Disable kicking off tests during build. Can do this through command line with : -Dandroid.enableIntegrationTest=true -->
         <android.enableIntegrationTest>false</android.enableIntegrationTest>
@@ -97,15 +105,32 @@
           <dependency>
               <groupId>com.groupon.roboremote</groupId>
               <artifactId>roboremoteservercommon</artifactId>
-              <version>${com.groupon.roboremote-version}</version>
+              <version>${project.version}</version>
           </dependency>
           <dependency>
               <groupId>com.groupon.roboremote</groupId>
               <artifactId>roboremoteconstants</artifactId>
-              <version>${com.groupon.roboremote-version}</version>
+              <version>${project.version}</version>
           </dependency>
       </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.9</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <modules>
         <module>apklib</module>
