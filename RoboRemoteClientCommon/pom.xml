@@ -35,7 +35,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremoteclientcommon</artifactId>
-    <version>1.0.0</version>
+    <version>0.6.2-b0-SNAPSHOT</version>
     <name>RoboRemote Client Common Library</name>
     <description>This is the desktop side common client component</description>
 
@@ -51,8 +51,7 @@
         <url>git@github.com:groupon/robo-remote.git</url>
         <connection>scm:git:git@github.com:groupon/robo-remote.git</connection>
         <developerConnection>scm:git:git@github.com:groupon/robo-remote.git</developerConnection>
-      <tag>roboremote-1.0.0</tag>
-  </scm>
+    </scm>
 
     <parent>
         <groupId>org.sonatype.oss</groupId>
