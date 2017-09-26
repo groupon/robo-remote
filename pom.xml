@@ -56,9 +56,9 @@
     </scm>
 
     <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>9</version>
+        <groupId>com.groupon</groupId>
+        <artifactId>basepom</artifactId>
+        <version>8</version>
     </parent>
 
     <modules>
@@ -72,6 +72,47 @@
         <module>UIAutomatorClient</module>
     </modules>
 
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <url>http://nexus-dev/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>http://nexus-dev/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <repositories>
+        <repository>
+            <releases />
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>public</id>
+            <name>Public Repositories</name>
+            <url>http://nexus-dev/content/groups/public</url>
+        </repository>
+        <repository>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots />
+            <id>public-snapshots</id>
+            <name>Public Snapshots Repositories</name>
+            <url>http://nexus-dev/content/groups/public-snapshots</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+    <pluginRepository>
+        <releases />
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+        <id>public</id>
+        <name>Public Repositories</name>
+        <url>http://nexus-dev/content/groups/public</url>
+    </pluginRepository>
+    </pluginRepositories>
     <build>
         <plugins>
             <plugin>

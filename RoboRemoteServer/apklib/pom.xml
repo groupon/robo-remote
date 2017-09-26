@@ -36,7 +36,6 @@
 
     <groupId>com.groupon.roboremote</groupId>
     <artifactId>roboremoteserver</artifactId>
-    <version>0.6.2-b0-SNAPSHOT</version>
     <packaging>apklib</packaging>
     <name>RoboRemoteServer APKLib</name>
     <description>This is the Android side component of RoboRemote</description>

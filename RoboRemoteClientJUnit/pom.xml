@@ -35,7 +35,6 @@
 
     <groupId>com.groupon.roboremote.roboremoteclient</groupId>
     <artifactId>junit</artifactId>
-    <version>0.6.2-b0-SNAPSHOT</version>
     <name>RoboRemote Client JUnit</name>
     <description>This is the junit portion of the desktop side component of RoboRemote</description>
 
@@ -54,9 +53,9 @@
     </scm>
 
     <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>9</version>
+        <groupId>com.groupon.roboremote</groupId>
+        <artifactId>roboremote</artifactId>
+        <version>0.6.2-b0-SNAPSHOT</version>
     </parent>
 
     <properties>
