@@ -52,13 +52,13 @@
         <url>git@github.com:groupon/robo-remote.git</url>
         <connection>scm:git:git@github.com:groupon/robo-remote.git</connection>
         <developerConnection>scm:git:git@github.com:groupon/robo-remote.git</developerConnection>
-      <tag>roboremote-1.0.1</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <parent>
         <groupId>com.groupon.roboremote</groupId>
         <artifactId>roboremoteserveraggregator</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2-SNAPSHOT</version>
     </parent>
 
     <dependencies>
