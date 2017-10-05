@@ -107,7 +107,7 @@
         <dependency>
             <groupId>com.android.tools.ddms</groupId>
             <artifactId>ddmlib</artifactId>
-            <version>22.8.2</version>
+            <version>25.3.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -119,7 +119,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>15.0</version>
+            <version>18.0</version>
         </dependency>
         <dependency>
             <groupId>com.groupon.roboremote</groupId>
