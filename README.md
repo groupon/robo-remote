@@ -2,7 +2,7 @@
 
 ## Overview
 ***
-**RoboRemote** is a remote control framework for Robotium/UIAutomator.  The goal of RoboRemote is to allow for more complex test scenarios by letting the automator write their tests using standard desktop Java/JUnit(other frameworks to be supported in the future).  All of the Robotium Solo commands and UIAutomator commands are available.  RoboRemote also provides some convencience classes to assist in common tasks such as interacting with list views.
+**RoboRemote** is a remote control framework for Robotium/UIAutomator.  The goal of RoboRemote is to allow for more complex test scenarios by letting the automator write their tests using standard desktop Java/JUnit(other frameworks to be supported in the future).  All of the Robotium Solo commands and UIAutomator commands are available.  RoboRemote also provides some convenience classes to assist in common tasks such as interacting with list views.
 
 RoboRemote is loosely modeled after Frank for iOS.
 
@@ -271,7 +271,7 @@ Client.map("solo", "waitForWebElement", QueryBuilder.getStoredValue("byMyText"))
 </code></pre>
 
 **Class Instantiation**
-RoboRemoteClientCommon provides a method to do paramaterized class instantion.
+RoboRemoteClientCommon provides a method to do parameterized class instantion.
 
 *Traditional Syntax*:
 <pre><code>UiObject myObject = new UiObject(mySelector);</code></pre>
